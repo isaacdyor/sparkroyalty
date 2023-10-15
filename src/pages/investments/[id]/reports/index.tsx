@@ -17,8 +17,11 @@ const ReportsPage: NextPage<{ investmentId: string }> = ({ investmentId }) => {
   return (
     <div className="flex justify-center ">
       <div className="mt-0 w-full max-w-6xl rounded p-6">
-        <h1 className="mb-4 text-center text-3xl text-white">
-          Reports for {data.title}
+        <h1 className="mb-4 flex text-center text-3xl text-white">
+          <p className="pr-2">Reports for</p>
+          <Link href={`/investments/${data.id}`}>
+            <p className="hover:text-gray-400"> {data.title}</p>
+          </Link>
         </h1>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">

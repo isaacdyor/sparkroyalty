@@ -58,8 +58,8 @@ const CreateFounderPage: NextPage = () => {
   if (!user) return <Unauthorized />;
 
   return (
-    <div className="flex flex-grow items-center justify-center bg-black p-4">
-      <div className="w-full max-w-xl rounded border border-slate-600 bg-black p-6">
+    <div className="flex flex-grow items-center justify-center  p-4">
+      <div className="w-full max-w-xl rounded border border-slate-600  p-6">
         <h1 className="mb-4 text-2xl font-semibold text-white">
           Create New Founder Profile
         </h1>

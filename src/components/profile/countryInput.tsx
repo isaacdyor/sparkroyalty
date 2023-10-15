@@ -36,7 +36,7 @@ const CountryInput: React.FC<CountryInputProps> = ({ country, setCountry }) => {
 
   return (
     <div className="relative mb-4 inline-block w-full text-left">
-      <label className="mb-2 block text-muted-foreground">Country</label>
+      <label className="mb-2 block text-white">Country</label>
       <div className="flex flex-col" ref={dropdownRef}>
         <input
           type="text"

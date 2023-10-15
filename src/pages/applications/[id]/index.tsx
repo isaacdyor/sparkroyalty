@@ -26,16 +26,20 @@ const ApplicationDetailPage: NextPage<{ applicationId: string }> = ({
 
   return (
     <div className="flex justify-center ">
-      <div className="mt-8 w-full max-w-6xl rounded border-2 border-border p-6">
+      <div className="mt-8 w-full max-w-4xl rounded border-2 border-border p-6 px-8">
         <h1 className="mb-8 text-center text-4xl font-bold text-white">
           Application for {data.investment.title}
         </h1>
-        <div className="mx-32 rounded p-6 text-white">
-          <h2 className="mb-2 text-xl font-semibold">
-            Reason for interest: {data.projectInterest}
+        <div className=" rounded p-6 text-white">
+          <h2 className="mb-2 text-lg ">
+            <span className="font-bold">Reason for interest:</span>{" "}
+            {data.projectInterest}
           </h2>
-          <h2 className="mb-2 text-xl font-semibold">
-            Their relative skills and experience: {data.projectInterest}
+          <h2 className="mb-2 text-xl ">
+            <span className="font-bold">
+              Their relative skills and experience:
+            </span>{" "}
+            {data.projectInterest}
           </h2>
           {user?.id === data.investorId &&
             user?.unsafeMetadata.active === ActiveType.INVESTOR && (

@@ -97,11 +97,14 @@ export const investmentsRouter = createTRPCRouter({
     const investments = await ctx.prisma.investment.findMany({
       where: {
         investorId: ctx.userId,
-        status: "BUILDING",
+        status: {
+          in: ["BUILDING", "PAYOUT", "COMPLETED"],
+        },
       },
       include: {
         founder: true,
         investor: true,
+        skills: true,
       },
     });
     return investments;

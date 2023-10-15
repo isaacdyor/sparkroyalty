@@ -75,8 +75,8 @@ const NewInvestor: NextPage = () => {
   if (!user) return <Unauthorized />;
 
   return (
-    <div className="flex flex-grow items-center justify-center bg-black p-4">
-      <div className="w-full max-w-xl rounded border border-slate-600 bg-black p-6">
+    <div className="flex flex-grow items-center justify-center  p-4">
+      <div className="w-full max-w-xl rounded border-2 border-border p-6">
         <h1 className="mb-4 text-2xl font-semibold text-white">
           Create New Investor Profile
         </h1>
@@ -87,12 +87,12 @@ const NewInvestor: NextPage = () => {
           }}
         >
           <div className="mb-4">
-            <label className="mb-2 block text-white">Title</label>
+            <label className="mb-2 block text-white">Occupation</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="input w-full rounded bg-neutral-800 px-4 py-2 text-white hover:bg-neutral-700"
+              className="input w-full rounded bg-input px-4 py-2 text-white "
               required
             />
           </div>

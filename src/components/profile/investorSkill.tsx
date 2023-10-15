@@ -72,7 +72,7 @@ const InvestorSkill: React.FC<SkillComponentProps> = ({
 
   return (
     <div>
-      <label className="text-muted-foreground">Skills</label>
+      <label className="text-white">Skills</label>
       {skills.map((skill, index) => (
         <div
           key={index}

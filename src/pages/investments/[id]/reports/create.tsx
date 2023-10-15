@@ -121,7 +121,7 @@ const CreateReportPage: NextPage<{ investmentId: string }> = ({
           {page === 1 && (
             <>
               <h1 className="mb-4 text-2xl font-semibold text-white">
-                Create New Report for @{data?.title}
+                Create New Report for {data?.title}
               </h1>
               <div className="mb-4">
                 <label className="mb-2 block text-white">

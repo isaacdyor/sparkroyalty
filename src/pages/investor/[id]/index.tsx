@@ -16,7 +16,7 @@ const InvestorProfilePage: NextPage<{ id: string; imageUrl: string }> = ({
   if (!data) return <InvalidID />;
 
   return (
-    <div className="flex justify-center bg-black">
+    <div className="flex justify-center">
       <InvestorProfileComponent investor={data} imageUrl={imageUrl} />
     </div>
   );

@@ -13,7 +13,7 @@ const MoreInfo: React.FC<{ infoText: string; label: string }> = ({
 
   return (
     <div className="z-10 mb-2 flex text-center">
-      <label className="mr-2 block text-muted-foreground">{label}</label>
+      <label className="mr-2 block text-white">{label}</label>
 
       <div className="relative flex items-center justify-between">
         <div

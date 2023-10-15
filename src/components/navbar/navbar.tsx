@@ -14,6 +14,7 @@ import SearchBar from "./searchBar";
 import MessageIcon from "../messages/messageIcon";
 import { useEffect, useState } from "react";
 import HamburgerMenu from "./hamburgerMenu";
+import Image from "next/image";
 
 const Navbar = () => {
   const { user, isLoaded } = useUser();
@@ -154,9 +155,14 @@ const Navbar = () => {
     <nav className="bg-black-500 border-b-2 border-border p-4">
       <div className="mx-auto flex items-center justify-between">
         <Link href="/" passHref>
-          <p className="ml-2 mr-8 text-xl font-semibold text-white md:ml-6 lg:ml-8">
-            Sparket
-          </p>
+          <Image
+            src="/logo.png"
+            alt="logo"
+            width={150}
+            height={150}
+            priority
+            className="h-auto w-auto"
+          />
         </Link>
         {isBigScreen ? (
           <ul className="flex max-w-5xl grow items-center justify-end space-x-6">

@@ -54,7 +54,7 @@ const InvestmentForm: React.FC<PayoutFormProps> = ({
         Investment Details
       </h2>
       <div className="mb-4">
-        <label className="mb-2 block text-muted-foreground">Title</label>
+        <label className="mb-2 block text-white">Title</label>
         <input
           type="text"
           value={title}

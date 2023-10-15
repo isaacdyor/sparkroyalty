@@ -25,8 +25,8 @@ const FounderProfilePage: NextPage<{ founderId: string; imageUrl: string }> = ({
   if (!investmentData || !founderData) return <InvalidID />;
 
   return (
-    <div className="flex justify-center bg-black">
-      <div className="mt-8 flex w-full max-w-6xl flex-col rounded border border-slate-600 p-6 ">
+    <div className="flex justify-center">
+      <div className="mt-8 flex w-full max-w-6xl flex-col rounded border-2 border-border p-6 ">
         <h1 className="mb-8 text-center text-4xl font-bold text-white">
           {founderData.fullName}&apos;s Founder Profile
         </h1>

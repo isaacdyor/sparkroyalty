@@ -39,9 +39,9 @@ const CompleteJobButton: React.FC<{
           link: `/investor/${investment.investorId}/review`,
         });
       }}
-      className="w-full rounded-full bg-blue-500 p-2 font-semibold hover:bg-blue-600"
+      className="w-full rounded-full bg-blue-500 p-1.5 font-semibold hover:bg-blue-600"
     >
-      Complete Job
+      Complete
     </button>
   );
 };
