@@ -64,9 +64,9 @@ const Home: NextPage = () => {
   return (
     <div className="p-8 md:px-16 lg:px-24 xl:pb-0">
       <div className="max-w-8xl w-full">
-        <div className="max-w-8xl text-gradient w-full">
-          <h1 className="text-vw-xl text-transparent">Welcome to Sparket</h1>
-          <p className="text-vw-lg text-transparent">
+        <div className="max-w-8xl text-gradient w-full pb-8">
+          <h1 className="text-9xl text-transparent">Welcome to Sparket</h1>
+          <p className="text-7xl text-transparent">
             A royalty based freelancing market
           </p>
         </div>
@@ -82,7 +82,7 @@ const Home: NextPage = () => {
           <div className="flex md:w-1/2 ">
             <div className="w-1/2 grow border border-transparent border-r-slate-600 border-t-slate-600">
               <div className="flex flex-col items-center pt-4">
-                <p className="pb-3 text-vw-lg">
+                <p className="pb-3 text-7xl">
                   $4.2<span className="text-vw-md">B+</span>
                 </p>
                 <p className=" px-4 text-center text-lg text-slate-400">
@@ -92,7 +92,7 @@ const Home: NextPage = () => {
             </div>
             <div className="grow border border-transparent border-r-slate-600 border-t-slate-600 md:w-1/2">
               <div className="flex flex-col items-center pt-4 text-center">
-                <p className="pb-3 text-vw-lg">
+                <p className="pb-3 text-7xl">
                   700<span className="text-vw-md">K+</span>
                 </p>
                 <p className="px-2 text-lg text-slate-400">
