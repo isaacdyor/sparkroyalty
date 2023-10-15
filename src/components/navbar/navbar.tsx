@@ -42,9 +42,9 @@ const Navbar = () => {
   if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
     specificContent = (
       <>
-        {/* <li className="grow">
+        <li className="grow">
           <SearchBar />
-        </li> */}
+        </li>
         <li>
           <Link href="/investor/jobs" passHref>
             <p className="text-white">My Jobs</p>
