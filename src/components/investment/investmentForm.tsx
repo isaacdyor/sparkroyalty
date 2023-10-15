@@ -54,12 +54,13 @@ const InvestmentForm: React.FC<PayoutFormProps> = ({
         Investment Details
       </h2>
       <div className="mb-4">
-        <label className="mb-2 block text-white">Title</label>
+        <label className="mb-2 block text-muted-foreground">Title</label>
         <input
           type="text"
           value={title}
+          placeholder="Title"
           onChange={(e) => setTitle(e.target.value)}
-          className="input w-full rounded bg-neutral-800 px-4 py-2 text-white"
+          className="input w-full rounded bg-input px-4 py-2 text-white"
           required
         />
       </div>
@@ -100,7 +101,7 @@ const InvestmentForm: React.FC<PayoutFormProps> = ({
               className={`w-1/2 rounded-l px-4 py-2 font-semibold text-white  ${
                 paymentBasis === PaymentBasisType.REVENUE
                   ? "bg-blue-500 hover:bg-blue-600"
-                  : "bg-neutral-800 hover:bg-neutral-700"
+                  : "bg-input hover:bg-slate-700"
               }`}
               onClick={(e) => {
                 e.preventDefault();
@@ -113,7 +114,7 @@ const InvestmentForm: React.FC<PayoutFormProps> = ({
               className={`w-1/2 rounded-r px-4 py-2 font-semibold text-white  ${
                 paymentBasis === PaymentBasisType.PROFIT
                   ? "bg-blue-500 hover:bg-blue-600"
-                  : "bg-neutral-800 hover:bg-neutral-700"
+                  : "bg-input hover:bg-slate-700"
               }`}
               onClick={(e) => {
                 e.preventDefault();
@@ -139,7 +140,7 @@ const InvestmentForm: React.FC<PayoutFormProps> = ({
                   const inputValue = parseFloat(e.target.value);
                   setPercent(inputValue.toString());
                 }}
-                className="input grow rounded bg-neutral-800 px-4 py-2 text-white"
+                className="input grow rounded bg-input px-4 py-2 text-white"
                 required
               />
               <p className="pl-1">%</p>
@@ -153,16 +154,16 @@ const InvestmentForm: React.FC<PayoutFormProps> = ({
               infoText="How often payments will be sent. Along with each payment you will include a brief report of your revenue, progress, and plans for the future."
             />
             <select
-              className="w-full rounded border border-gray-600 bg-neutral-800 py-2 pl-1 text-white focus:outline-none"
+              className="w-full rounded border border-gray-600 bg-input py-2 pl-1 text-white focus:outline-none"
               id="payout-frequency-dropdown"
               onChange={(e) => {
                 setPayoutFrequency(e.target.value as FrequencyType);
               }}
             >
-              <option className="bg-gray-800 text-white" value="MONTHLY">
+              <option className="bg-input text-white" value="MONTHLY">
                 Monthly
               </option>
-              <option className="bg-gray-800 text-white" value="QUARTERLY">
+              <option className="bg-input text-white" value="QUARTERLY">
                 Quarterly
               </option>
               <option
@@ -192,7 +193,7 @@ const InvestmentForm: React.FC<PayoutFormProps> = ({
                   const inputValue = parseFloat(e.target.value);
                   setTotalPayout(inputValue.toString());
                 }}
-                className="input w-full rounded bg-neutral-800 px-4 py-2 text-white"
+                className="input w-full rounded bg-input px-4 py-2 text-white"
                 required
               />
             </div>

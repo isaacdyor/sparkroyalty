@@ -12,6 +12,10 @@ const InvestmentCard: React.FC<{ investment: InvestmentType }> = ({
 }) => {
   const { user } = useUser();
 
+  const alreadyApplied = investment.applications?.some(
+    (application) => application.investorId === user?.id
+  );
+
   return (
     <div className="overflow-hidden rounded bg-gray-800 p-6 text-white">
       <div className="flex h-full flex-col">
@@ -24,7 +28,6 @@ const InvestmentCard: React.FC<{ investment: InvestmentType }> = ({
               {investment.title}
             </Link>
           </h2>
-          {investment.status}
 
           <p className="mb-3 text-gray-300">
             <span className="font-semibold">Description:</span>{" "}
@@ -48,7 +51,6 @@ const InvestmentCard: React.FC<{ investment: InvestmentType }> = ({
               ))}
             </div>
           </div>
-          <hr className="my-4 border-t-2 border-slate-600" />
         </div>
 
         {investment.founderId === user?.id &&
@@ -64,11 +66,29 @@ const InvestmentCard: React.FC<{ investment: InvestmentType }> = ({
                     View Applications
                   </Link>
                   <div className="mt-4 flex justify-center">
-                    <div className="pr-1">
+                    <div className="pr-2">
                       <EditInvestmentButton investmentId={investment.id} />
                     </div>
                     <DeleteInvestmentButton investmentId={investment.id} />
                   </div>
+                </div>
+              )}
+            </>
+          )}
+        {user?.unsafeMetadata.active === ActiveType.INVESTOR &&
+          !alreadyApplied && (
+            <>
+              {investment.status === "PENDING" && (
+                <div>
+                  <hr className="my-4 border-t-2 border-slate-600" />
+                  <Link
+                    className="text-blue-500 hover:text-blue-600"
+                    href={`/investments/${investment.id}/apply`}
+                  >
+                    <button className="rounded-full bg-primary p-2 px-4 text-white">
+                      Apply
+                    </button>
+                  </Link>
                 </div>
               )}
             </>

@@ -137,7 +137,7 @@ const CreateReportPage: NextPage<{ investmentId: string }> = ({
                     const inputValue = parseFloat(e.target.value);
                     setEarnings(inputValue.toString());
                   }}
-                  className="input w-full rounded bg-neutral-800 px-4 py-2 text-white hover:bg-neutral-700"
+                  className="input h w-full rounded bg-input px-4 py-2 text-white"
                   required
                 />
               </div>

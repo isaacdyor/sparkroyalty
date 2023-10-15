@@ -31,7 +31,7 @@ const FounderProfileComponent: React.FC<{
   if (!founder.reviews) return null;
 
   return (
-    <div className="mt-4 w-full max-w-3xl rounded border border-slate-600 p-6">
+    <div className="mt-4 w-full max-w-3xl rounded border-2 border-border p-6">
       <div className="mb-4 flex items-center justify-center">
         <Image
           src={imageUrl}
@@ -68,7 +68,7 @@ const FounderProfileComponent: React.FC<{
         </div>
       </div>
 
-      <hr className="my-4 border-t-2 border-slate-600" />
+      <hr className="my-4 border-t-2 border-border" />
 
       <div className="mb-4 flex flex-col">
         <div className="mb-1 mr-4 flex items-center justify-between">
@@ -88,19 +88,19 @@ const FounderProfileComponent: React.FC<{
           </p>
         </div>
       </div>
-      <hr className="my-4 border-t-2 border-slate-600" />
+      <hr className="my-4 border-t-2 border-border" />
 
       <div className="mb-4">
         <p className="text-lg font-semibold">About</p>
         <p>{founder.bio}</p>
       </div>
-      <hr className="my-4 border-t-2 border-slate-600" />
+      <hr className="my-4 border-t-2 border-border" />
 
       <div className="mb-4">
         <p className="text-lg font-semibold">Education and Experience</p>
         <p>{founder.educationAndExperience}</p>
       </div>
-      <hr className="my-4 border-t-2 border-slate-600" />
+      <hr className="my-4 border-t-2 border-border" />
 
       <LinkedAccounts />
 

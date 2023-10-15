@@ -25,15 +25,14 @@ const ApplicationDetailPage: NextPage<{ applicationId: string }> = ({
   if (data.investorId != user?.id) return <Unauthorized />;
 
   return (
-    <div className="flex justify-center bg-black">
-      <div className="mt-8 w-full max-w-6xl rounded border border-slate-600 p-6">
+    <div className="flex justify-center ">
+      <div className="mt-8 w-full max-w-6xl rounded border-2 border-border p-6">
         <h1 className="mb-8 text-center text-4xl font-bold text-white">
           Application for {data.investment.title}
         </h1>
-        <div className="mx-32 rounded bg-gray-800 p-6 text-white">
+        <div className="mx-32 rounded p-6 text-white">
           <h2 className="mb-2 text-xl font-semibold">
-            Why {data.investor.firstName} is interested in this project:{" "}
-            {data.projectInterest}
+            Reason for interest: {data.projectInterest}
           </h2>
           <h2 className="mb-2 text-xl font-semibold">
             Their relative skills and experience: {data.projectInterest}

@@ -5,6 +5,7 @@ import { useState } from "react";
 import InvalidID from "~/components/conditionals/invalidId";
 import Loading from "~/components/conditionals/loading";
 import Unauthorized from "~/components/conditionals/unauthorized";
+import TextArea from "~/components/shared/textArea";
 import { api } from "~/utils/api";
 
 const ApplyPage: NextPage<{ id: string }> = ({ id }) => {
@@ -82,40 +83,33 @@ const ApplyPage: NextPage<{ id: string }> = ({ id }) => {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-black">
-      <div className="m-6 w-full max-w-md rounded border border-slate-600 bg-black p-8 shadow-md">
+    <div className="flex justify-center">
+      <div className="m-6 w-full max-w-xl rounded border-2 border-border  p-8 shadow-md">
         <h1 className="mb-4 text-2xl font-bold text-white">
-          Application for{" "}
-          <Link
-            href={`/investment/${investmentData.id}`}
-            className="text-blue-500 hover:text-blue-600"
-          >
-            {investmentData.title}
-          </Link>
+          Application for {investmentData.title}
         </h1>
         <div className="mb-4">
-          <label className="mb-2 block text-sm font-semibold text-white">
+          <label className="mb-2 block text-white">
             Why are you interested in this project?
           </label>
-          <input
-            type="text"
-            value={projectInterest}
-            onChange={(e) => setProjectInterest(e.target.value)}
-            className="w-full rounded border border-gray-600 bg-gray-800 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+          <TextArea
+            text={projectInterest}
+            setText={setProjectInterest}
+            placeHolder="Describe your interest in the project..."
           />
         </div>
         <div className="mb-4">
-          <label className="mb-2 block text-sm font-semibold text-white">
+          <label className="mb-2 block text-white">
             What skills or experience do you have that would be useful for this
             project?
           </label>
-          <input
-            type="text"
-            value={projectSkills}
-            onChange={(e) => setProjectSkills(e.target.value)}
-            className="w-full rounded border border-gray-600 bg-gray-800 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+          <TextArea
+            text={projectSkills}
+            setText={setProjectSkills}
+            placeHolder="Describe your skills specific to this project..."
           />
         </div>
+
         <button
           onClick={(e) => {
             e.preventDefault();

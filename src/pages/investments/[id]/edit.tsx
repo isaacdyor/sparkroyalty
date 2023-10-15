@@ -84,9 +84,9 @@ const EditInvestmentPage: NextPage<{ id: string }> = ({ id }) => {
   if (error) return <Unauthorized />;
 
   return (
-    <div className="flex flex-grow items-center justify-center bg-black p-4">
-      <div className="w-full max-w-xl rounded border border-slate-600 bg-black p-6">
-        <h1 className="mb-4 text-center text-3xl font-semibold text-white">
+    <div className="flex flex-grow items-center justify-center p-4">
+      <div className="w-full max-w-xl rounded border-2 border-border p-6">
+        <h1 className="mb-4 text-3xl font-semibold text-white">
           Update Investment
         </h1>
         <hr className="my-4 border-t-2 border-slate-600" />
@@ -122,7 +122,7 @@ const EditInvestmentPage: NextPage<{ id: string }> = ({ id }) => {
           {isModalOpen && (
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
-                <div className="modal-content flex w-80 flex-col items-center rounded-lg bg-neutral-800 shadow-md">
+                <div className="modal-content flex w-80 flex-col items-center rounded-lg bg-secondary shadow-md">
                   <p className="px-4 pt-4 text-center">
                     Are you sure you want to edit your investment. This will
                     delete any existing applications for your investment.{" "}

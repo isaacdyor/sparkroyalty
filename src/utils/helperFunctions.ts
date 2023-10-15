@@ -41,8 +41,8 @@ export const formatCurrency = (value: number): string => {
 };
 
 export const sliceDescription = (description: string): string => {
-  if (description.length > 100) {
-    return description.slice(0, 100) + "...";
+  if (description.length > 199) {
+    return description.slice(0, 199) + "...";
   } else {
     return description;
   }

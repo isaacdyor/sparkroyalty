@@ -106,7 +106,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
     return (
       <li
         key={index}
-        className={`cursor-pointer rounded-lg px-4 py-2 hover:bg-neutral-800 ${
+        className={`cursor-pointer rounded-lg px-4 py-2 hover:bg-slate-700 ${
           index === suggestionList.length - 1 ? "border-b border-gray-600" : ""
         }`}
         onClick={(e) => {
@@ -129,7 +129,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
   return (
     <>
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute left-0 z-10 mt-11 w-full rounded-lg border border-gray-600 bg-neutral-900">
+        <div className="absolute left-0 z-10 mt-11 w-full rounded-lg border border-gray-600 bg-input">
           <ul>
             {suggestions.map((suggestion, index) => (
               <React.Fragment key={index}>

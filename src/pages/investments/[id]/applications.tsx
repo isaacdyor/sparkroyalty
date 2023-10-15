@@ -24,14 +24,6 @@ const ApplicationListPage: NextPage<{ id: string }> = ({ id }) => {
   if (user?.unsafeMetadata.active !== ActiveType.FOUNDER)
     return <Unauthorized />;
 
-  if (!data.applications.length) {
-    return (
-      <div>
-        <p>No applications yet</p>
-      </div>
-    );
-  }
-
   if (data.status !== "PENDING") {
     return (
       <div>
@@ -41,26 +33,73 @@ const ApplicationListPage: NextPage<{ id: string }> = ({ id }) => {
   }
 
   return (
-    <div className="flex justify-center bg-black">
-      <div className="mt-8 w-full max-w-6xl rounded border border-slate-600 p-6">
+    <div className="flex justify-center">
+      <div className="mt-8 w-full max-w-6xl rounded border border-border p-6">
         <h1 className="mb-8 text-center text-4xl font-bold text-white">
           Applications for {data.title}
         </h1>
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+        {data.applications.length == 0 && (
+          <div>
+            <p className="text-center text-xl">
+              Nobody has applied for your post yet. Give it some time or improve
+              your offer!
+            </p>
+          </div>
+        )}
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           {data.applications.map((application) => (
             <div
               key={application.id}
-              className="rounded bg-gray-800 p-6 text-white"
+              className="rounded bg-secondary p-6 text-white"
             >
-              <Link href={`/applications/${application.id}`}>
-                <h2 className="mb-2 text-xl font-semibold">
-                  {application.investor!.fullName}&apos;s application
-                </h2>
-              </Link>
+              <h2 className="mb-2 text-2xl font-semibold">
+                <Link
+                  className="hover:text-slate-300"
+                  href={`/investor/${application.investorId}`}
+                >
+                  {application.investor!.fullName}&apos;s
+                </Link>{" "}
+                application
+              </h2>
 
-              <p>Why I am interested: {application.projectInterest}</p>
-              <p>What skills I have: {application.projectSkills}</p>
-              <p>Status: {application.status}</p>
+              <p className="pb-2">
+                <span className="font-semibold">Occupation:</span>{" "}
+                {application.investor!.title}
+              </p>
+              <p className="pb-2">
+                <span className="font-semibold">Bio:</span>{" "}
+                {application.investor!.bio}
+              </p>
+              <p className="pb-2">
+                <span className="font-semibold">Education and Experience:</span>{" "}
+                {application.investor!.educationAndExperience}
+              </p>
+              <p className="pb-2">
+                <span className="font-semibold">Country:</span>{" "}
+                {application.investor!.country}
+              </p>
+              <div>
+                <p className="pb-2">
+                  <span className="font-semibold">Skills:</span>
+                </p>
+                <div className="flex pb-2">
+                  {application.investor!.skills?.map((skill) => (
+                    <p
+                      className="mb-1 mr-1 rounded-2xl border border-gray-600 bg-gray-700 p-1 px-2" // Add margin to create spacing between skills
+                      key={skill.id}
+                    >
+                      {skill.skill}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              <p className="pb-2">
+                Reason for interest: {application.projectInterest}
+              </p>
+              <p className="pb-2">
+                Project Specific Skills: {application.projectSkills}
+              </p>
               <AcceptApplication
                 applicationId={application.id}
                 investment={data}

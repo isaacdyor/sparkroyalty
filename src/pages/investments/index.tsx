@@ -42,7 +42,7 @@ const InvestmentPage: NextPage<{ userId: string }> = ({ userId }) => {
   if (isLoading || userLoading) return <Loading />;
 
   return (
-    <div className="flex justify-center bg-black">
+    <div className="flex justify-center ">
       <div className="mt-0 w-full max-w-6xl rounded p-6">
         {query ? (
           <h1 className="mb-4 text-center text-3xl text-white">
@@ -57,7 +57,7 @@ const InvestmentPage: NextPage<{ userId: string }> = ({ userId }) => {
           <div className="flex items-center">
             <p className="mr-2">Sort by: </p>
             <select
-              className="rounded border border-gray-600 bg-black py-2 pl-1 text-white focus:outline-none"
+              className="rounded border border-gray-600 bg-background py-2 pl-1 text-white focus:outline-none"
               id="sortingDropdown"
               onChange={(e) => {
                 setSortMethod(e.target.value as SortingMethod);

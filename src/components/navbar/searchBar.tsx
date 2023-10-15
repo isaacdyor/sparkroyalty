@@ -50,10 +50,10 @@ const SearchBar = () => {
       className="flex h-6 grow items-center space-x-6"
     >
       <div className="flex grow " ref={dropdownRef}>
-        <div className="group relative flex grow rounded-l-3xl border border-gray-600 focus-within:border-blue-500">
+        <div className="group relative flex grow rounded-l-3xl border border-border focus-within:border-blue-500">
           <input
             type="text"
-            className="input search:text-gray-600 grow rounded-l-3xl bg-black py-2 pl-4 focus:outline-none"
+            className=" grow rounded-l-3xl bg-background py-2 pl-4 focus:outline-none"
             placeholder="What service would you like to provide?"
             value={query}
             onFocus={() => {
@@ -93,14 +93,14 @@ const SearchBar = () => {
         {query ? (
           <button
             type="submit"
-            className="rounded-r-3xl bg-gray-600 px-1 hover:bg-gray-500"
+            className="rounded-r-3xl bg-secondary px-1 hover:bg-secondary/70"
           >
             <AiOutlineSearch className=" mr-1 h-7 w-7 p-1 text-white" />
           </button>
         ) : (
           <button
             onClick={(e) => e.preventDefault()}
-            className="rounded-r-3xl bg-gray-600 px-1 hover:bg-gray-500"
+            className="rounded-r-3xl bg-secondary px-1 hover:bg-secondary/70"
           >
             <AiOutlineSearch className=" mr-1 h-7 w-7 p-1 text-white" />
           </button>

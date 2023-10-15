@@ -72,7 +72,7 @@ const InvestorSkill: React.FC<SkillComponentProps> = ({
 
   return (
     <div>
-      <label>Skills</label>
+      <label className="text-muted-foreground">Skills</label>
       {skills.map((skill, index) => (
         <div
           key={index}
@@ -91,7 +91,7 @@ const InvestorSkill: React.FC<SkillComponentProps> = ({
                 type="text"
                 value={skill.skill}
                 onChange={(e) => updateSkill(index, "skill", e.target.value)}
-                className="input w-full rounded bg-neutral-800 px-4 py-2 text-white hover:bg-neutral-700"
+                className="input w-full rounded bg-input px-4 py-2 text-white "
                 placeholder="Enter skill"
                 onFocus={() => {
                   setActiveSuggestion(index);
@@ -125,7 +125,7 @@ const InvestorSkill: React.FC<SkillComponentProps> = ({
                   e.target.value as ExperienceLevelType
                 )
               }
-              className={`input w-full rounded bg-neutral-800 px-4 py-2 hover:bg-neutral-700 ${
+              className={`input w-full rounded bg-input px-4 py-2  ${
                 skill.experience === "" ? "text-gray-400" : "text-white"
               }`}
               required

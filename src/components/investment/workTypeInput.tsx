@@ -24,9 +24,10 @@ const WorkTypeInput: React.FC<WorkTypeInputProps> = ({
       <div className="relative flex w-full items-start" ref={dropdownRef}>
         <input
           type="text"
+          placeholder="Type of work you are looking for"
           value={workType}
           onChange={(e) => setWorkType(e.target.value)}
-          className="input w-full rounded bg-neutral-800 px-4 py-2 text-white"
+          className="input w-full rounded bg-input px-4 py-2 text-white"
           required
           onFocus={() => {
             setShowSuggestions(true);

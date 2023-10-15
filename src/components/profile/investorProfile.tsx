@@ -36,7 +36,7 @@ const InvestorProfileComponent: React.FC<{
   if (!investor.reviews) return null;
 
   return (
-    <div className="mt-4 w-full max-w-3xl rounded border border-slate-600 p-6">
+    <div className="mt-4 w-full max-w-3xl rounded border-2 border-border p-6">
       <div className="mb-4 flex items-center justify-center">
         <Image
           src={imageUrl}
@@ -72,7 +72,7 @@ const InvestorProfileComponent: React.FC<{
         </div>
       </div>
 
-      <hr className="my-4 mr-4 border-t-2 border-slate-600" />
+      <hr className="my-4 mr-4 border-t-2 border-border" />
 
       <div className="mb-4">
         <div className="mb-1 flex items-center justify-between">
@@ -99,18 +99,18 @@ const InvestorProfileComponent: React.FC<{
           </p>
         </div>
       </div>
-      <hr className="my-4 mr-4 border-t-2 border-slate-600" />
+      <hr className="my-4 mr-4 border-t-2 border-border" />
 
       <div className="mb-4">
         <p className="text-lg font-semibold">About</p>
         <p>{investor.bio}</p>
       </div>
-      <hr className="my-4 mr-4 border-t-2 border-slate-600" />
+      <hr className="my-4 mr-4 border-t-2 border-border" />
       <div className="mb-4">
         <p className="text-lg font-semibold">Education and Experience</p>
         <p>{investor.educationAndExperience}</p>
       </div>
-      <hr className="my-4 mr-4 border-t-2 border-slate-600" />
+      <hr className="my-4 mr-4 border-t-2 border-border" />
 
       <p className="mb-2 text-lg font-semibold">Skills</p>
 
@@ -123,7 +123,7 @@ const InvestorProfileComponent: React.FC<{
         </div>
       ))}
 
-      <hr className="my-4 mr-4 border-t-2 border-slate-600" />
+      <hr className="my-4 mr-4 border-t-2 border-border" />
 
       <LinkedAccounts />
 

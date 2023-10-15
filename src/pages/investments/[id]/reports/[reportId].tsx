@@ -23,11 +23,11 @@ const ReportsPage: NextPage<{ investmentId: string; reportId: string }> = ({
   if (!data || !reportData) return <InvalidID />;
 
   return (
-    <div className="flex justify-center bg-black">
+    <div className="flex justify-center ">
       <div className="mt-0 w-full max-w-6xl rounded p-6">
         <h1 className="mb-4 text-center text-3xl text-white"></h1>
 
-        <div className="overflow-hidden rounded bg-neutral-800 p-6 text-white">
+        <div className="overflow-hidden rounded bg-secondary p-6 text-white">
           <div className="flex h-full flex-col">
             <div>
               <h2 className="mb-2 text-2xl font-semibold text-white">

@@ -93,8 +93,8 @@ const EditFounderPage: NextPage<{ userId: string }> = ({ userId }) => {
   }
 
   return (
-    <div className="flex flex-grow items-center justify-center bg-black p-4">
-      <div className="w-full max-w-xl rounded border border-slate-600 bg-black p-6">
+    <div className="flex flex-grow items-center justify-center  p-4">
+      <div className="w-full max-w-xl rounded border border-slate-600 p-6">
         <h1 className="mb-4 text-2xl font-semibold text-white">
           Update Founder Profile
         </h1>
@@ -106,7 +106,7 @@ const EditFounderPage: NextPage<{ userId: string }> = ({ userId }) => {
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="input w-full rounded px-4 py-2 text-black"
+                className="input w-full rounded bg-input px-4 py-2 text-white"
                 required
               />
             </div>
@@ -116,7 +116,7 @@ const EditFounderPage: NextPage<{ userId: string }> = ({ userId }) => {
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="input w-full rounded px-4 py-2 text-black"
+                className="input w-full rounded bg-input px-4 py-2 text-white"
                 required
               />
             </div>

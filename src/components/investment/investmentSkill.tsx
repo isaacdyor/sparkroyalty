@@ -66,7 +66,7 @@ const InvestmentSkill: React.FC<{
           <div
             key={index}
             ref={refs.current[index]}
-            className="relative flex w-full items-start"
+            className="group relative flex w-full items-start"
           >
             <input
               type="text"
@@ -80,9 +80,10 @@ const InvestmentSkill: React.FC<{
               }}
               onMouseLeave={() => {
                 setShowTrash(-1);
+                console.log("mouse leave");
               }}
               onChange={(e) => updateSkill(index, e.target.value)}
-              className="input w-full rounded bg-neutral-800 px-4 py-2 pr-10 text-white" // Add pr-10 for padding on the right
+              className="input w-full rounded bg-input px-4 py-2 pr-10 text-white " // Add pr-10 for padding on the right
               placeholder="Enter skill"
               required
             />
@@ -101,10 +102,10 @@ const InvestmentSkill: React.FC<{
               </div>
             )}
 
-            {skills.length > 1 && index === showTrash && (
+            {skills.length > 1 && (
               <button
                 type="button"
-                className="absolute right-2 top-3 text-gray-600" // Adjust the positioning
+                className={`absolute right-2 top-3 text-input group-hover:text-gray-600`} // Adjust the positioning
                 onClick={() => deleteSkill(index)}
               >
                 <BsTrash3 className="h-4 w-4" />

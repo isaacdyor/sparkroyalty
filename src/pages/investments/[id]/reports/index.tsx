@@ -15,7 +15,7 @@ const ReportsPage: NextPage<{ investmentId: string }> = ({ investmentId }) => {
   if (!data) return <InvalidID />;
 
   return (
-    <div className="flex justify-center bg-black">
+    <div className="flex justify-center ">
       <div className="mt-0 w-full max-w-6xl rounded p-6">
         <h1 className="mb-4 text-center text-3xl text-white">
           Reports for {data.title}
@@ -24,7 +24,7 @@ const ReportsPage: NextPage<{ investmentId: string }> = ({ investmentId }) => {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {data.reports.map((report) => (
             <div
-              className="overflow-hidden rounded bg-neutral-800 p-6 text-white"
+              className="overflow-hidden rounded bg-secondary p-6 text-white"
               key={report.id}
             >
               <div className="flex h-full flex-col">

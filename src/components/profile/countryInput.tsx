@@ -36,11 +36,11 @@ const CountryInput: React.FC<CountryInputProps> = ({ country, setCountry }) => {
 
   return (
     <div className="relative mb-4 inline-block w-full text-left">
-      <label className="mb-2 block text-white">Country</label>
+      <label className="mb-2 block text-muted-foreground">Country</label>
       <div className="flex flex-col" ref={dropdownRef}>
         <input
           type="text"
-          className="rounded bg-neutral-800 px-4 py-2 text-white hover:bg-neutral-700 focus:outline-none"
+          className="rounded bg-input px-4 py-2 text-white  focus:outline-none"
           value={text}
           onFocus={() => {
             setIsOpen(true);

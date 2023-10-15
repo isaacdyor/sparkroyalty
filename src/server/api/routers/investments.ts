@@ -24,6 +24,7 @@ export const investmentsRouter = createTRPCRouter({
       include: {
         skills: true,
         founder: true,
+        applications: true,
       },
     });
     return investments;
@@ -58,7 +59,11 @@ export const investmentsRouter = createTRPCRouter({
           reports: true,
           applications: {
             include: {
-              investor: true,
+              investor: {
+                include: {
+                  skills: true,
+                },
+              },
             },
           },
         },

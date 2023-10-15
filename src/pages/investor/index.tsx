@@ -23,7 +23,7 @@ const CurrentInvestorProfilePage: NextPage = () => {
   if (error ?? !user) return <Unauthorized />;
 
   return (
-    <div className="flex justify-center bg-black">
+    <div className="flex justify-center ">
       <InvestorProfileComponent investor={data} imageUrl={user.imageUrl} />
     </div>
   );

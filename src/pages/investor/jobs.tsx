@@ -16,7 +16,7 @@ const JobPage: NextPage = () => {
   if (error) return <Unauthorized />;
 
   return (
-    <div className="flex min-h-screen justify-center bg-black">
+    <div className="flex min-h-screen justify-center ">
       <div className=" w-full max-w-6xl rounded p-6">
         <h1 className="mb-8 text-center text-4xl font-bold text-white">
           Your Jobs
@@ -43,11 +43,12 @@ const JobPage: NextPage = () => {
               >
                 <div className="flex h-full flex-col justify-between">
                   <div>
-                    <Link href={`/investments/${investment.id}`}>
-                      <h2 className="mb-2 text-2xl font-semibold text-white transition duration-300 ease-in-out hover:text-blue-400">
+                    <h2 className="mb-2 text-2xl font-semibold text-white transition duration-300 ease-in-out hover:text-blue-400">
+                      <Link href={`/investments/${investment.id}`}>
                         {investment.title}
-                      </h2>
-                    </Link>
+                      </Link>
+                    </h2>
+
                     <p className="mb-3 text-gray-300">
                       <span className="font-semibold">Work Type:</span>{" "}
                       {investment.workType}
@@ -68,12 +69,10 @@ const JobPage: NextPage = () => {
                       <span className="font-semibold">Extra Details:</span>{" "}
                       {investment.extraDetails}
                     </p>
-                    <p className="text-gray-300">
-                      <span className="font-semibold">Status:</span>{" "}
-                      {investment.status}
-                    </p>
                   </div>
-                  <CompleteJobButton investment={investment} />
+                  <div className="w-40">
+                    <CompleteJobButton investment={investment} />
+                  </div>
                 </div>
               </div>
             ))}

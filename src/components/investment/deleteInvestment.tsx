@@ -22,7 +22,7 @@ const DeleteInvestmentButton: React.FC<{ investmentId: string }> = ({
           investmentId,
         });
       }}
-      className="rounded-full border border-blue-500 p-2 font-semibold text-blue-500 hover:bg-blue-500 hover:bg-opacity-10"
+      className="rounded-full border border-blue-500 p-2 px-4 font-semibold text-blue-500 hover:bg-blue-500 hover:bg-opacity-10"
     >
       Delete
     </button>

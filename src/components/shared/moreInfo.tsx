@@ -13,7 +13,7 @@ const MoreInfo: React.FC<{ infoText: string; label: string }> = ({
 
   return (
     <div className="z-10 mb-2 flex text-center">
-      <label className="mr-2 block text-neutral-400">{label}</label>
+      <label className="mr-2 block text-muted-foreground">{label}</label>
 
       <div className="relative flex items-center justify-between">
         <div
@@ -21,10 +21,10 @@ const MoreInfo: React.FC<{ infoText: string; label: string }> = ({
           onMouseEnter={togglePopup}
           onMouseLeave={togglePopup}
         >
-          <AiOutlineQuestionCircle className="cursor-pointer text-neutral-400" />
+          <AiOutlineQuestionCircle className="cursor-pointer text-muted-foreground" />
         </div>
         {showPopup && (
-          <div className="absolute left-5 z-20 w-44 rounded-lg border border-gray-600 bg-neutral-900 px-1 py-3 text-sm">
+          <div className="absolute left-5 z-20 w-44 rounded-lg border border-slate-600 bg-card px-1 py-3 text-sm">
             {infoText}
           </div>
         )}

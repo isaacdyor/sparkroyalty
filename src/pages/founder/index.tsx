@@ -17,7 +17,7 @@ const CurrentFounderProfilePage: NextPage = () => {
   if (error ?? !user) return <Unauthorized />;
 
   return (
-    <div className="flex justify-center bg-black">
+    <div className="flex justify-center ">
       <FounderProfileComponent founder={data} imageUrl={user.imageUrl} />
     </div>
   );

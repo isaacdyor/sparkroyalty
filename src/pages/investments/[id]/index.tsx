@@ -62,11 +62,13 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
     ).length;
   }
 
+  const payoutPercent = (data.currentPayout / data.totalPayout) * 100;
+
   return (
     <div className="flex justify-center pb-32 pt-4">
-      <div className="flex w-3/4 items-center justify-center rounded border border-neutral-500 bg-neutral-900 text-white">
+      <div className="flex w-3/4 items-center justify-center rounded border-2 border-border text-white">
         <div className="flex w-3/4 flex-col">
-          <div className="flex flex-col border border-transparent border-b-neutral-500 border-r-neutral-500  p-6">
+          <div className="flex flex-col border border-transparent border-b-border border-r-border  p-6">
             <div className="flex items-center pb-6">
               <h2 className="pr-4 text-2xl font-bold text-white ">
                 {data.title}
@@ -90,41 +92,61 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
               )}
             </div>
             <p className="">{data.workType}</p>
-            <p className="text-neutral-400">Posted {timeAgo(data.createdAt)}</p>
+            <p className="text-muted-foreground">
+              Posted {timeAgo(data.createdAt)}
+            </p>
           </div>
-          <div className="flex flex-col border border-transparent border-b-neutral-500 border-r-neutral-500 p-6">
+          <div className="flex flex-col border border-transparent border-b-border border-r-border p-6">
             <h2 className="pb-2 font-bold text-white">Company Description:</h2>
             <p className="text-white">{data.description}</p>
           </div>
-          <div className="flex h-24 justify-between border border-transparent border-b-neutral-500 border-r-neutral-500 p-6">
+          <div className="flex h-24 justify-between border border-transparent border-b-border border-r-border p-6">
             <div className="flex flex-col">
-              <p className="text-neutral-400">Payment Basis:</p>
+              <p className="text-muted-foreground">Payment Basis:</p>
               <p>{capitalizeFirstLetter(data.paymentBasis)}</p>
             </div>
             <div className="flex flex-col">
-              <p className="text-neutral-400">Roytalty Rate:</p>
+              <p className="text-muted-foreground">Roytalty Rate:</p>
               <p>{data.percent}%</p>
             </div>
             <div className="flex flex-col">
-              <p className="text-neutral-400">Total Payout:</p>
+              <p className="text-muted-foreground">Total Payout:</p>
               <p>{formatCurrency(data.totalPayout)}</p>
             </div>
             <div className="flex flex-col">
-              <p className="text-neutral-400">Payout Frequency:</p>
+              <p className="text-muted-foreground">Payout Frequency:</p>
               <p>{capitalizeFirstLetter(data.payoutFrequency)}</p>
             </div>
           </div>
-          <div className="flex flex-col border border-transparent border-b-neutral-500 border-r-neutral-500 p-6">
+          <div className="flex flex-col border border-transparent border-b-border border-r-border p-6">
+            <h2 className="pb-2 font-bold text-white">Current Payout:</h2>
+            <div className="flex items-center">
+              <div className="mr-4 h-4 w-full rounded-full bg-secondary">
+                {payoutPercent > 0 && (
+                  <div
+                    className={` h-full w-[${payoutPercent.toString()}%] ${
+                      payoutPercent == 100 && "rounded-full"
+                    } rounded-l-full bg-blue-500`}
+                  ></div>
+                )}
+              </div>
+              <p>
+                {formatCurrency(data.currentPayout)}/
+                {formatCurrency(data.totalPayout)}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col border border-transparent border-b-border border-r-border p-6">
             <h2 className="pb-2 font-bold text-white">Services Needed:</h2>
             <p className="text-white">{data.workDescription}</p>
           </div>
-          <div className="flex flex-col border border-transparent border-r-neutral-500 p-6">
+          <div className="flex flex-col border border-transparent border-r-border p-6">
             <div className="w-1/2">
               <h2 className="pb-2 font-bold text-white">Recommended Skills:</h2>
               <div className="mt-2 flex flex-wrap ">
                 {data.skills?.map((skill) => (
                   <p
-                    className="mb-1 mr-1 rounded-2xl border border-gray-600 bg-neutral-700 p-1 px-2"
+                    className="mb-1 mr-1 rounded-2xl bg-secondary p-1 px-2"
                     key={skill.id}
                   >
                     {skill.skill}
@@ -138,7 +160,7 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
           {data.status === InvestmentStatusType.PENDING && (
             <>
               {user?.unsafeMetadata.active === ActiveType.INVESTOR && (
-                <div className="flex flex-col border border-transparent border-b-neutral-500  p-4">
+                <div className="flex flex-col border border-transparent border-b-border  p-4">
                   <Link
                     className="mb-4 rounded-full bg-blue-500 p-2 text-center font-semibold hover:bg-blue-600"
                     href={`/investments/${data.id}/apply`}
@@ -156,7 +178,7 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
               )}
               {user?.unsafeMetadata.active === ActiveType.FOUNDER &&
                 user?.id === data.founderId && (
-                  <div className="flex flex-col border border-transparent border-b-neutral-500  p-4">
+                  <div className="flex flex-col border border-transparent border-b-border  p-4">
                     <Link
                       className="mb-4 rounded-full bg-blue-500 p-2 text-center font-semibold hover:bg-blue-600"
                       href={`/investments/${data.id}/edit`}
@@ -180,7 +202,7 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
           {data.status === InvestmentStatusType.BUILDING &&
             user?.unsafeMetadata.active === ActiveType.INVESTOR &&
             user?.id === data.investorId && (
-              <div className="flex flex-col border border-transparent border-b-neutral-500  p-4">
+              <div className="flex flex-col border border-transparent border-b-border  p-4">
                 <div className="pb-4 ">
                   <CompleteJobButton investment={data} />
                 </div>
@@ -193,7 +215,7 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
           {data.status === InvestmentStatusType.PAYOUT &&
             user?.unsafeMetadata.active === ActiveType.FOUNDER &&
             user?.id === data.founderId && (
-              <div className="flex flex-col border border-transparent border-b-neutral-500  p-4">
+              <div className="flex flex-col border border-transparent border-b-border  p-4">
                 <Link href={`/investments/${data.id}/reports/create`}>
                   <button className="mb-4 w-full rounded-full bg-blue-500 p-2 font-semibold text-white hover:bg-blue-600">
                     Pay Investor
@@ -247,7 +269,7 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
               <div className="flex items-center">
                 <p>
                   <Link
-                    className="hover:text-neutral-400"
+                    className="hover:text-muted-foreground"
                     href={`/founder/${data.founder.id}`}
                   >
                     {data.founder.fullName}
@@ -256,32 +278,32 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
                 <BiSolidMessageDetail className="ml-2 mt-1 h-5 w-5 text-blue-500 hover:cursor-pointer hover:text-blue-600" />
               </div>
 
-              <p className="pb-4 text-neutral-400">
+              <p className="pb-4 text-muted-foreground">
                 Member since {data.founder.createdAt.toLocaleDateString()}
               </p>
               <div className="flex pb-5">
                 <MultiStarsComponent reviews={data.founder.reviews} />
                 {data.founder.reviews.length > 0 && (
                   <Link href={`/founder/${data.founder.id}/reviews`}>
-                    <p className="ml-1 hover:text-neutral-400">
+                    <p className="ml-1 hover:text-muted-foreground">
                       ({data.founder.reviews.length})
                     </p>
                   </Link>
                 )}
               </div>
               <p className="">{data.founder.country}</p>
-              <p className="pb-4 text-neutral-400">English</p>
+              <p className="pb-4 text-muted-foreground">English</p>
               <p className="">
                 {data.founder.investments.length} investments posted
               </p>
-              <p className="pb-4 text-neutral-400">
+              <p className="pb-4 text-muted-foreground">
                 {openInvestments} open{" "}
                 {data.founder.investments.length - openInvestments} closed
               </p>
 
               <p className="">{formatCurrency(totalSpent)} paid out</p>
               {paidInvesmtnets > 0 && (
-                <p className="pb-5 text-neutral-400">
+                <p className="pb-5 text-muted-foreground">
                   Through {paidInvesmtnets} investment
                   {paidInvesmtnets > 1 && "s"}
                 </p>
@@ -298,7 +320,7 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
               <div className="flex items-center">
                 <p>
                   <Link
-                    className="hover:text-neutral-400"
+                    className="hover:text-muted-foreground"
                     href={`/investor/${data.investor.id}`}
                   >
                     {data.investor.fullName}
@@ -306,23 +328,23 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
                 </p>
                 <BiSolidMessageDetail className="ml-2 mt-1 h-5 w-5 text-blue-500 hover:cursor-pointer hover:text-blue-600" />
               </div>
-              <p className="pb-4 text-neutral-400">
+              <p className="pb-4 text-muted-foreground">
                 Member since {data.investor.createdAt.toLocaleDateString()}
               </p>
               <div className="flex pb-5">
                 <MultiStarsComponent reviews={data.investor.reviews} />
                 {data.investor.reviews.length > 0 && (
                   <Link href={`/investor/${data.investor.id}/reviews`}>
-                    <p className="ml-1 hover:text-neutral-400">
+                    <p className="ml-1 hover:text-muted-foreground">
                       ({data.investor.reviews.length ?? 0})
                     </p>
                   </Link>
                 )}
               </div>
               <p className="">{data.investor.country}</p>
-              <p className="pb-4 text-neutral-400">English</p>
+              <p className="pb-4 text-muted-foreground">English</p>
               <p className="">{completedJobs} jobs completed</p>
-              <p className="pb-4 text-neutral-400">
+              <p className="pb-4 text-muted-foreground">
                 {openJobs} currently working
               </p>
 

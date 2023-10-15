@@ -38,8 +38,8 @@ const ApplicationListPage: NextPage = () => {
   const FilteredData = filterData(applicationStatus);
 
   return (
-    <div className="flex justify-center bg-black">
-      <div className="mt-8 w-full max-w-6xl rounded border border-slate-600 p-6">
+    <div className="flex justify-center ">
+      <div className="mt-8 w-full max-w-6xl rounded border-2 border-border p-6">
         <h1 className="mb-8 text-center text-4xl font-bold text-white">
           Your Open Applications
         </h1>
