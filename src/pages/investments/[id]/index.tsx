@@ -64,8 +64,6 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
 
   const payoutPercent = (data.currentPayout / data.totalPayout) * 100;
 
-  console.log(payoutPercent);
-
   return (
     <div className="flex justify-center pb-32 pt-4">
       <div className="flex w-3/4 items-center justify-center rounded border-2 border-border text-white">
@@ -126,7 +124,8 @@ const DetailPage: NextPage<{ id: string }> = ({ id }) => {
               <div className="mr-4 h-4 w-full rounded-full bg-secondary">
                 {payoutPercent > 0 && (
                   <div
-                    className={` h-full w-[${payoutPercent}%] ${
+                    style={{ width: payoutPercent + "%" }}
+                    className={` h-full  ${
                       payoutPercent == 100 && "rounded-full"
                     } rounded-l-full bg-blue-500`}
                   ></div>

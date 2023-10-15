@@ -110,10 +110,14 @@ const JobPage: NextPage = () => {
                           investment.totalPayout
                         ) > 0 && (
                           <div
-                            className={` mb-3 h-full w-[${getpayoutPercent(
-                              investment.currentPayout,
-                              investment.totalPayout
-                            )}%] ${
+                            style={{
+                              width:
+                                getpayoutPercent(
+                                  investment.currentPayout,
+                                  investment.totalPayout
+                                ) + "%",
+                            }}
+                            className={` mb-3 h-full  ${
                               getpayoutPercent(
                                 investment.currentPayout,
                                 investment.totalPayout
