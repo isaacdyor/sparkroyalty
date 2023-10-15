@@ -63,7 +63,10 @@ const JobPage: NextPage = () => {
                     </p>
                     <div className="flex pb-4">
                       {investment.skills.map((skill) => (
-                        <p className="mr-1 rounded-full bg-slate-600 p-1 px-2">
+                        <p
+                          key={skill.id}
+                          className="mr-1 rounded-full bg-slate-600 p-1 px-2"
+                        >
                           {skill.skill}
                         </p>
                       ))}

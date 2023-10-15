@@ -6,7 +6,6 @@ import Link from "next/link";
 import { RxCross2 } from "react-icons/rx";
 import { GoDotFill } from "react-icons/go";
 import { BsArchive } from "react-icons/bs";
-import Modal from "../shared/modal";
 
 const InvestorNotificationIcon = () => {
   const { data } = api.investorNotifications.getCurrent.useQuery();
@@ -44,8 +43,8 @@ const InvestorNotificationIcon = () => {
   >(null);
 
   useEffect(() => {
-    function handleClickOutside(event: any) {
-      if (ref.current && !ref.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
         setIsModalOpen(false);
       }
     }

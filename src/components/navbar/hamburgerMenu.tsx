@@ -18,7 +18,6 @@ import SearchBar from "./searchBar";
 const HamburgerMenu = () => {
   const { user, isLoaded } = useUser();
   let specificContent;
-  const [isBigScreen, setIsBigScreen] = useState(false);
   const [hamMenuOpen, setHamMenuOpen] = useState(false);
 
   if (!isLoaded) {

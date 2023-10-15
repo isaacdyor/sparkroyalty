@@ -8,7 +8,6 @@ const InvestmentSkill: React.FC<{
   skills: string[];
   setSkills: (skills: string[]) => void;
 }> = ({ skills, setSkills }) => {
-  const [showTrash, setShowTrash] = useState(-1);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [activeSuggestion, setActiveSuggestion] = useState(-1);
@@ -74,13 +73,6 @@ const InvestmentSkill: React.FC<{
               onFocus={() => {
                 setShowSuggestions(true);
                 setActiveSuggestion(index);
-              }}
-              onMouseEnter={() => {
-                setShowTrash(index);
-              }}
-              onMouseLeave={() => {
-                setShowTrash(-1);
-                console.log("mouse leave");
               }}
               onChange={(e) => updateSkill(index, e.target.value)}
               className="input w-full rounded bg-input px-4 py-2 pr-10 text-white " // Add pr-10 for padding on the right
