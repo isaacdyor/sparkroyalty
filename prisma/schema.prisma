@@ -1,0 +1,268 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+enum InvestmentStatusType {
+  PENDING
+  BUILDING
+  PAYOUT
+  COMPLETED
+}
+
+model Investment {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    title String
+    description String @db.Text
+    workType String
+    workDescription String @db.Text
+
+    paymentBasis PaymentBasisType
+    percent Int
+    totalPayout Int
+    currentPayout Float @default(0)
+    payoutFrequency FrequencyType
+    
+    reports Report[]
+
+    extraDetails String @db.Text
+
+    status InvestmentStatusType
+    skills InvestmentSkill[]
+    applications Application[]
+
+    investorId String?
+    @@index([investorId])
+    investor Investor? @relation(fields: [investorId], references: [id], onDelete: SetNull)
+    
+    founderId  String
+    @@index([founderId])
+    founder Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
+   
+    
+}
+
+model InvestmentSkill {
+    id        String      @id @default(cuid())
+    skill     String
+    investment  Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+    investmentId String
+    @@index([investmentId])
+}
+
+model Investor {
+    id        String @id
+    createdAt DateTime @default(now())
+    fullName String 
+    firstName      String 
+    lastName      String 
+    email     String @unique
+    imageUrl  String
+    title     String
+    bio       String @db.Text
+    skills    InvestorSkill[]
+    country   String
+    educationAndExperience String @db.Text
+
+    investments Investment[]
+    application Application[]
+    reviews Review[]
+    notifications InvestorNotification[]
+
+    conversations Conversation[]
+    messages Message[]
+
+}
+
+enum ExperienceLevelType {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model InvestorSkill {
+    id        String      @id @default(cuid())
+    skill     String
+    experience ExperienceLevelType
+    investor  Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
+    investorId String
+    @@index([investorId])
+}
+
+model Founder {
+    id String @id 
+    createdAt DateTime @default(now())
+    fullName String 
+    firstName      String 
+    lastName      String 
+    email     String @unique
+    imageUrl  String
+    bio       String @db.Text
+    country   String
+    educationAndExperience String @db.Text
+
+    investments Investment[]
+    reviews Review[]
+    notifications FounderNotification[]
+    conversations Conversation[]
+    messages Message[] 
+}
+
+enum ApplicationStatusType {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model Application {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  projectInterest String
+  projectSkills String
+  status ApplicationStatusType
+
+  investmentId String
+  @@index([investmentId])
+  investment Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  
+  investorId String
+  @@index([investorId])
+  investor Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
+}
+
+enum AccountType {
+  INVESTOR
+  FOUNDER
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  review String
+  revieweeType AccountType
+  stars       Int    
+
+  investorId String
+  @@index([investorId])
+  investor Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
+
+  founderId String
+  @@index([founderId])
+  founder Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
+}
+
+enum InvestorNotificationType {
+  APP_ACCEPTED
+  APP_REJECTED
+  NEW_REVIEW
+  PARTIAL_PAY
+  FULL_PAY
+}
+
+model InvestorNotification {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  subject String
+  content String
+  read Boolean
+  deleted Boolean
+  type InvestorNotificationType
+  link String?
+
+  investorId String
+  @@index([investorId])
+  investor Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
+}
+
+enum FounderNotificationType {
+  NEW_REVIEW
+  JOB_COMPLETE
+  NEW_APPLICATION
+}
+
+model FounderNotification {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  subject String
+  content String
+  read Boolean
+  deleted Boolean
+  type FounderNotificationType
+  link String?
+
+  founderId String
+  @@index([founderId])
+  founder Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
+}
+
+enum PaymentBasisType {
+  PROFIT
+  REVENUE
+}
+
+enum FrequencyType {
+  MONTHLY
+  QUARTERLY
+  SEMI_ANNUALLY
+  ANNUALLY
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+ 
+  earnings Int
+  progress String @db.Text
+  plans String @db.Text
+
+  investmentId String
+  @@index([investmentId])
+  investment Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+}
+
+model Conversation {
+  id String @id @default(cuid())
+  createdAt       DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+
+  investorSeen Boolean @default(false)
+  founderSeen Boolean @default(false)
+  
+  messages Message[]
+
+  investorId String
+  @@index([investorId])
+  investor Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
+  
+  founderId String
+  @@index([founderId])
+  founder Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  content String @db.Text
+
+  conversationId String
+  @@index([conversationId])
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderType AccountType
+  
+  investorId String
+  @@index([investorId])
+  investor Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
+
+  founderId String
+  @@index([founderId])
+  founder Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
+}
