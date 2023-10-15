@@ -65,7 +65,9 @@ const Home: NextPage = () => {
     <div className="p-8 md:px-16 lg:px-24 xl:pb-0">
       <div className="max-w-8xl w-full">
         <div className="max-w-8xl text-gradient w-full pb-8">
-          <h1 className="text-9xl text-transparent">Welcome to Sparket</h1>
+          <h1 className="text-8xl text-transparent">
+            Welcome to Spark Royalty
+          </h1>
           <p className="text-7xl text-transparent">
             A royalty based freelancing market
           </p>
