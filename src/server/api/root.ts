@@ -7,7 +7,7 @@ import { reviewsRouter } from "./routers/reviews";
 import { usersRouter } from "./routers/users";
 import { reportsRouter } from "./routers/reports";
 import { messagesRouter } from "./routers/messages";
-import { notificationsRouter } from "./routers/investorNotifications";
+import { notificationsRouter } from "./routers/notifications";
 
 /**
  * This is the primary router for your server.

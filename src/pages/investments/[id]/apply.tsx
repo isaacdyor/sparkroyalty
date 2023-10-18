@@ -1,3 +1,4 @@
+import { NotificationClass } from "@prisma/client";
 import type { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -39,7 +40,7 @@ const ApplyPage: NextPage<{ id: string }> = ({ id }) => {
         subject: "New Application",
         content: `You just got a new application from ${investorData?.fullName}`,
         founderId: investmentData!.founderId,
-        notificationType: "NEW_APPLICATION",
+        notificationClass: NotificationClass.NEW_APPLICATION,
         link: `/applications/${data.id}`,
       });
       await router.push(`/applications/${data.id}`);
@@ -50,13 +51,12 @@ const ApplyPage: NextPage<{ id: string }> = ({ id }) => {
     },
   });
 
-  const { mutate: sendNotification } =
-    api.founderNotifications.create.useMutation({
-      onError: (e) => {
-        const errorMessage = e.data?.zodError?.fieldErrors.content;
-        console.error("Error creating investment:", errorMessage);
-      },
-    });
+  const { mutate: sendNotification } = api.notifications.create.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.error("Error creating investment:", errorMessage);
+    },
+  });
 
   if (applicationLoading || investmentLoading || investorLoading)
     return <Loading />;

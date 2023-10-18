@@ -14,10 +14,10 @@ import { prisma } from "~/server/db";
 import { getAuth } from "@clerk/nextjs/server";
 import {
   ActiveType,
-  ActiveUnsafeMetadata,
+  type ActiveUnsafeMetadata,
   type UnsafeMetadata,
 } from "~/types/types";
-import { AccountType } from "@prisma/client";
+import type { AccountType } from "@prisma/client";
 
 /**
  * 1. CONTEXT

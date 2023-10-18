@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { type InvestorType, ProfileType } from "~/types/types";
+import { type InvestorType } from "~/types/types";
 import Link from "next/link";
 import Modal from "../shared/modal";
 import { FaUser } from "react-icons/fa";
@@ -11,6 +11,7 @@ import StarsComponent from "../review/multiStars";
 import SwitchProfileButton from "./switchProfile";
 import DeleteProfileButton from "./deleteProfile";
 import LinkedAccounts from "./linkedAccounts";
+import { AccountType } from "@prisma/client";
 
 const InvestorProfileComponent: React.FC<{
   investor: InvestorType;
@@ -131,8 +132,8 @@ const InvestorProfileComponent: React.FC<{
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
             <div className="modal-content flex w-80 flex-col rounded-lg bg-slate-800 shadow-md">
-              <SwitchProfileButton profileType={ProfileType.INVESTOR} />
-              <DeleteProfileButton profileType={ProfileType.INVESTOR} />
+              <SwitchProfileButton accountType={AccountType.INVESTOR} />
+              <DeleteProfileButton accountType={AccountType.INVESTOR} />
               <button onClick={closeModal} className="text-white">
                 <div className="rounded-b-lg p-4 text-center hover:bg-slate-600">
                   Cancel

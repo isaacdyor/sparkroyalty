@@ -1,13 +1,14 @@
 import { useUser } from "@clerk/nextjs";
+import { AccountType } from "@prisma/client";
 import Link from "next/link";
 import router from "next/router";
 import React from "react";
-import { ActiveType, ProfileType, type UnsafeMetadata } from "~/types/types";
+import { ActiveType, type UnsafeMetadata } from "~/types/types";
 import { updateMetadata } from "~/utils/helperFunctions";
 
 const SwitchProfileButton: React.FC<{
-  profileType: ProfileType;
-}> = ({ profileType }) => {
+  accountType: AccountType;
+}> = ({ accountType }) => {
   const { user } = useUser();
 
   const switchProfile = () => {
@@ -17,7 +18,7 @@ const SwitchProfileButton: React.FC<{
     }
     let unsafeMetadata: UnsafeMetadata;
 
-    if (profileType === ProfileType.FOUNDER) {
+    if (accountType === AccountType.FOUNDER) {
       unsafeMetadata = {
         investor: user.unsafeMetadata.investor,
         founder: user.unsafeMetadata.founder,
@@ -33,7 +34,7 @@ const SwitchProfileButton: React.FC<{
 
     updateMetadata(user, unsafeMetadata)
       .then(async () => {
-        if (profileType === ProfileType.FOUNDER) {
+        if (accountType === AccountType.FOUNDER) {
           await router.push("/investor");
         } else {
           await router.push("/founder");
@@ -45,7 +46,7 @@ const SwitchProfileButton: React.FC<{
   };
   return (
     <>
-      {profileType === ProfileType.INVESTOR ? (
+      {accountType === AccountType.INVESTOR ? (
         user?.unsafeMetadata.founder ? (
           <button onClick={switchProfile}>
             <div className="rounded-t-lg p-4 text-center text-white hover:bg-slate-600">

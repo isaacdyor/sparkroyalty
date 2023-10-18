@@ -5,11 +5,12 @@ import { MdLocationPin } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import Link from "next/link";
 import Modal from "../shared/modal";
-import { type FounderType, ProfileType } from "~/types/types";
+import { type FounderType } from "~/types/types";
 import SwitchProfileButton from "./switchProfile";
 import DeleteProfileButton from "./deleteProfile";
 import LinkedAccounts from "./linkedAccounts";
 import MultiStarsComponent from "../review/multiStars";
+import { AccountType } from "@prisma/client";
 
 const FounderProfileComponent: React.FC<{
   founder: FounderType;
@@ -108,8 +109,8 @@ const FounderProfileComponent: React.FC<{
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
             <div className="modal-content flex w-80 flex-col rounded-lg bg-slate-800 shadow-md">
-              <SwitchProfileButton profileType={ProfileType.FOUNDER} />
-              <DeleteProfileButton profileType={ProfileType.FOUNDER} />
+              <SwitchProfileButton accountType={AccountType.FOUNDER} />
+              <DeleteProfileButton accountType={AccountType.FOUNDER} />
               <button onClick={closeModal} className="text-white">
                 <div className="rounded-b-lg p-4 text-center hover:bg-slate-600">
                   Cancel

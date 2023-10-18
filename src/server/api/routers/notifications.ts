@@ -2,7 +2,6 @@ import { z } from "zod";
 import {
   activeProcedure,
   createTRPCRouter,
-  investorProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
 import { AccountType, NotificationClass } from "@prisma/client";
@@ -61,7 +60,7 @@ export const notificationsRouter = createTRPCRouter({
       return notification;
     }),
 
-  delete: investorProcedure
+  delete: activeProcedure
     .input(
       z.object({
         notificationId: z.string(),
@@ -79,7 +78,7 @@ export const notificationsRouter = createTRPCRouter({
 
       return user;
     }),
-  markRead: investorProcedure
+  markRead: activeProcedure
     .input(
       z.object({
         notificationId: z.string(),

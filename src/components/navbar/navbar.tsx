@@ -7,14 +7,14 @@ import {
   SignedOut,
   SignUpButton,
 } from "@clerk/nextjs";
-import InvestorNotificationIcon from "../notifications/investorNotificationIcon";
-import FounderNotificationIcon from "../notifications/founderNotificationIcon";
 import { ActiveType } from "~/types/types";
 import SearchBar from "./searchBar";
 import MessageIcon from "../messages/messageIcon";
 import { useEffect, useState } from "react";
 import HamburgerMenu from "./hamburgerMenu";
 import Image from "next/image";
+import NotificationIcon from "../notifications/notificationIcon";
+import { updateMetadata } from "~/utils/helperFunctions";
 
 const Navbar = () => {
   const { user, isLoaded } = useUser();
@@ -34,6 +34,28 @@ const Navbar = () => {
       window.removeEventListener("resize", checkScreenSize);
     };
   }, []);
+
+  const setFounderActive = () => {
+    const unsafeMetadata = {
+      investor: user!.unsafeMetadata.investor,
+      founder: true,
+      active: ActiveType.FOUNDER,
+    };
+    updateMetadata(user!, unsafeMetadata).catch((err) => {
+      console.error("Error updating metadata", err);
+    });
+  };
+
+  const setInvestorActive = () => {
+    const unsafeMetadata = {
+      investor: true,
+      founder: user!.unsafeMetadata.founder,
+      active: ActiveType.INVESTOR,
+    };
+    updateMetadata(user!, unsafeMetadata).catch((err) => {
+      console.error("Error updating metadata", err);
+    });
+  };
 
   if (!isLoaded) {
     specificContent = null;
@@ -61,7 +83,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <InvestorNotificationIcon />
+          <NotificationIcon />
         </li>
         <li>
           <MessageIcon />
@@ -87,7 +109,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <FounderNotificationIcon />
+          <NotificationIcon />
         </li>
         <li>
           <MessageIcon />
@@ -100,7 +122,7 @@ const Navbar = () => {
       <>
         <li>
           {user?.unsafeMetadata.investor ? (
-            <Link href="/investor/login" passHref>
+            <Link href="/investor" passHref onClick={() => setInvestorActive()}>
               <p className="text-white">Login as Investor</p>
             </Link>
           ) : (
@@ -111,7 +133,7 @@ const Navbar = () => {
         </li>
         <li>
           {user?.unsafeMetadata.founder ? (
-            <Link href="/founder/login" passHref>
+            <Link href="/founder" passHref onClick={() => setFounderActive()}>
               <p className="text-white">Login as Founder</p>
             </Link>
           ) : (

@@ -1,20 +1,18 @@
 import { useUser } from "@clerk/nextjs";
+import { AccountType } from "@prisma/client";
 import router from "next/router";
 import React from "react";
 import { ActiveType, type UnsafeMetadata } from "~/types/types";
 import { api } from "~/utils/api";
 import { updateMetadata } from "~/utils/helperFunctions";
-import { ProfileType } from "~/types/types";
 
-const DeleteProfileButton: React.FC<{ profileType: ProfileType }> = ({
-  profileType,
+const DeleteProfileButton: React.FC<{ accountType: AccountType }> = ({
+  accountType,
 }) => {
   const { user } = useUser();
 
-  console.log("profileType", profileType);
-
   const profileApi =
-    profileType === ProfileType.FOUNDER ? api.founders : api.investors;
+    accountType === AccountType.FOUNDER ? api.founders : api.investors;
 
   const { mutate } = profileApi.delete.useMutation({
     onSuccess: async () => {
@@ -33,7 +31,7 @@ const DeleteProfileButton: React.FC<{ profileType: ProfileType }> = ({
     }
 
     let unsafeMetadata: UnsafeMetadata;
-    if (profileType === ProfileType.FOUNDER) {
+    if (accountType === AccountType.FOUNDER) {
       unsafeMetadata = {
         investor: user.unsafeMetadata.investor,
         founder: false,

@@ -10,6 +10,7 @@ import TextArea from "~/components/shared/textArea";
 import InvalidID from "~/components/conditionals/invalidId";
 import { ActiveType } from "~/types/types";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
+import { NotificationClass } from "@prisma/client";
 
 const CreateReportPage: NextPage<{ investmentId: string }> = ({
   investmentId,
@@ -40,13 +41,12 @@ const CreateReportPage: NextPage<{ investmentId: string }> = ({
     },
   });
 
-  const { mutate: sendNotification } =
-    api.investorNotifications.create.useMutation({
-      onError: (e) => {
-        const errorMessage = e.data?.zodError?.fieldErrors.content;
-        console.error("Error creating investment:", errorMessage);
-      },
-    });
+  const { mutate: sendNotification } = api.notifications.create.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.error("Error creating investment:", errorMessage);
+    },
+  });
 
   if (!data) return <InvalidID />;
 
@@ -79,7 +79,7 @@ const CreateReportPage: NextPage<{ investmentId: string }> = ({
         subject: "You have been fully paid out",
         content: `${data.founder.fullName} has paid you back the total amount of $${data.totalPayout}`,
         investorId: data.investorId!,
-        notificationType: "FULL_PAY",
+        notificationClass: NotificationClass.FULL_PAY,
         link: `/founder/${data.founderId}/review`,
       });
       await router.push(`/investments/${investmentId}/reports`);
@@ -93,7 +93,7 @@ const CreateReportPage: NextPage<{ investmentId: string }> = ({
         subject: "You were just paid",
         content: `${data.founder.fullName} has just paid you $${payout}`,
         investorId: data.investorId!,
-        notificationType: "PARTIAL_PAY",
+        notificationClass: NotificationClass.PARTIAL_PAY,
       });
     }
   };

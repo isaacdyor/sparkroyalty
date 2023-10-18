@@ -2,6 +2,7 @@ import router from "next/router";
 import React from "react";
 import { api } from "~/utils/api";
 import type { InvestmentType } from "~/types/types";
+import { NotificationClass } from "@prisma/client";
 
 const AcceptApplication: React.FC<{
   investment: InvestmentType;
@@ -25,13 +26,12 @@ const AcceptApplication: React.FC<{
       },
     });
 
-  const { mutate: sendNotification } =
-    api.investorNotifications.create.useMutation({
-      onError: (e) => {
-        const errorMessage = e.data?.zodError?.fieldErrors.content;
-        console.error("Error creating investment:", errorMessage);
-      },
-    });
+  const { mutate: sendNotification } = api.notifications.create.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.error("Error creating investment:", errorMessage);
+    },
+  });
 
   const acceptApplication = (applicationId: string) => {
     if (!investment.applications) return null;
@@ -46,16 +46,16 @@ const AcceptApplication: React.FC<{
           subject: "Your application has been accepted",
           content: `Your application for ${investment.title} has been accepted`,
           investorId: application.investorId,
-          notificationType: "APP_ACCEPTED",
+          notificationClass: NotificationClass.APP_ACCEPTED,
           link: `/investments/${investment.id}`,
         });
       } else {
         mutateApplication({ id: application.id, status: "REJECTED" });
         sendNotification({
           subject: "Your application has been rejected",
-          content: `Your application for ${investment.title} has been accepted`,
+          content: `Your application for ${investment.title} has been rejected`,
           investorId: application.investorId,
-          notificationType: "APP_REJECTED",
+          notificationClass: NotificationClass.APP_ACCEPTED,
         });
       }
     });

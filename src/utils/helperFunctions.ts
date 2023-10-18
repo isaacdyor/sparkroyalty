@@ -49,7 +49,7 @@ export const sliceDescription = (description: string): string => {
 };
 
 export const updateMetadata = async (
-  user: UserResource | undefined,
+  user: UserResource,
   unsafeMetadata: UnsafeMetadata
 ): Promise<void> => {
   if (!user) {

@@ -1,6 +1,7 @@
 import React from "react";
 import { api } from "~/utils/api";
 import type { InvestmentType } from "~/types/types";
+import { NotificationClass } from "@prisma/client";
 
 const CompleteJobButton: React.FC<{
   investment: InvestmentType;
@@ -15,13 +16,12 @@ const CompleteJobButton: React.FC<{
     },
   });
 
-  const { mutate: sendNotification } =
-    api.founderNotifications.create.useMutation({
-      onError: (e) => {
-        const errorMessage = e.data?.zodError?.fieldErrors.content;
-        console.error("Error creating investment:", errorMessage);
-      },
-    });
+  const { mutate: sendNotification } = api.notifications.create.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.error("Error creating investment:", errorMessage);
+    },
+  });
 
   return (
     <button
@@ -35,7 +35,7 @@ const CompleteJobButton: React.FC<{
             investment.investor!.fullName
           }`,
           founderId: investment.founderId,
-          notificationType: "JOB_COMPLETE",
+          notificationClass: NotificationClass.JOB_COMPLETE,
           link: `/investor/${investment.investorId}/review`,
         });
       }}
