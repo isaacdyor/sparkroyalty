@@ -5,6 +5,10 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { AccountType, NotificationClass } from "@prisma/client";
+import { pusherServer } from "~/server/pusher";
+import { toPusherKey } from "~/utils/helperFunctions";
+import { NotificationType } from "~/types/types";
+import { nanoid } from "nanoid";
 
 export const notificationsRouter = createTRPCRouter({
   getCurrent: activeProcedure.query(async ({ ctx }) => {
@@ -56,6 +60,39 @@ export const notificationsRouter = createTRPCRouter({
           ...connectField,
         },
       });
+
+      const data: NotificationType = {
+        id: nanoid(),
+        createdAt: new Date(),
+        subject: input.subject,
+        content: input.content,
+        read: false,
+        deleted: false,
+        notificationClass: input.notificationClass,
+        link: input.link ? input.link : undefined,
+      };
+
+      if (input.investorId) {
+        const investorData = {
+          ...data,
+          investorId: input.investorId,
+        };
+        await pusherServer.trigger(
+          toPusherKey(`founder:${input.investorId}`),
+          "new-conversation",
+          investorData
+        );
+      } else if (input.founderId) {
+        const founderData = {
+          ...data,
+          founderData: input.founderId,
+        };
+        await pusherServer.trigger(
+          toPusherKey(`investor:${input.founderId}`),
+          "new-conversation",
+          founderData
+        );
+      }
 
       return notification;
     }),

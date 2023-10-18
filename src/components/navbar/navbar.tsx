@@ -9,12 +9,13 @@ import {
 } from "@clerk/nextjs";
 import { ActiveType } from "~/types/types";
 import SearchBar from "./searchBar";
-import MessageIcon from "../messages/messageIcon";
+import MessageIcon from "./messageIcon";
 import { useEffect, useState } from "react";
 import HamburgerMenu from "./hamburgerMenu";
 import Image from "next/image";
-import NotificationIcon from "../notifications/notificationIcon";
+
 import { updateMetadata } from "~/utils/helperFunctions";
+import NotificationIcon from "./notificationIcon";
 
 const Navbar = () => {
   const { user, isLoaded } = useUser();

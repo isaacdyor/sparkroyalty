@@ -10,8 +10,9 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { SlMenu } from "react-icons/sl";
 import { ActiveType } from "~/types/types";
-import MessageIcon from "../messages/messageIcon";
+import MessageIcon from "./messageIcon";
 import SearchBar from "./searchBar";
+import NotificationIcon from "./notificationIcon";
 
 const HamburgerMenu = () => {
   const { user, isLoaded } = useUser();
@@ -43,9 +44,9 @@ const HamburgerMenu = () => {
             <p className="text-white">Profile</p>
           </Link>
         </li>
-        {/* <li>
-          <InvestorNotificationIcon />
-        </li> */}
+        <li>
+          <NotificationIcon />
+        </li>
         <li>
           <MessageIcon />
         </li>
@@ -69,9 +70,9 @@ const HamburgerMenu = () => {
             <p className="text-white">Profile</p>
           </Link>
         </li>
-        {/* <li>
-          <FounderNotificationIcon />
-        </li> */}
+        <li>
+          <NotificationIcon />
+        </li>
         <li>
           <MessageIcon />
         </li>

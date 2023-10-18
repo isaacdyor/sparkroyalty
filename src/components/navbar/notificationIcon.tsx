@@ -6,10 +6,18 @@ import { RxCross2 } from "react-icons/rx";
 import { GoDotFill } from "react-icons/go";
 import { BsArchive } from "react-icons/bs";
 import { api } from "~/utils/api";
-import { NotificationClass } from "@prisma/client";
+import { AccountType, NotificationClass } from "@prisma/client";
+import { GetServerSideProps } from "next";
+import { clerkClient, getAuth } from "@clerk/nextjs/server";
+import { ActiveType } from "~/types/types";
+import { pusherClient } from "~/server/pusher";
+import { toPusherKey } from "~/utils/helperFunctions";
+import { useUser } from "@clerk/nextjs";
 
-const NotificationIcon: React.FC = () => {
+const NotificationIcon: React.FC<{ active: ActiveType }> = ({ active }) => {
   const { data } = api.notifications.getCurrent.useQuery();
+
+  const { user } = useUser();
 
   const ctx = api.useContext();
 
@@ -57,6 +65,30 @@ const NotificationIcon: React.FC = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isModalOpen]);
+
+  // subscribe to pusher
+  useEffect(() => {
+    if (active === ActiveType.FOUNDER) {
+      pusherClient.subscribe(toPusherKey(`founder:${user?.id}`));
+    } else if (active === ActiveType.INVESTOR) {
+      pusherClient.subscribe(toPusherKey(`investor:${user?.id}`));
+    }
+
+    const newNotificationHandler = () => {
+      void ctx.notifications.getCurrent.invalidate();
+    };
+
+    pusherClient.bind("new-notification", newNotificationHandler);
+
+    return () => {
+      if (active === ActiveType.FOUNDER) {
+        pusherClient.unsubscribe(toPusherKey(`founder:${user?.id}`));
+      } else if (active === ActiveType.INVESTOR) {
+        pusherClient.unsubscribe(toPusherKey(`investor:${user?.id}`));
+      }
+      pusherClient.unbind("new-conversation", newNotificationHandler);
+    };
+  }, [active, user?.id]);
 
   if (!data) return null;
 
@@ -214,6 +246,28 @@ const NotificationIcon: React.FC = () => {
       )}
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { userId } = getAuth(ctx.req);
+
+  if (!userId) {
+    return {
+      redirect: {
+        destination: "/sign-in?redirect_url=" + ctx.resolvedUrl,
+        permanent: false,
+      },
+    };
+  }
+
+  const user = await clerkClient.users.getUser(userId);
+  const active = user.unsafeMetadata.active;
+
+  return {
+    props: {
+      active,
+    },
+  };
 };
 
 export default NotificationIcon;

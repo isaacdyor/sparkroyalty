@@ -264,6 +264,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
 
   // send the message
   const sendMessage = () => {
+    if (!message || !selectedConversation) return;
     updateSenderMessages();
     sendMessageMutation({
       content: message,
@@ -277,6 +278,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
 
   // create conversation
   const createConversation = () => {
+    if (!message || !newConversationUser) return;
     createConversationMutation({
       content: message,
       recipientId: newConversationUser!.id,
