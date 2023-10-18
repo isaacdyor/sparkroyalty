@@ -75,7 +75,7 @@ model Investor {
     investments Investment[]
     application Application[]
     reviews Review[]
-    notifications InvestorNotification[]
+    notifications Notification[]
 
     conversations Conversation[]
     messages Message[]
@@ -111,7 +111,7 @@ model Founder {
 
     investments Investment[]
     reviews Review[]
-    notifications FounderNotification[]
+    notifications Notification[]
     conversations Conversation[]
     messages Message[] 
 }
@@ -159,48 +159,33 @@ model Review {
   founder Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
 }
 
-enum InvestorNotificationType {
+enum NotificationClass {
   APP_ACCEPTED
   APP_REJECTED
   NEW_REVIEW
   PARTIAL_PAY
   FULL_PAY
-}
-
-model InvestorNotification {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  subject String
-  content String
-  read Boolean
-  deleted Boolean
-  type InvestorNotificationType
-  link String?
-
-  investorId String
-  @@index([investorId])
-  investor Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
-}
-
-enum FounderNotificationType {
-  NEW_REVIEW
   JOB_COMPLETE
   NEW_APPLICATION
 }
 
-model FounderNotification {
+model Notification {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   subject String
   content String
   read Boolean
   deleted Boolean
-  type FounderNotificationType
+  notificationClass NotificationClass
   link String?
 
-  founderId String
+  founderId String?
   @@index([founderId])
-  founder Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
+  founder Founder? @relation(fields: [founderId], references: [id], onDelete: Cascade)
+
+  investorId String?
+  @@index([investorId])
+  investor Investor? @relation(fields: [investorId], references: [id], onDelete: Cascade)
 }
 
 enum PaymentBasisType {

@@ -12,7 +12,12 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
 import { getAuth } from "@clerk/nextjs/server";
-import { ActiveType, type UnsafeMetadata } from "~/types/types";
+import {
+  ActiveType,
+  ActiveUnsafeMetadata,
+  type UnsafeMetadata,
+} from "~/types/types";
+import { AccountType } from "@prisma/client";
 
 /**
  * 1. CONTEXT
@@ -157,10 +162,16 @@ const enforceUserIsActive = t.middleware(async ({ ctx, next }) => {
     });
   }
 
+  const activeUnsafeMetadata: ActiveUnsafeMetadata = {
+    active: ctx.unsafeMetadata.active as AccountType,
+    investor: ctx.unsafeMetadata.investor,
+    founder: ctx.unsafeMetadata.founder,
+  };
+
   return next({
     ctx: {
       userId: ctx.userId,
-      unsafeMetadata: ctx.unsafeMetadata,
+      unsafeMetadata: activeUnsafeMetadata,
     },
   });
 });

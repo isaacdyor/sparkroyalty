@@ -1,16 +1,24 @@
 import { z } from "zod";
 import {
+  activeProcedure,
   createTRPCRouter,
   investorProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { InvestorNotificationType } from "@prisma/client";
+import { AccountType, NotificationClass } from "@prisma/client";
 
-export const investorNotificationsRouter = createTRPCRouter({
-  getCurrent: investorProcedure.query(async ({ ctx }) => {
-    const notifications = await ctx.prisma.investorNotification.findMany({
+export const notificationsRouter = createTRPCRouter({
+  getCurrent: activeProcedure.query(async ({ ctx }) => {
+    const notifications = await ctx.prisma.notification.findMany({
       where: {
-        investorId: ctx.userId,
+        investorId:
+          ctx.unsafeMetadata.active === AccountType.INVESTOR
+            ? ctx.userId
+            : undefined,
+        founderId:
+          ctx.unsafeMetadata.active === AccountType.FOUNDER
+            ? ctx.userId
+            : undefined,
         deleted: false,
       },
       orderBy: {
@@ -25,23 +33,28 @@ export const investorNotificationsRouter = createTRPCRouter({
       z.object({
         subject: z.string(),
         content: z.string(),
-        investorId: z.string(),
-        notificationType: z.nativeEnum(InvestorNotificationType),
-        link: z.union([z.string(), z.undefined()]),
+        investorId: z.optional(z.string()),
+        founderId: z.optional(z.string()),
+        notificationClass: z.nativeEnum(NotificationClass),
+        link: z.optional(z.string()),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const notification = await ctx.prisma.investorNotification.create({
+      let connectField;
+      if (input.founderId) {
+        connectField = { founder: { connect: { id: input.founderId } } };
+      } else if (input.investorId) {
+        connectField = { investor: { connect: { id: input.investorId } } };
+      }
+      const notification = await ctx.prisma.notification.create({
         data: {
           subject: input.subject,
           content: input.content,
           read: false,
           deleted: false,
-          type: input.notificationType,
-          investor: {
-            connect: { id: input.investorId },
-          },
-          link: input.link ? input.link : undefined,
+          notificationClass: input.notificationClass,
+          link: input.link ? input.link : null,
+          ...connectField,
         },
       });
 
@@ -55,7 +68,7 @@ export const investorNotificationsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.prisma.investorNotification.update({
+      const user = await ctx.prisma.notification.update({
         where: {
           id: input.notificationId,
         },
@@ -73,7 +86,7 @@ export const investorNotificationsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.prisma.investorNotification.update({
+      const user = await ctx.prisma.notification.update({
         where: {
           id: input.notificationId,
         },

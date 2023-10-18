@@ -4,6 +4,7 @@ import type {
   AccountType,
   PaymentBasisType,
   FrequencyType,
+  NotificationClass,
 } from "@prisma/client";
 
 export interface InvestmentType {
@@ -119,6 +120,23 @@ export interface MessageType {
   investor?: InvestorType;
 }
 
+export interface NotificationType {
+  id: string;
+  createdAt: Date;
+  subject: string;
+  content: string;
+  read: boolean;
+  deleted: boolean;
+  notificationClass: NotificationClass;
+  link?: string;
+
+  founderId?: string;
+  founder?: FounderType;
+
+  investorId?: string;
+  investor?: InvestorType;
+}
+
 export interface SuggestionType {
   id: string;
   fullName: string;
@@ -127,18 +145,19 @@ export interface SuggestionType {
 }
 
 export enum ActiveType {
-  NONE = "none",
-  FOUNDER = "founder",
-  INVESTOR = "investor",
-}
-
-export enum ProfileType {
-  FOUNDER = "founder",
-  INVESTOR = "investor",
+  NONE = "NONE",
+  FOUNDER = "FOUNDER",
+  INVESTOR = "INVESTOR",
 }
 
 export interface UnsafeMetadata {
   active: ActiveType;
+  investor: boolean;
+  founder: boolean;
+}
+
+export interface ActiveUnsafeMetadata {
+  active: AccountType;
   investor: boolean;
   founder: boolean;
 }

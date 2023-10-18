@@ -4,11 +4,10 @@ import { founderRouter } from "./routers/founders";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { applicationsRouter } from "./routers/applications";
 import { reviewsRouter } from "./routers/reviews";
-import { investorNotificationsRouter } from "./routers/investorNotifications";
-import { founderNotificationsRouter } from "./routers/founderNotifications";
 import { usersRouter } from "./routers/users";
 import { reportsRouter } from "./routers/reports";
 import { messagesRouter } from "./routers/messages";
+import { notificationsRouter } from "./routers/investorNotifications";
 
 /**
  * This is the primary router for your server.
@@ -22,8 +21,7 @@ export const appRouter = createTRPCRouter({
   applications: applicationsRouter,
   reviews: reviewsRouter,
   reports: reportsRouter,
-  investorNotifications: investorNotificationsRouter,
-  founderNotifications: founderNotificationsRouter,
+  notifications: notificationsRouter,
   messages: messagesRouter,
   users: usersRouter,
 });
