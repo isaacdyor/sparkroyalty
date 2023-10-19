@@ -128,13 +128,13 @@ export interface NotificationType {
   read: boolean;
   deleted: boolean;
   notificationClass: NotificationClass;
-  link?: string;
+  link?: string | null;
 
-  founderId?: string;
-  founder?: FounderType;
+  founderId?: string | null;
+  founder?: FounderType | null;
 
-  investorId?: string;
-  investor?: InvestorType;
+  investorId?: string | null;
+  investor?: InvestorType | null;
 }
 
 export interface SuggestionType {

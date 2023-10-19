@@ -49,17 +49,17 @@ export const notificationsRouter = createTRPCRouter({
       } else if (input.investorId) {
         connectField = { investor: { connect: { id: input.investorId } } };
       }
-      const notification = await ctx.prisma.notification.create({
-        data: {
-          subject: input.subject,
-          content: input.content,
-          read: false,
-          deleted: false,
-          notificationClass: input.notificationClass,
-          link: input.link ? input.link : null,
-          ...connectField,
-        },
-      });
+      // const notification = await ctx.prisma.notification.create({
+      //   data: {
+      //     subject: input.subject,
+      //     content: input.content,
+      //     read: false,
+      //     deleted: false,
+      //     notificationClass: input.notificationClass,
+      //     link: input.link ? input.link : null,
+      //     ...connectField,
+      //   },
+      // });
 
       const data: NotificationType = {
         id: nanoid(),
@@ -78,8 +78,8 @@ export const notificationsRouter = createTRPCRouter({
           investorId: input.investorId,
         };
         await pusherServer.trigger(
-          toPusherKey(`founder:${input.investorId}`),
-          "new-conversation",
+          toPusherKey(`investor:${input.investorId}`),
+          "new-notification",
           investorData
         );
       } else if (input.founderId) {
@@ -88,13 +88,13 @@ export const notificationsRouter = createTRPCRouter({
           founderData: input.founderId,
         };
         await pusherServer.trigger(
-          toPusherKey(`investor:${input.founderId}`),
-          "new-conversation",
+          toPusherKey(`founder:${input.founderId}`),
+          "new-notification",
           founderData
         );
       }
 
-      return notification;
+      // return notification;
     }),
 
   delete: activeProcedure

@@ -1,16 +1,30 @@
+import { NotificationClass } from "@prisma/client";
 import type { NextPage } from "next/types";
+import { api } from "~/utils/api";
 
 const Playground: NextPage = () => {
-  console.log("p");
+  const { mutate: sendNotification } = api.notifications.create.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.error("Error creating investment:", errorMessage);
+    },
+  });
   return (
     <div className="flex h-screen w-full items-center justify-center">
-      <div className="flex h-96 w-96 flex-col bg-red-600">
-        <div className="overflow-scroll"></div>
-        <p>Wowza woo</p>
-        <p>rage commit</p>
-        <p>Bullshit</p>
-        <div className="h-20 w-full flex-shrink-0 bg-blue-500"></div>
-      </div>
+      <button
+        className="rounded-xl bg-primary p-4 text-4xl"
+        onClick={() =>
+          sendNotification({
+            subject: "subject",
+            content: "content",
+            founderId: "user_2WnIEBwcE03MsmAtORSOlD41hFu",
+            notificationClass: NotificationClass.APP_ACCEPTED,
+            link: "hello",
+          })
+        }
+      >
+        Send a noti
+      </button>
     </div>
   );
 };

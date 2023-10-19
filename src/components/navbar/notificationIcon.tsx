@@ -6,16 +6,19 @@ import { RxCross2 } from "react-icons/rx";
 import { GoDotFill } from "react-icons/go";
 import { BsArchive } from "react-icons/bs";
 import { api } from "~/utils/api";
-import { AccountType, NotificationClass } from "@prisma/client";
+import { NotificationClass } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import { clerkClient, getAuth } from "@clerk/nextjs/server";
-import { ActiveType } from "~/types/types";
+import { ActiveType, NotificationType } from "~/types/types";
 import { pusherClient } from "~/server/pusher";
 import { toPusherKey } from "~/utils/helperFunctions";
 import { useUser } from "@clerk/nextjs";
+import { useToast } from "../ui/use-toast";
 
 const NotificationIcon: React.FC<{ active: ActiveType }> = ({ active }) => {
-  const { data } = api.notifications.getCurrent.useQuery();
+  const { data, isLoading } = api.notifications.getCurrent.useQuery();
+
+  const { toast } = useToast();
 
   const { user } = useUser();
 
@@ -45,10 +48,17 @@ const NotificationIcon: React.FC<{ active: ActiveType }> = ({ active }) => {
 
   const unreadNotifications = data?.filter((n) => !n.read);
 
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hoveredNotificationId, setHoveredNotificationId] = useState<
     string | null
   >(null);
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setNotifications(data);
+    }
+  }, [isLoading, data]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -74,8 +84,20 @@ const NotificationIcon: React.FC<{ active: ActiveType }> = ({ active }) => {
       pusherClient.subscribe(toPusherKey(`investor:${user?.id}`));
     }
 
-    const newNotificationHandler = () => {
+    const newNotificationHandler = (notification: any) => {
+      console.log(notification);
+      setNotifications((prevNotifications) => {
+        const updatedNotifications = [
+          ...(prevNotifications || []),
+          notification,
+        ];
+        return updatedNotifications;
+      });
       void ctx.notifications.getCurrent.invalidate();
+      toast({
+        title: notification.subject,
+        description: notification.content,
+      });
     };
 
     pusherClient.bind("new-notification", newNotificationHandler);
@@ -86,7 +108,7 @@ const NotificationIcon: React.FC<{ active: ActiveType }> = ({ active }) => {
       } else if (active === ActiveType.INVESTOR) {
         pusherClient.unsubscribe(toPusherKey(`investor:${user?.id}`));
       }
-      pusherClient.unbind("new-conversation", newNotificationHandler);
+      pusherClient.unbind("new-notification", newNotificationHandler);
     };
   }, [active, user?.id]);
 
@@ -126,7 +148,7 @@ const NotificationIcon: React.FC<{ active: ActiveType }> = ({ active }) => {
             {data.length === 0 && (
               <p className="m-2 text-sm">No notifications</p>
             )}
-            {data.map((notification) => (
+            {notifications.map((notification) => (
               <div key={notification.id}>
                 <hr className="border-t-2 border-slate-600" />
                 <div
