@@ -205,7 +205,7 @@ export const messagesRouter = createTRPCRouter({
       if (ctx.unsafeMetadata.active === ActiveType.INVESTOR) {
         await pusherServer.trigger(
           toPusherKey(`founder:${input.conversation.founderId}`),
-          "incoming-message",
+          "new-message",
           {
             content: input.content,
             id: nanoid(),
@@ -216,7 +216,7 @@ export const messagesRouter = createTRPCRouter({
       } else if (ctx.unsafeMetadata.active === ActiveType.FOUNDER) {
         await pusherServer.trigger(
           toPusherKey(`investor:${input.conversation.investorId}`),
-          "incoming-message",
+          "new-message",
           {
             content: input.content,
             id: nanoid(),

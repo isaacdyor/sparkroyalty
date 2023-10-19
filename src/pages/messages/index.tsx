@@ -16,6 +16,7 @@ import { pusherClient } from "~/server/pusher";
 import { toPusherKey } from "~/utils/helperFunctions";
 import { useUser } from "@clerk/nextjs";
 import { nanoid } from "nanoid";
+import toast from "react-hot-toast";
 
 const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
   const { user, isLoaded } = useUser();
@@ -420,6 +421,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
       } else {
         updateRecieverMessages(message);
         markNotRead(message);
+        toast("New Message");
       }
     };
 
@@ -429,7 +431,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
       return response;
     };
 
-    pusherClient.bind("incoming-message", newMessageHandler);
+    pusherClient.bind("new-message", newMessageHandler);
     pusherClient.bind("new-conversation", newConversationHandler);
 
     return () => {
@@ -439,7 +441,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
         pusherClient.unsubscribe(toPusherKey(`investor:${user?.id}`));
       }
       pusherClient.unbind("new-conversation", newConversationHandler);
-      pusherClient.unbind("incoming-message", newMessageHandler);
+      pusherClient.unbind("new-message", newMessageHandler);
     };
   }, [active, user?.id, markNotRead, selectedConversation?.id, refetch]);
 

@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "~/components/navbar/navbar";
 import Head from "next/head";
 import toast, { Toaster } from "react-hot-toast";
+import MessageListener from "~/components/shared/messageListener";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -16,6 +17,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <Navbar />
         <Component {...pageProps} />
         <Toaster />
+        <MessageListener />
       </ClerkProvider>
     </>
   );
