@@ -7,7 +7,7 @@ import {
 import { AccountType, NotificationClass } from "@prisma/client";
 import { pusherServer } from "~/server/pusher";
 import { toPusherKey } from "~/utils/helperFunctions";
-import { NotificationType } from "~/types/types";
+import type { NotificationType } from "~/types/types";
 import { nanoid } from "nanoid";
 
 export const notificationsRouter = createTRPCRouter({
@@ -49,17 +49,17 @@ export const notificationsRouter = createTRPCRouter({
       } else if (input.investorId) {
         connectField = { investor: { connect: { id: input.investorId } } };
       }
-      // const notification = await ctx.prisma.notification.create({
-      //   data: {
-      //     subject: input.subject,
-      //     content: input.content,
-      //     read: false,
-      //     deleted: false,
-      //     notificationClass: input.notificationClass,
-      //     link: input.link ? input.link : null,
-      //     ...connectField,
-      //   },
-      // });
+      const notification = await ctx.prisma.notification.create({
+        data: {
+          subject: input.subject,
+          content: input.content,
+          read: false,
+          deleted: false,
+          notificationClass: input.notificationClass,
+          link: input.link ? input.link : null,
+          ...connectField,
+        },
+      });
 
       const data: NotificationType = {
         id: nanoid(),
@@ -94,7 +94,7 @@ export const notificationsRouter = createTRPCRouter({
         );
       }
 
-      // return notification;
+      return notification;
     }),
 
   delete: activeProcedure

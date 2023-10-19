@@ -4,7 +4,7 @@ import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "~/components/navbar/navbar";
 import Head from "next/head";
-import { Toaster } from "~/components/ui/toaster";
+import toast, { Toaster } from "react-hot-toast";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (

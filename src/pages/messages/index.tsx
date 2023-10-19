@@ -270,9 +270,9 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
       content: message,
       recipientId:
         active === ActiveType.INVESTOR
-          ? selectedConversation!.founderId
-          : selectedConversation!.investorId,
-      conversation: selectedConversation!,
+          ? selectedConversation.founderId
+          : selectedConversation.investorId,
+      conversation: selectedConversation,
     });
   };
 
@@ -281,7 +281,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
     if (!message || !newConversationUser) return;
     createConversationMutation({
       content: message,
-      recipientId: newConversationUser!.id,
+      recipientId: newConversationUser.id,
       senderName: user!.fullName!,
       senderImageUrl: user!.imageUrl,
     });
