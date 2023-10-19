@@ -46,13 +46,13 @@ const NotificationIcon: React.FC<{ active: ActiveType }> = ({ active }) => {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const unreadNotifications = data?.filter((n) => !n.read);
-
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hoveredNotificationId, setHoveredNotificationId] = useState<
     string | null
   >(null);
+
+  const unreadNotifications = notifications?.filter((n) => !n.read);
 
   useEffect(() => {
     if (!isLoading && data) {
@@ -84,12 +84,16 @@ const NotificationIcon: React.FC<{ active: ActiveType }> = ({ active }) => {
       pusherClient.subscribe(toPusherKey(`investor:${user?.id}`));
     }
 
-    const newNotificationHandler = (notification: any) => {
-      console.log(notification);
+    const newNotificationHandler = (notification: NotificationType) => {
+      const date = new Date(notification.createdAt);
+      const newNotification = {
+        ...notification,
+        createdAt: date,
+      };
       setNotifications((prevNotifications) => {
         const updatedNotifications = [
           ...(prevNotifications || []),
-          notification,
+          newNotification,
         ];
         return updatedNotifications;
       });
