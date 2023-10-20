@@ -57,12 +57,14 @@ export const useMessagesContext = () => {
 interface GeneralContextType {
   conversations: ConversationType[] | null;
   selectedConversation: ConversationType | null;
+  unreadMessages: boolean;
   setConversations: React.Dispatch<
     React.SetStateAction<ConversationType[] | null>
   >;
   setSelectedConversation: React.Dispatch<
     React.SetStateAction<ConversationType | null>
   >;
+  setUnreadMessages: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const GeneralContext = createContext<GeneralContextType | null>(null);

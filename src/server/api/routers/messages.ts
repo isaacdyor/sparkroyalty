@@ -255,7 +255,7 @@ export const messagesRouter = createTRPCRouter({
     });
     return conversation;
   }),
-  getUnredConversations: activeProcedure.query(async ({ ctx }) => {
+  getUnreadConversations: activeProcedure.query(async ({ ctx }) => {
     let condition = {};
     if (ctx.unsafeMetadata.active === ActiveType.INVESTOR) {
       condition = {

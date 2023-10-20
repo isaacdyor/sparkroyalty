@@ -17,11 +17,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   const [selectedConversation, setSelectedConversation] =
     useState<ConversationType | null>(null);
 
+  const [unreadMessages, setUnreadMessages] = useState(false);
+
   const value = {
     conversations: conversations,
     selectedConversation: selectedConversation,
+    unreadMessages: unreadMessages,
     setConversations: setConversations,
     setSelectedConversation: setSelectedConversation,
+    setUnreadMessages: setUnreadMessages,
   };
   return (
     <>

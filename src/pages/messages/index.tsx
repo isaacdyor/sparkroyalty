@@ -16,7 +16,6 @@ import { pusherClient } from "~/server/pusher";
 import { toPusherKey } from "~/utils/helperFunctions";
 import { useUser } from "@clerk/nextjs";
 import { nanoid } from "nanoid";
-import toast from "react-hot-toast";
 
 const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
   const { user, isLoaded } = useUser();
