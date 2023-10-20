@@ -135,6 +135,8 @@ export const messagesRouter = createTRPCRouter({
           investorId: z.string(),
         }),
         recipientId: z.string(),
+        imageUrl: z.string(),
+        senderName: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -211,6 +213,8 @@ export const messagesRouter = createTRPCRouter({
             id: nanoid(),
             senderType: AccountType.INVESTOR,
             conversationId: input.conversation.id,
+            imageUrl: input.imageUrl,
+            senderName: input.senderName,
           }
         );
       } else if (ctx.unsafeMetadata.active === ActiveType.FOUNDER) {
@@ -222,6 +226,8 @@ export const messagesRouter = createTRPCRouter({
             id: nanoid(),
             senderType: AccountType.FOUNDER,
             conversationId: input.conversation.id,
+            imageUrl: input.imageUrl,
+            senderName: input.senderName,
           }
         );
       }

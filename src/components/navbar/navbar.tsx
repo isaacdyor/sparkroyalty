@@ -16,6 +16,7 @@ import Image from "next/image";
 
 import { updateMetadata } from "~/utils/helperFunctions";
 import NotificationIcon from "./notificationIcon";
+import { useGeneralContext } from "~/utils/context";
 
 const Navbar = () => {
   const { user, isLoaded } = useUser();
@@ -174,6 +175,7 @@ const Navbar = () => {
       </SignedOut>
     </>
   );
+
   return (
     <nav className="bg-black-500 border-b-2 border-border p-4">
       <div className="mx-auto flex items-center justify-between">
@@ -187,6 +189,7 @@ const Navbar = () => {
             className="h-auto w-auto"
           />
         </Link>
+
         {isBigScreen ? (
           <ul className="flex max-w-5xl grow items-center justify-end space-x-6">
             {content}

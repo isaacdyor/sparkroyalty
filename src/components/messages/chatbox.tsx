@@ -31,6 +31,19 @@ const Chatbox = () => {
     isBigScreen,
     setSidebarOpen,
   } = useMessagesContext();
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // Prevent the default behavior (e.g., form submission)
+      if (newConversation) {
+        createConversation();
+      } else {
+        sendMessage();
+      }
+      setMessage("");
+    }
+  };
+
   return (
     <div className="flex h-full w-full flex-col overflow-clip rounded-lg">
       <div className="flex items-center justify-between border-b border-b-border px-2 py-1">
@@ -134,6 +147,7 @@ const Chatbox = () => {
           required
           className="w-full rounded-full border-2 border-border  bg-background py-2 pl-3 pr-12 outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring"
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         {!(newConversation && !newConversationUser) && (
           <button

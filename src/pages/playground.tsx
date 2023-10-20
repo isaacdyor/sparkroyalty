@@ -2,6 +2,7 @@ import { NotificationClass } from "@prisma/client";
 import type { NextPage } from "next/types";
 import toast from "react-hot-toast";
 import { api } from "~/utils/api";
+import { sendToast } from "~/utils/toast";
 
 const Playground: NextPage = () => {
   const { mutate: sendNotification } = api.notifications.create.useMutation({
@@ -16,14 +17,7 @@ const Playground: NextPage = () => {
       <button
         className="rounded-xl bg-primary p-4 text-4xl"
         onClick={() => {
-          sendNotification({
-            subject: "subject",
-            content: "content",
-            founderId: "user_2WnIEBwcE03MsmAtORSOlD41hFu",
-            notificationClass: NotificationClass.APP_ACCEPTED,
-            link: "hello",
-          });
-          toast("Hello World");
+          sendToast("isaac dyor", "got ya girl");
         }}
       >
         Send a noti

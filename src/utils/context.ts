@@ -53,3 +53,26 @@ export const useMessagesContext = () => {
   }
   return context;
 };
+
+interface GeneralContextType {
+  conversations: ConversationType[] | null;
+  selectedConversation: ConversationType | null;
+  setConversations: React.Dispatch<
+    React.SetStateAction<ConversationType[] | null>
+  >;
+  setSelectedConversation: React.Dispatch<
+    React.SetStateAction<ConversationType | null>
+  >;
+}
+
+export const GeneralContext = createContext<GeneralContextType | null>(null);
+
+export const useGeneralContext = () => {
+  const context = useContext(GeneralContext);
+  if (!context) {
+    throw new Error(
+      "useMessagesContext must be used within a MessagesProvider"
+    );
+  }
+  return context;
+};

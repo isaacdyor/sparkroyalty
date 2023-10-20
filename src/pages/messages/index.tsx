@@ -9,7 +9,7 @@ import {
   type SuggestionType,
 } from "~/types/types";
 import { api } from "~/utils/api";
-import { MessagesContext } from "~/utils/context";
+import { MessagesContext, useGeneralContext } from "~/utils/context";
 import { clerkClient, getAuth } from "@clerk/nextjs/server";
 import { AccountType } from "@prisma/client";
 import { pusherClient } from "~/server/pusher";
@@ -64,15 +64,17 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
   });
 
   // state
+  const {
+    conversations,
+    selectedConversation,
+    setConversations,
+    setSelectedConversation,
+  } = useGeneralContext();
+
   const [conversationSearch, setConversationSearch] = useState("");
   const [newConversation, setNewConversation] = useState(false);
   const [message, setMessage] = useState("");
   const [userSearch, setUserSearch] = useState("");
-  const [conversations, setConversations] = useState<ConversationType[] | null>(
-    null
-  );
-  const [selectedConversation, setSelectedConversation] =
-    useState<ConversationType | null>(null);
 
   const [newConversationUser, setNewConversationUser] =
     useState<SuggestionType | null>(null);
@@ -186,6 +188,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
             founderId: user!.id,
             senderType: AccountType.FOUNDER,
             conversationId: nanoid(),
+            senderName: user!.fullName!,
           },
         ],
       };
@@ -210,6 +213,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
             founderId: newConversationUser.id,
             senderType: AccountType.INVESTOR,
             conversationId: nanoid(),
+            senderName: user!.fullName!,
           },
         ],
       };
@@ -234,6 +238,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
         investorId: selectedConversation?.investorId,
         founderId: selectedConversation?.founderId,
         senderType: AccountType.FOUNDER,
+        senderName: user!.fullName!,
         conversationId: selectedConversation?.id,
       };
     } else if (active === ActiveType.INVESTOR) {
@@ -244,6 +249,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
         investorId: selectedConversation?.investorId,
         founderId: selectedConversation?.founderId,
         senderType: AccountType.INVESTOR,
+        senderName: user!.fullName!,
         conversationId: selectedConversation?.id,
       };
     }
@@ -274,6 +280,8 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
           ? selectedConversation.founderId
           : selectedConversation.investorId,
       conversation: selectedConversation,
+      imageUrl: user!.imageUrl,
+      senderName: user!.fullName!,
     });
   };
 
@@ -360,6 +368,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
           investorId: message.investorId,
           founderId: message.founderId,
           senderType: AccountType.FOUNDER,
+          senderName: user!.fullName!,
           conversationId: message.conversationId,
         };
       } else {
@@ -370,6 +379,7 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
           investorId: message.investorId,
           founderId: message.founderId,
           senderType: AccountType.INVESTOR,
+          senderName: user!.fullName!,
           conversationId: message.conversationId,
         };
       }
@@ -421,7 +431,6 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
       } else {
         updateRecieverMessages(message);
         markNotRead(message);
-        toast("New Message");
       }
     };
 

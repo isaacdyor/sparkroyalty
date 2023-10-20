@@ -1,4 +1,5 @@
 import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { pusherClient } from "~/server/pusher";
@@ -8,13 +9,17 @@ import {
   MessageType,
   NotificationType,
 } from "~/types/types";
+import { useGeneralContext } from "~/utils/context";
 import { toPusherKey } from "~/utils/helperFunctions";
+import { sendToast } from "~/utils/toast";
 
 const MessageListener: React.FC = () => {
   const { user, isLoaded } = useUser();
+
+  const { selectedConversation } = useGeneralContext();
+
   // subscribe to pusher
   useEffect(() => {
-    console.log("listening");
     if (isLoaded) {
       if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
         pusherClient.subscribe(toPusherKey(`founder:${user?.id}`));
@@ -23,15 +28,29 @@ const MessageListener: React.FC = () => {
       }
     }
     const newNotificationHandler = (notification: NotificationType) => {
-      toast("New notification");
+      sendToast(notification.subject, notification.content);
     };
 
     const newConversationHandler = (conversation: ConversationType) => {
-      toast("new conversation");
+      if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
+        sendToast(
+          conversation.investorName!,
+          conversation.messages![0]!.content!,
+          conversation.investorImageUrl!
+        );
+      } else if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
+        sendToast(
+          conversation.founderName!,
+          conversation.messages![0]!.content!,
+          conversation.founderImageUrl!
+        );
+      }
     };
 
     const newMessageHandler = (message: MessageType) => {
-      toast("new message");
+      if (message.conversationId != selectedConversation?.id) {
+        sendToast(message.senderName!, message.content, message.imageUrl);
+      }
     };
 
     pusherClient.bind("new-notification", newNotificationHandler);

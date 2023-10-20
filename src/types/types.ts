@@ -114,10 +114,12 @@ export interface MessageType {
   content: string;
   senderType: AccountType;
   conversationId: string;
+  senderName?: string;
   founderId: string;
   investorId: string;
   founder?: FounderType;
   investor?: InvestorType;
+  imageUrl?: string;
 }
 
 export interface NotificationType {
