@@ -20,7 +20,7 @@ const Playground: NextPage = () => {
           sendToast("isaac dyor", "got ya girl");
         }}
       >
-        Send a noti
+        Send a notification
       </button>
     </div>
   );
