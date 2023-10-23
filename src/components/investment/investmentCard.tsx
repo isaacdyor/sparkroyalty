@@ -17,7 +17,7 @@ const InvestmentCard: React.FC<{ investment: InvestmentType }> = ({
   );
 
   return (
-    <div className="overflow-hidden rounded bg-gray-800 p-6 text-white">
+    <div className="overflow-hidden rounded bg-secondary p-6 text-white">
       <div className="flex h-full flex-col">
         <div>
           <h2 className="mb-2 text-2xl font-semibold text-white ">

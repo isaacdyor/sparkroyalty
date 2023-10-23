@@ -1,7 +1,6 @@
-import React, { use, useEffect } from "react";
-import { api } from "~/utils/api";
+import React, { useEffect } from "react";
 
-import { AiFillMessage } from "react-icons/ai";
+import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useGeneralContext } from "~/utils/context";
 import { useUser } from "@clerk/nextjs";
@@ -40,13 +39,13 @@ const MessageIcon = () => {
       {unreadMessages ? (
         <div className="relative">
           <Link href={"/messages"}>
-            <AiFillMessage className="h-6 w-6 hover:cursor-pointer hover:text-foreground/70" />
+            <ChatBubbleLeftEllipsisIcon className="h-6 w-6 hover:cursor-pointer hover:text-foreground/70" />
           </Link>
           <div className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-blue-500 text-sm text-white" />
         </div>
       ) : (
         <Link href={"/messages"}>
-          <AiFillMessage className="h-6 w-6 hover:cursor-pointer hover:text-foreground/70" />
+          <ChatBubbleLeftEllipsisIcon className="h-7 w-7 hover:cursor-pointer hover:text-foreground/70" />
         </Link>
       )}
     </>

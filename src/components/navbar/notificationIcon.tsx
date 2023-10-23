@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AiFillBell } from "react-icons/ai";
+import { BellIcon } from "@heroicons/react/24/outline";
 import { timeAgo } from "~/utils/helperFunctions";
 import Link from "next/link";
 import { RxCross2 } from "react-icons/rx";
@@ -116,14 +116,14 @@ const NotificationIcon: React.FC = () => {
       <div className="notifications-icon relative hover:cursor-pointer">
         {unreadNotifications && unreadNotifications.length > 0 ? (
           <div>
-            <AiFillBell
+            <BellIcon
               onClick={() => setIsModalOpen(true)}
               className=" h-7 w-7 text-white "
             />
             <div className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-blue-500 text-sm text-white" />
           </div>
         ) : (
-          <AiFillBell
+          <BellIcon
             onClick={() => setIsModalOpen(true)}
             className="h-7 w-7 text-white"
           />

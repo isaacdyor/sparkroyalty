@@ -38,7 +38,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-black-500 border-b-2 border-border p-4">
+    <nav className="bg-black-500 border-b-2 border-border p-3.5">
       <div className="mx-auto flex items-center justify-between">
         <Link href="/" passHref>
           <Image

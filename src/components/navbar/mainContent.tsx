@@ -9,12 +9,10 @@ import {
 } from "@clerk/nextjs";
 import { ActiveType } from "~/types/types";
 import SearchBar from "./searchBar";
-import MessageIcon from "./messageIcon";
-import { useEffect, useState } from "react";
-import HamburgerMenu from "./hamburgerMenu";
-import Image from "next/image";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
 import { updateMetadata } from "~/utils/helperFunctions";
+import MessageIcon from "./messageIcon";
 import NotificationIcon from "./notificationIcon";
 
 const MainContent = () => {
@@ -56,6 +54,9 @@ const MainContent = () => {
       <li>
         <MessageIcon />
       </li>
+      <li>
+        <HeartIcon className="h-7 w-7 text-muted-foreground" />
+      </li>
     </>
   );
 
@@ -80,12 +81,7 @@ const MainContent = () => {
             <p className="text-white">Profile</p>
           </Link>
         </li>
-        <li>
-          <NotificationIcon />
-        </li>
-        <li>
-          <MessageIcon />
-        </li>
+        {iconGroup}
       </>
     );
   } else if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
@@ -93,25 +89,15 @@ const MainContent = () => {
       <>
         <li>
           <Link href="/investments/create" passHref>
-            <p className="text-white">Create Startup Post</p>
+            <p className="text-muted-foreground">Create Venture</p>
           </Link>
         </li>
         <li>
           <Link href="/founder/investments" passHref>
-            <p className="text-white">Investments</p>
+            <p className="text-muted-foreground">Your Ventures</p>
           </Link>
         </li>
-        <li>
-          <Link href="/founder" passHref>
-            <p className="text-white">Profile</p>
-          </Link>
-        </li>
-        <li>
-          <NotificationIcon />
-        </li>
-        <li>
-          <MessageIcon />
-        </li>
+        {iconGroup}
       </>
     );
   } else if (user) {
