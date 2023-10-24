@@ -118,14 +118,14 @@ const NotificationIcon: React.FC = () => {
           <div>
             <BellIcon
               onClick={() => setIsModalOpen(true)}
-              className=" h-7 w-7 text-white "
+              className=" h-7 w-7 text-muted-foreground "
             />
             <div className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-blue-500 text-sm text-white" />
           </div>
         ) : (
           <BellIcon
             onClick={() => setIsModalOpen(true)}
-            className="h-7 w-7 text-white"
+            className="h-7 w-7 text-muted-foreground"
           />
         )}
       </div>
