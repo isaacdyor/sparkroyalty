@@ -22,6 +22,7 @@ const Playground: NextPage = () => {
       >
         Send a notification
       </button>
+      <p>Hello</p>
     </div>
   );
 };
