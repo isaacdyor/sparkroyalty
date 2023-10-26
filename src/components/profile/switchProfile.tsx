@@ -46,29 +46,19 @@ const SwitchProfileButton: React.FC<{
   };
   return (
     <>
-      {accountType === AccountType.INVESTOR ? (
-        user?.unsafeMetadata.founder ? (
-          <button onClick={switchProfile}>
-            <div className="rounded-t-lg p-4 text-center text-white hover:bg-slate-600">
-              Switch to founder profile
-            </div>
-          </button>
-        ) : (
-          <button className="rounded-t-lg p-4 text-center text-white hover:bg-slate-600">
-            <Link href="/founder/create">Create Founder Profile</Link>
-          </button>
-        )
-      ) : user?.unsafeMetadata.investor ? (
-        <button onClick={switchProfile}>
-          <div className="rounded-t-lg p-4 text-center text-white hover:bg-slate-600">
-            Switch to investor profile
-          </div>
-        </button>
-      ) : (
-        <button className="rounded-t-lg p-4 text-center text-white hover:bg-slate-600">
-          <Link href="/investor/create">Create Investor Profile</Link>
-        </button>
-      )}
+      {accountType === AccountType.INVESTOR
+        ? user?.unsafeMetadata.founder && (
+            <button onClick={switchProfile}>
+              <div className="text-muted-foreground">
+                Switch to founder profile
+              </div>
+            </button>
+          )
+        : user?.unsafeMetadata.investor && (
+            <button onClick={switchProfile}>
+              <div className="text-muted-foreground">Switch to Investing</div>
+            </button>
+          )}
     </>
   );
 };

@@ -47,7 +47,7 @@ const SearchBar = () => {
           console.error("Error router", err);
         });
       }}
-      className="flex h-6 grow items-center space-x-6"
+      className="flex h-6 grow items-center"
     >
       <div className="flex grow " ref={dropdownRef}>
         <div className="group relative flex grow rounded-l-3xl border border-border focus-within:border-blue-500">
@@ -76,35 +76,26 @@ const SearchBar = () => {
           />
 
           {query ? (
-            <button
-              type="button"
-              className=" text-gray-600 hover:text-gray-400"
-              onClick={(e) => {
-                e.preventDefault();
-                setQuery("");
-              }}
-            >
-              <RxCross2 className="h-6 w-6" />
-            </button>
+            <div className="flex items-center">
+              <RxCross2
+                onClick={(e) => {
+                  e.preventDefault();
+                  setQuery("");
+                }}
+                className="h-6 w-6  text-slate-700 hover:cursor-pointer hover:text-slate-600"
+              />
+            </div>
           ) : (
             <div className="h-6 w-6"></div>
           )}
         </div>
-        {query ? (
-          <button
-            type="submit"
-            className="rounded-r-3xl bg-secondary px-1 hover:bg-secondary/70"
-          >
-            <AiOutlineSearch className=" mr-1 h-7 w-7 p-1 text-white" />
-          </button>
-        ) : (
-          <button
-            onClick={(e) => e.preventDefault()}
-            className="rounded-r-3xl bg-secondary px-1 hover:bg-secondary/70"
-          >
-            <AiOutlineSearch className=" mr-1 h-7 w-7 p-1 text-white" />
-          </button>
-        )}
+        <button
+          type="submit"
+          disabled={!query}
+          className="rounded-r-3xl bg-secondary px-1 hover:bg-secondary/70"
+        >
+          <AiOutlineSearch className=" mr-1 h-7 w-7 p-1 text-white" />
+        </button>
       </div>
     </form>
   );

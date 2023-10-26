@@ -1,21 +1,8 @@
 import Link from "next/link";
-import {
-  SignInButton,
-  useUser,
-  UserButton,
-  SignedIn,
-  SignedOut,
-  SignUpButton,
-} from "@clerk/nextjs";
-import { ActiveType } from "~/types/types";
-import SearchBar from "./searchBar";
-import MessageIcon from "./messageIcon";
+import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import HamburgerMenu from "./hamburgerMenu";
 import Image from "next/image";
-
-import { updateMetadata } from "~/utils/helperFunctions";
-import NotificationIcon from "./notificationIcon";
 import MainContent from "./mainContent";
 
 const Navbar = () => {
@@ -38,9 +25,9 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-black-500 border-b-2 border-border p-3.5">
+    <nav className="bg-black-500 border-b-2 border-border px-6 py-3">
       <div className="mx-auto flex items-center justify-between">
-        <Link href="/" passHref>
+        <Link href="/" className="pr-8" passHref>
           <Image
             src="/logo.png"
             alt="logo"

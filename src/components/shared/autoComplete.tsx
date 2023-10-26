@@ -129,7 +129,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
   return (
     <>
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute left-0 z-10 mt-11 w-full rounded-lg border border-gray-600 bg-input">
+        <div className="absolute left-0 z-10 mt-11 w-full rounded-lg bg-secondary">
           <ul>
             {suggestions.map((suggestion, index) => (
               <React.Fragment key={index}>

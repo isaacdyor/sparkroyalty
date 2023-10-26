@@ -40,14 +40,33 @@ const MainContent = () => {
     });
   };
 
-  let specificContent;
+  const founderContent = (
+    <>
+      <li>
+        <Link href="/investments/create" passHref>
+          <p className="text-muted-foreground">Create Venture</p>
+        </Link>
+      </li>
+      <li>
+        <Link href="/founder/investments" passHref>
+          <p className="text-muted-foreground">Your Ventures</p>
+        </Link>
+      </li>
+    </>
+  );
 
-  if (!isLoaded) {
-    specificContent = null;
-  }
+  const investorContent = (
+    <>
+      <li>
+        <Link href="/investor/jobs" passHref>
+          <p className="text-muted-foreground">My Jobs</p>
+        </Link>
+      </li>
+    </>
+  );
 
   const iconGroup = (
-    <>
+    <div className="flex gap-4">
       <li>
         <NotificationIcon />
       </li>
@@ -57,104 +76,76 @@ const MainContent = () => {
       <li>
         <HeartIcon className="h-7 w-7 text-muted-foreground" />
       </li>
+    </div>
+  );
+
+  const activeContent = (
+    <>
+      {user?.unsafeMetadata.active == ActiveType.INVESTOR
+        ? investorContent
+        : founderContent}
+      {iconGroup}
+    </>
+  );
+  const inactiveContent = (
+    <>
+      <li>
+        {user?.unsafeMetadata.investor ? (
+          <Link href="/investor" passHref onClick={() => setInvestorActive()}>
+            <p className="text-muted-foreground">Login as Investor</p>
+          </Link>
+        ) : (
+          <Link href="/investor/create" passHref>
+            <p className="text-muted-foreground">Become an Investor</p>
+          </Link>
+        )}
+      </li>
+      <li>
+        {user?.unsafeMetadata.founder ? (
+          <Link href="/founder" passHref onClick={() => setFounderActive()}>
+            <p className="text-muted-foreground">Login as Founder</p>
+          </Link>
+        ) : (
+          <Link href="/founder/create" passHref>
+            <p className="text-muted-foreground">Become a Founder</p>
+          </Link>
+        )}
+      </li>
+    </>
+  );
+  const signedInContent = (
+    <>
+      {user?.unsafeMetadata.active == ActiveType.NONE
+        ? inactiveContent
+        : activeContent}
+      <li>
+        <UserButton afterSignOutUrl="/" />
+      </li>
     </>
   );
 
-  if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
-    specificContent = (
-      <>
-        <li className="grow">
-          <SearchBar />
-        </li>
-        <li>
-          <Link href="/investor/jobs" passHref>
-            <p className="text-white">My Jobs</p>
-          </Link>
-        </li>
-        <li>
-          <Link href="/applications" passHref>
-            <p className="text-white">My Applications</p>
-          </Link>
-        </li>
-        <li>
-          <Link href="/investor" passHref>
-            <p className="text-white">Profile</p>
-          </Link>
-        </li>
-        {iconGroup}
-      </>
-    );
-  } else if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
-    specificContent = (
-      <>
-        <li>
-          <Link href="/investments/create" passHref>
-            <p className="text-muted-foreground">Create Venture</p>
-          </Link>
-        </li>
-        <li>
-          <Link href="/founder/investments" passHref>
-            <p className="text-muted-foreground">Your Ventures</p>
-          </Link>
-        </li>
-        {iconGroup}
-      </>
-    );
-  } else if (user) {
-    specificContent = (
-      <>
-        <li>
-          {user?.unsafeMetadata.investor ? (
-            <Link href="/investor" passHref onClick={() => setInvestorActive()}>
-              <p className="text-white">Login as Investor</p>
-            </Link>
-          ) : (
-            <Link href="/investor/create" passHref>
-              <p className="text-white">Become an Investor</p>
-            </Link>
-          )}
-        </li>
-        <li>
-          {user?.unsafeMetadata.founder ? (
-            <Link href="/founder" passHref onClick={() => setFounderActive()}>
-              <p className="text-white">Login as Founder</p>
-            </Link>
-          ) : (
-            <Link href="/founder/create" passHref>
-              <p className="text-white">Become a Founder</p>
-            </Link>
-          )}
-        </li>
-      </>
-    );
-  }
-
   return (
-    <ul className="flex max-w-5xl grow items-center justify-end space-x-6">
-      {specificContent}
-
-      <SignedIn>
-        <li>
-          <UserButton afterSignOutUrl="/" />
-        </li>
-      </SignedIn>
-      <SignedOut>
-        <li>
-          <SignInButton />
-        </li>
-        <li>
-          {" "}
-          <SignUpButton
-            redirectUrl="/"
-            unsafeMetadata={{
-              active: "none",
-              investor: false,
-              founder: false,
-            }}
-          />
-        </li>
-      </SignedOut>
-    </ul>
+    <div className="flex grow items-center justify-between">
+      {user?.unsafeMetadata.active == ActiveType.INVESTOR && <SearchBar />}
+      <ul className="flex max-w-5xl grow items-center justify-end space-x-5">
+        <SignedIn>{signedInContent}</SignedIn>
+        <SignedOut>
+          <li>
+            <SignInButton />
+          </li>
+          <li>
+            <SignUpButton
+              redirectUrl="/"
+              unsafeMetadata={{
+                active: "none",
+                investor: false,
+                founder: false,
+              }}
+            />
+          </li>
+        </SignedOut>
+      </ul>
+    </div>
   );
 };
 
