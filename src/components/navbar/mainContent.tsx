@@ -9,14 +9,20 @@ import {
 } from "@clerk/nextjs";
 import { ActiveType } from "~/types/types";
 import SearchBar from "./searchBar";
-import { HeartIcon } from "@heroicons/react/24/outline";
+import { HeartIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 import { updateMetadata } from "~/utils/helperFunctions";
 import MessageIcon from "./messageIcon";
 import NotificationIcon from "./notificationIcon";
+import { useEffect, useRef, useState } from "react";
 
-const MainContent = () => {
+const MainContent: React.FC<{ width: number }> = ({ width }) => {
   const { user, isLoaded } = useUser();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  const [showSearchBar, setShowSearchBar] = useState(false);
 
   const setFounderActive = () => {
     const unsafeMetadata = {
@@ -59,9 +65,19 @@ const MainContent = () => {
     <>
       <li>
         <Link href="/investor/jobs" passHref>
-          <p className="text-muted-foreground">My Jobs</p>
+          <p className="whitespace-nowrap text-muted-foreground">My Jobs</p>
         </Link>
       </li>
+      {width <= 800 && (
+        <li>
+          <MagnifyingGlassIcon
+            onClick={() => {
+              setShowSearchBar(true);
+            }}
+            className="h-7 w-7 text-muted-foreground hover:cursor-pointer"
+          />
+        </li>
+      )}
     </>
   );
 
@@ -81,10 +97,14 @@ const MainContent = () => {
 
   const activeContent = (
     <>
-      {user?.unsafeMetadata.active == ActiveType.INVESTOR
-        ? investorContent
-        : founderContent}
-      {iconGroup}
+      {(!showSearchBar || width > 800) && (
+        <>
+          {user?.unsafeMetadata.active == ActiveType.INVESTOR
+            ? investorContent
+            : founderContent}
+          {iconGroup}
+        </>
+      )}
     </>
   );
   const inactiveContent = (
@@ -124,10 +144,38 @@ const MainContent = () => {
     </>
   );
 
+  useEffect(() => {
+    if (showSearchBar) {
+      inputRef.current?.focus();
+    }
+  }, [showSearchBar]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef?.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSearchBar(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [inputRef]);
+
+  const renderSearchBar =
+    showSearchBar ||
+    (user?.unsafeMetadata.active == ActiveType.INVESTOR && width > 800);
+
   return (
-    <div className="flex grow items-center justify-between">
-      {user?.unsafeMetadata.active == ActiveType.INVESTOR && <SearchBar />}
+    <>
       <ul className="flex max-w-5xl grow items-center justify-end space-x-5">
+        {renderSearchBar && (
+          <div className="w-full" ref={searchRef}>
+            <SearchBar inputRef={inputRef} />
+          </div>
+        )}
         <SignedIn>{signedInContent}</SignedIn>
         <SignedOut>
           <li>
@@ -145,7 +193,7 @@ const MainContent = () => {
           </li>
         </SignedOut>
       </ul>
-    </div>
+    </>
   );
 };
 

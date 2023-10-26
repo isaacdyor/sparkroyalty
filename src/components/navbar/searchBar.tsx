@@ -5,7 +5,9 @@ import { RxCross2 } from "react-icons/rx";
 import { searchSuggestions } from "~/utils/searchSuggestions";
 import AutoComplete from "../shared/autoComplete";
 
-const SearchBar = () => {
+const SearchBar: React.FC<{
+  inputRef: React.RefObject<HTMLInputElement>;
+}> = ({ inputRef }) => {
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -47,7 +49,7 @@ const SearchBar = () => {
           console.error("Error router", err);
         });
       }}
-      className="flex h-6 grow items-center"
+      className="flex h-6 w-full max-w-lg grow items-center"
     >
       <div className="flex grow " ref={dropdownRef}>
         <div className="group relative flex grow rounded-l-3xl border border-border focus-within:border-blue-500">
@@ -59,6 +61,7 @@ const SearchBar = () => {
             onFocus={() => {
               setShowSuggestions(true);
             }}
+            ref={inputRef}
             onChange={(e) => {
               setQuery(e.target.value);
             }}

@@ -4,15 +4,17 @@ import { useEffect, useState } from "react";
 import HamburgerMenu from "./hamburgerMenu";
 import Image from "next/image";
 import MainContent from "./mainContent";
+import { ActiveType } from "~/types/types";
+import SearchBar from "./searchBar";
 
 const Navbar = () => {
   const { user, isLoaded } = useUser();
 
-  const [isBigScreen, setIsBigScreen] = useState(false);
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsBigScreen(window.innerWidth >= 640);
+      setWidth(window.innerWidth);
     };
 
     window.addEventListener("resize", checkScreenSize);
@@ -25,20 +27,20 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-black-500 border-b-2 border-border px-6 py-3">
+    <nav className="bg-black-500 border-b border-border px-6 py-3">
       <div className="mx-auto flex items-center justify-between">
-        <Link href="/" className="pr-8" passHref>
+        <Link href="/" className="flex-1 shrink-0 pr-8" passHref>
           <Image
             src="/logo.png"
             alt="logo"
             width={150}
             height={150}
             priority
-            className="h-auto w-auto"
+            className="h-auto w-auto min-w-[192px] "
           />
         </Link>
 
-        {isBigScreen ? <MainContent /> : <HamburgerMenu />}
+        {width >= 640 ? <MainContent width={width} /> : <HamburgerMenu />}
       </div>
     </nav>
   );
