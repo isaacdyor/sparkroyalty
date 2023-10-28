@@ -26,6 +26,11 @@ const Navbar = () => {
     };
   }, []);
 
+  const showMainContent =
+    (user?.unsafeMetadata.active == ActiveType.FOUNDER && width >= 690) ||
+    (user?.unsafeMetadata.active == ActiveType.INVESTOR && width >= 600) ||
+    (user?.unsafeMetadata.active == ActiveType.NONE && width >= 615);
+
   return (
     <nav className="bg-black-500 border-b border-border px-6 py-3">
       <div className="mx-auto flex items-center justify-between">
@@ -40,7 +45,7 @@ const Navbar = () => {
           />
         </Link>
 
-        {width >= 640 ? <MainContent width={width} /> : <HamburgerMenu />}
+        {showMainContent ? <MainContent width={width} /> : <HamburgerMenu />}
       </div>
     </nav>
   );

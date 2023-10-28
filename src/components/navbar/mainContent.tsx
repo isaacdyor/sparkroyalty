@@ -50,12 +50,16 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
     <>
       <li>
         <Link href="/investments/create" passHref>
-          <p className="text-muted-foreground">Create Venture</p>
+          <p className="whitespace-nowrap text-muted-foreground">
+            Create Venture
+          </p>
         </Link>
       </li>
       <li>
         <Link href="/founder/investments" passHref>
-          <p className="text-muted-foreground">Your Ventures</p>
+          <p className="whitespace-nowrap text-muted-foreground">
+            Your Ventures
+          </p>
         </Link>
       </li>
     </>

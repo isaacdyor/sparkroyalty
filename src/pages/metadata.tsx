@@ -63,9 +63,9 @@ const Home: NextPage = () => {
     <div>
       <button
         className="bg-gradient m-5 rounded-lg p-5 text-white"
-        onClick={handleButtonClick}
+        onClick={() => onClick(ActiveType.NONE)}
       >
-        Reset Metadata
+        None
       </button>
       <button
         className="bg-gradient m-5 rounded-lg p-5 text-white"
