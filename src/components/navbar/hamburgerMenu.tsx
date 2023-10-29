@@ -78,7 +78,7 @@ const HamburgerMenu: React.FC = () => {
   );
 
   const iconGroup = (
-    <div className="flex gap-4">
+    <>
       <li>
         <NotificationIcon />
       </li>
@@ -88,7 +88,7 @@ const HamburgerMenu: React.FC = () => {
       <li>
         <HeartIcon className="h-7 w-7 text-muted-foreground" />
       </li>
-    </div>
+    </>
   );
 
   const activeContent = (
@@ -156,9 +156,31 @@ const HamburgerMenu: React.FC = () => {
       )}
 
       {hamMenuOpen && (
-        <ul className="absolute flex max-w-5xl grow flex-col items-center justify-end space-x-6">
-          {/* {content} */}
-        </ul>
+        // <ul className="absolute flex max-w-5xl grow flex-col items-center justify-end space-x-6">
+        //   <SignedIn>{signedInContent}</SignedIn>
+        //   <SignedOut>
+        //     <li>
+        //       <SignInButton />
+        //     </li>
+        //     <li>
+        //       <SignUpButton
+        //         redirectUrl="/"
+        //         unsafeMetadata={{
+        //           active: "none",
+        //           investor: false,
+        //           founder: false,
+        //         }}
+        //       />
+        //     </li>
+        //   </SignedOut>
+        // </ul>
+        <div className="absolute left-0 top-[57px] z-50 flex w-full items-center justify-center rounded-b-lg bg-secondary bg-opacity-80">
+          <div className=" flex max-h-[500px] w-80 flex-col overflow-scroll rounded-lg  shadow-md">
+            <div className="flex items-center justify-between">
+              <p className="m-2 text-lg">Notifications</p>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
