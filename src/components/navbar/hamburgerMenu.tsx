@@ -174,12 +174,14 @@ const HamburgerMenu: React.FC = () => {
         //     </li>
         //   </SignedOut>
         // </ul>
-        <div className="absolute left-0 top-[57px] z-50 flex w-full items-center justify-center rounded-b-lg bg-secondary bg-opacity-80">
-          <div className=" flex max-h-[500px] w-80 flex-col overflow-scroll rounded-lg  shadow-md">
-            <div className="flex items-center justify-between">
-              <p className="m-2 text-lg">Notifications</p>
-            </div>
+        <div className="absolute left-0 top-[63px] z-50 flex h-full w-full flex-col ">
+          <div className="flex w-full flex-col border-b-2 border-b-border bg-background p-4 ">
+            <p className="text-lg">Profile</p>
+            <p className="text-lg">My Jobs</p>
+            <p className="text-lg">Search</p>
+            <p className="text-lg">Notifications</p>
           </div>
+          <div className="h-full w-full bg-black bg-opacity-50" />
         </div>
       )}
     </div>
