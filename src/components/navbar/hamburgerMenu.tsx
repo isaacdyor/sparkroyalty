@@ -3,26 +3,18 @@ import {
   SignUpButton,
   SignedIn,
   SignedOut,
-  UserButton,
   useUser,
 } from "@clerk/nextjs";
 import Link from "next/link";
-import React, { useState } from "react";
-import { SlMenu } from "react-icons/sl";
+import React, { useEffect, useRef, useState } from "react";
 import { ActiveType } from "~/types/types";
-import MessageIcon from "./messageIcon";
-import SearchBar from "./searchBar";
-import NotificationIcon from "./notificationIcon";
 import { updateMetadata } from "~/utils/helperFunctions";
-import {
-  HeartIcon,
-  MagnifyingGlassIcon,
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const HamburgerMenu: React.FC = () => {
   const { user, isLoaded } = useUser();
+
+  const ref = useRef<HTMLDivElement>(null);
 
   const [hamMenuOpen, setHamMenuOpen] = useState(false);
 
@@ -50,44 +42,49 @@ const HamburgerMenu: React.FC = () => {
 
   const founderContent = (
     <>
-      <li>
-        <Link href="/investments/create" passHref>
-          <p className="whitespace-nowrap text-muted-foreground">
-            Create Venture
-          </p>
-        </Link>
-      </li>
-      <li>
-        <Link href="/founder/investments" passHref>
-          <p className="whitespace-nowrap text-muted-foreground">
-            Your Ventures
-          </p>
-        </Link>
-      </li>
+      <Link
+        href="/investments/create"
+        passHref
+        onClick={() => setHamMenuOpen(false)}
+      >
+        <p className="whitespace-nowrap py-2">Create Venture</p>
+      </Link>
+
+      <Link
+        href="/founder/investments"
+        passHref
+        onClick={() => setHamMenuOpen(false)}
+      >
+        <p className="whitespace-nowrap py-2">Your Ventures</p>
+      </Link>
     </>
   );
 
   const investorContent = (
     <>
-      <li>
-        <Link href="/investor/jobs" passHref>
-          <p className="whitespace-nowrap text-muted-foreground">My Jobs</p>
-        </Link>
-      </li>
+      <Link
+        href="/investor/jobs"
+        passHref
+        onClick={() => setHamMenuOpen(false)}
+      >
+        <p className="whitespace-nowrap py-2 ">My Jobs</p>
+      </Link>
     </>
   );
 
   const iconGroup = (
     <>
-      <li>
-        <NotificationIcon />
-      </li>
-      <li>
-        <MessageIcon />
-      </li>
-      <li>
-        <HeartIcon className="h-7 w-7 text-muted-foreground" />
-      </li>
+      <Link
+        href="/notifications"
+        passHref
+        onClick={() => setHamMenuOpen(false)}
+      >
+        <p className="whitespace-nowrap py-2">Notifications</p>
+      </Link>
+      <Link href="/messages" passHref onClick={() => setHamMenuOpen(false)}>
+        <p className="whitespace-nowrap py-2">Messages</p>
+      </Link>
+      <p className="py-2">Saved</p>
     </>
   );
 
@@ -101,40 +98,72 @@ const HamburgerMenu: React.FC = () => {
   );
   const inactiveContent = (
     <>
-      <li>
-        {user?.unsafeMetadata.investor ? (
-          <Link href="/investor" passHref onClick={() => setInvestorActive()}>
-            <p className="text-muted-foreground">Login as Investor</p>
-          </Link>
-        ) : (
-          <Link href="/investor/create" passHref>
-            <p className="text-muted-foreground">Become an Investor</p>
-          </Link>
-        )}
-      </li>
-      <li>
-        {user?.unsafeMetadata.founder ? (
-          <Link href="/founder" passHref onClick={() => setFounderActive()}>
-            <p className="text-muted-foreground">Login as Founder</p>
-          </Link>
-        ) : (
-          <Link href="/founder/create" passHref>
-            <p className="text-muted-foreground">Become a Founder</p>
-          </Link>
-        )}
-      </li>
+      {user?.unsafeMetadata.investor ? (
+        <Link
+          href="/investor"
+          passHref
+          onClick={() => {
+            setHamMenuOpen(false);
+            setInvestorActive();
+          }}
+        >
+          <p className=" py-2">Login as Investor</p>
+        </Link>
+      ) : (
+        <Link
+          href="/investor/create"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          <p className="py-2">Become an Investor</p>
+        </Link>
+      )}
+
+      {user?.unsafeMetadata.founder ? (
+        <Link
+          href="/founder"
+          passHref
+          onClick={() => {
+            setHamMenuOpen(false);
+            setFounderActive();
+          }}
+        >
+          <p className="py-2">Login as Founder</p>
+        </Link>
+      ) : (
+        <Link
+          href="/founder/create"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          <p className="py-2">Become a Founder</p>
+        </Link>
+      )}
     </>
   );
   const signedInContent = (
     <>
+      <Link href="/profile" passHref onClick={() => setHamMenuOpen(false)}>
+        <p className="whitespace-nowrap py-2">Profile</p>
+      </Link>
       {user?.unsafeMetadata.active == ActiveType.NONE
         ? inactiveContent
         : activeContent}
-      <li>
-        <UserButton afterSignOutUrl="/" />
-      </li>
     </>
   );
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref?.current && ref.current.contains(e.target as Node)) {
+        setHamMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+
   return (
     <div>
       {hamMenuOpen ? (
@@ -156,32 +185,26 @@ const HamburgerMenu: React.FC = () => {
       )}
 
       {hamMenuOpen && (
-        // <ul className="absolute flex max-w-5xl grow flex-col items-center justify-end space-x-6">
-        //   <SignedIn>{signedInContent}</SignedIn>
-        //   <SignedOut>
-        //     <li>
-        //       <SignInButton />
-        //     </li>
-        //     <li>
-        //       <SignUpButton
-        //         redirectUrl="/"
-        //         unsafeMetadata={{
-        //           active: "none",
-        //           investor: false,
-        //           founder: false,
-        //         }}
-        //       />
-        //     </li>
-        //   </SignedOut>
-        // </ul>
         <div className="absolute left-0 top-[63px] z-50 flex h-full w-full flex-col ">
-          <div className="flex w-full flex-col border-b-2 border-b-border bg-background p-4 ">
-            <p className="text-lg">Profile</p>
-            <p className="text-lg">My Jobs</p>
-            <p className="text-lg">Search</p>
-            <p className="text-lg">Notifications</p>
+          <div className="flex w-full flex-col border-b-2 border-b-border bg-background p-4 text-lg text-muted-foreground ">
+            <SignedIn>{signedInContent}</SignedIn>
+            <SignedOut>
+              <p className="py-2">
+                <SignInButton />
+              </p>
+              <p className="py-2">
+                <SignUpButton
+                  redirectUrl="/"
+                  unsafeMetadata={{
+                    active: "none",
+                    investor: false,
+                    founder: false,
+                  }}
+                />
+              </p>
+            </SignedOut>
           </div>
-          <div className="h-full w-full bg-black bg-opacity-50" />
+          <div ref={ref} className="h-full w-full bg-black bg-opacity-60" />
         </div>
       )}
     </div>

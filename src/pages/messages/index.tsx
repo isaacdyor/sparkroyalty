@@ -20,6 +20,7 @@ import { nanoid } from "nanoid";
 const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
   const { user, isLoaded } = useUser();
 
+  console.log(active);
   // queries
   const { data, isFetched, isLoading, refetch } =
     api.messages.getConversations.useQuery();

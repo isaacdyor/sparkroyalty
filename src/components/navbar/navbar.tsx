@@ -29,19 +29,20 @@ const Navbar = () => {
   const showMainContent =
     (user?.unsafeMetadata.active == ActiveType.FOUNDER && width >= 690) ||
     (user?.unsafeMetadata.active == ActiveType.INVESTOR && width >= 600) ||
-    (user?.unsafeMetadata.active == ActiveType.NONE && width >= 615);
+    (user?.unsafeMetadata.active == ActiveType.NONE && width >= 615) ||
+    (!user && width >= 450);
 
   return (
     <nav className="bg-black-500 border-b border-border px-6 py-3">
       <div className="mx-auto flex items-center justify-between">
-        <Link href="/" className="flex-1 shrink-0 pr-8" passHref>
+        <Link href="/" className="flex-1 pr-8" passHref>
           <Image
             src="/logo.png"
             alt="logo"
             width={150}
             height={150}
             priority
-            className="h-auto w-auto min-w-[192px] "
+            className="h-auto w-auto min-w-[192px] shrink-0 "
           />
         </Link>
 
