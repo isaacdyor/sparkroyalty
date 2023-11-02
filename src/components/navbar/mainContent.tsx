@@ -15,6 +15,7 @@ import { updateMetadata } from "~/utils/helperFunctions";
 import MessageIcon from "./messageIcon";
 import NotificationIcon from "./notificationIcon";
 import { useEffect, useRef, useState } from "react";
+import ProfileButton from "./profileButton";
 
 const MainContent: React.FC<{ width: number }> = ({ width }) => {
   const { user, isLoaded } = useUser();
@@ -143,7 +144,7 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
         ? inactiveContent
         : activeContent}
       <li>
-        <UserButton afterSignOutUrl="/" />
+        <ProfileButton />
       </li>
     </>
   );
