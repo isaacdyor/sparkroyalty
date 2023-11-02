@@ -8,7 +8,7 @@ import { MdLocationPin } from "react-icons/md";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { BsFillBriefcaseFill } from "react-icons/bs";
 import StarsComponent from "../review/multiStars";
-import SwitchProfileButton from "./switchProfile";
+import SwitchProfileButton from "../navbar/switchProfile";
 import DeleteProfileButton from "./deleteProfile";
 import LinkedAccounts from "./linkedAccounts";
 import { AccountType } from "@prisma/client";

@@ -6,7 +6,7 @@ import { FaUser } from "react-icons/fa";
 import Link from "next/link";
 import Modal from "../shared/modal";
 import { type FounderType } from "~/types/types";
-import SwitchProfileButton from "./switchProfile";
+import SwitchProfileButton from "../navbar/switchProfile";
 import DeleteProfileButton from "./deleteProfile";
 import LinkedAccounts from "./linkedAccounts";
 import MultiStarsComponent from "../review/multiStars";

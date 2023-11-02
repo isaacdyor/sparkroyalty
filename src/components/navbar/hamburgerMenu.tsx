@@ -42,21 +42,28 @@ const HamburgerMenu: React.FC = () => {
 
   const founderContent = (
     <>
-      <Link
-        href="/investments/create"
-        passHref
-        onClick={() => setHamMenuOpen(false)}
-      >
-        <p className="whitespace-nowrap py-2">Create Venture</p>
-      </Link>
+      <p className="whitespace-nowrap py-2 ">
+        <Link
+          className="hover:text-white"
+          href="/investments/create"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          Create Venture
+        </Link>
+      </p>
 
-      <Link
-        href="/founder/investments"
-        passHref
-        onClick={() => setHamMenuOpen(false)}
-      >
-        <p className="whitespace-nowrap py-2">Your Ventures</p>
-      </Link>
+      <p className="whitespace-nowrap py-2">
+        {" "}
+        <Link
+          className="hover:text-white"
+          href="/founder/investments"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          Your Ventures
+        </Link>
+      </p>
     </>
   );
 

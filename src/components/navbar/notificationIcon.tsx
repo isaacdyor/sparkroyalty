@@ -11,6 +11,7 @@ import { ActiveType, type NotificationType } from "~/types/types";
 import { pusherClient } from "~/server/pusher";
 import { toPusherKey } from "~/utils/helperFunctions";
 import { useUser } from "@clerk/nextjs";
+import NotificationComponent from "./notificationComponent";
 
 const NotificationIcon: React.FC = () => {
   const { data, isLoading } = api.notifications.getCurrent.useQuery();
@@ -131,23 +132,16 @@ const NotificationIcon: React.FC = () => {
       </div>
 
       {isModalOpen && (
-        <div className="absolute right-12 top-[57px] z-50 flex items-center justify-center rounded-lg bg-secondary bg-opacity-80">
-          <div className=" flex max-h-[500px] w-80 flex-col overflow-scroll rounded-lg  shadow-md">
-            <div className="flex items-center justify-between">
-              <p className="m-2 text-lg">Notifications</p>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="mr-2 text-white hover:text-gray-400"
-              >
-                <RxCross2 className="h-6 w-6" />
-              </button>
-            </div>
+        <div className="absolute right-12 top-[59px] z-50 flex w-full max-w-sm items-center justify-center rounded-lg bg-secondary bg-opacity-80">
+          <div className=" flex max-h-[500px] w-full flex-col overflow-scroll rounded-lg  shadow-md">
             {data.length === 0 && (
               <p className="m-2 text-sm">No notifications</p>
             )}
-            {notifications.map((notification) => (
+            {notifications.map((notification, index) => (
               <div key={notification.id}>
-                <hr className="border-t-2 border-slate-600" />
+                <hr
+                  className={`${index != 0 && "border-t-2 border-slate-600"}`}
+                />
                 <div
                   className="flex items-center justify-between pt-1 hover:cursor-pointer hover:bg-gray-700"
                   onMouseEnter={() => setHoveredNotificationId(notification.id)}
@@ -160,78 +154,10 @@ const NotificationIcon: React.FC = () => {
                     }
                   }}
                 >
-                  <div className="mb-3 ml-2 flex w-60 flex-col">
-                    <p className="text-md mb-2">{notification.subject}</p>
-                    <p className="mb-2 text-sm">{notification.content}</p>
-                    {notification.notificationClass ===
-                      NotificationClass.APP_ACCEPTED &&
-                      notification.link && (
-                        <>
-                          <Link
-                            href={notification.link}
-                            onClick={() => setIsModalOpen(false)}
-                            className="mb-2 text-sm text-blue-500 hover:text-blue-600"
-                          >
-                            View investment
-                          </Link>
-                        </>
-                      )}
-                    {notification.notificationClass ===
-                      NotificationClass.NEW_REVIEW &&
-                      notification.link && (
-                        <>
-                          <Link
-                            href={notification.link}
-                            onClick={() => setIsModalOpen(false)}
-                            className="mb-2 text-sm text-blue-500 hover:text-blue-600"
-                          >
-                            View review
-                          </Link>
-                        </>
-                      )}
-                    {notification.notificationClass ===
-                      NotificationClass.FULL_PAY &&
-                      notification.link && (
-                        <>
-                          <Link
-                            href={notification.link}
-                            onClick={() => setIsModalOpen(false)}
-                            className="mb-2 text-sm text-blue-500 hover:text-blue-600"
-                          >
-                            Leave review
-                          </Link>
-                        </>
-                      )}
-                    {notification.notificationClass ===
-                      NotificationClass.JOB_COMPLETE &&
-                      notification.link && (
-                        <>
-                          <Link
-                            href={notification.link}
-                            onClick={() => setIsModalOpen(false)}
-                            className="text-small mb-2 text-blue-500 hover:text-blue-600"
-                          >
-                            Leave Review
-                          </Link>
-                        </>
-                      )}
-                    {notification.notificationClass ===
-                      NotificationClass.NEW_APPLICATION &&
-                      notification.link && (
-                        <>
-                          <Link
-                            href={notification.link}
-                            onClick={() => setIsModalOpen(false)}
-                            className="text-small mb-2 text-blue-500 hover:text-blue-600"
-                          >
-                            View Application
-                          </Link>
-                        </>
-                      )}
-                    <p className="mb-1 text-xs">
-                      {timeAgo(notification.createdAt)}
-                    </p>
-                  </div>
+                  <NotificationComponent
+                    notification={notification}
+                    setIsModalOpen={setIsModalOpen}
+                  />
                   <div className="flex items-center">
                     {!notification.read && (
                       <div className="mr-1">

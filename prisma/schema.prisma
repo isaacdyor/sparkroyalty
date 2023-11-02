@@ -178,6 +178,7 @@ model Notification {
   deleted Boolean
   notificationClass NotificationClass
   link String?
+  
 
   founderId String?
   @@index([founderId])

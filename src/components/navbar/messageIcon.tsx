@@ -39,13 +39,13 @@ const MessageIcon = () => {
       {unreadMessages ? (
         <div className="relative">
           <Link href={"/messages"}>
-            <ChatBubbleLeftEllipsisIcon className="h-6 w-6 text-muted-foreground hover:cursor-pointer hover:text-foreground/70" />
+            <ChatBubbleLeftEllipsisIcon className="h-6 w-6 text-muted-foreground " />
           </Link>
           <div className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-blue-500 text-sm text-white" />
         </div>
       ) : (
         <Link href={"/messages"}>
-          <ChatBubbleLeftEllipsisIcon className="h-7 w-7 text-muted-foreground hover:cursor-pointer hover:text-foreground/70" />
+          <ChatBubbleLeftEllipsisIcon className="h-7 w-7 text-muted-foreground " />
         </Link>
       )}
     </>

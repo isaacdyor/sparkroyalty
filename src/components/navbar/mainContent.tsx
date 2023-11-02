@@ -49,54 +49,56 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
 
   const founderContent = (
     <>
-      <li>
+      <div>
         <Link href="/investments/create" passHref>
-          <p className="whitespace-nowrap text-muted-foreground">
+          <p className="whitespace-nowrap text-muted-foreground hover:text-white">
             Create Venture
           </p>
         </Link>
-      </li>
-      <li>
+      </div>
+      <div>
         <Link href="/founder/investments" passHref>
-          <p className="whitespace-nowrap text-muted-foreground">
+          <p className="whitespace-nowrap text-muted-foreground hover:text-white">
             Your Ventures
           </p>
         </Link>
-      </li>
+      </div>
     </>
   );
 
   const investorContent = (
     <>
-      <li>
+      <div>
         <Link href="/investor/jobs" passHref>
-          <p className="whitespace-nowrap text-muted-foreground">My Jobs</p>
+          <p className="whitespace-nowrap text-muted-foreground hover:text-white">
+            My Jobs
+          </p>
         </Link>
-      </li>
+      </div>
       {width <= 800 && (
-        <li>
+        <div>
           <MagnifyingGlassIcon
             onClick={() => {
               setShowSearchBar(true);
             }}
             className="h-7 w-7 text-muted-foreground hover:cursor-pointer"
           />
-        </li>
+        </div>
       )}
     </>
   );
 
   const iconGroup = (
-    <div className="flex gap-4">
-      <li>
+    <div className="flex gap-2">
+      <div className="rounded-xl p-1 hover:cursor-pointer hover:bg-slate-800">
         <NotificationIcon />
-      </li>
-      <li>
+      </div>
+      <div className="rounded-xl p-1 hover:cursor-pointer hover:bg-slate-800">
         <MessageIcon />
-      </li>
-      <li>
-        <HeartIcon className="h-7 w-7 text-muted-foreground" />
-      </li>
+      </div>
+      <div className="rounded-xl p-1 hover:cursor-pointer hover:bg-slate-800">
+        <HeartIcon className="h-7 w-7 text-muted-foreground  hover:cursor-pointer" />
+      </div>
     </div>
   );
 
@@ -114,28 +116,36 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
   );
   const inactiveContent = (
     <>
-      <li>
+      <div>
         {user?.unsafeMetadata.investor ? (
           <Link href="/investor" passHref onClick={() => setInvestorActive()}>
-            <p className="text-muted-foreground">Login as Investor</p>
+            <p className="text-muted-foreground hover:text-white">
+              Login as Investor
+            </p>
           </Link>
         ) : (
           <Link href="/investor/create" passHref>
-            <p className="text-muted-foreground">Become an Investor</p>
+            <p className="text-muted-foreground hover:text-white">
+              Become an Investor
+            </p>
           </Link>
         )}
-      </li>
-      <li>
+      </div>
+      <div>
         {user?.unsafeMetadata.founder ? (
           <Link href="/founder" passHref onClick={() => setFounderActive()}>
-            <p className="text-muted-foreground">Login as Founder</p>
+            <p className="text-muted-foreground hover:text-white">
+              Login as Founder
+            </p>
           </Link>
         ) : (
           <Link href="/founder/create" passHref>
-            <p className="text-muted-foreground">Become a Founder</p>
+            <p className="text-muted-foreground hover:text-white">
+              Become a Founder
+            </p>
           </Link>
         )}
-      </li>
+      </div>
     </>
   );
   const signedInContent = (
@@ -143,9 +153,9 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
       {user?.unsafeMetadata.active == ActiveType.NONE
         ? inactiveContent
         : activeContent}
-      <li>
+      <div>
         <ProfileButton />
-      </li>
+      </div>
     </>
   );
 
@@ -175,7 +185,7 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
 
   return (
     <>
-      <ul className="flex max-w-5xl grow items-center justify-end space-x-5">
+      <div className="flex max-w-5xl grow items-center justify-end space-x-4">
         {renderSearchBar && (
           <div className="w-full" ref={searchRef}>
             <SearchBar inputRef={inputRef} />
@@ -183,10 +193,10 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
         )}
         <SignedIn>{signedInContent}</SignedIn>
         <SignedOut>
-          <li>
+          <div>
             <SignInButton />
-          </li>
-          <li>
+          </div>
+          <div>
             <SignUpButton
               redirectUrl="/"
               unsafeMetadata={{
@@ -195,9 +205,9 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
                 founder: false,
               }}
             />
-          </li>
+          </div>
         </SignedOut>
-      </ul>
+      </div>
     </>
   );
 };
