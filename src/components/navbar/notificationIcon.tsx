@@ -1,12 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BellIcon } from "@heroicons/react/24/outline";
-import { timeAgo } from "~/utils/helperFunctions";
-import Link from "next/link";
-import { RxCross2 } from "react-icons/rx";
 import { GoDotFill } from "react-icons/go";
 import { BsArchive } from "react-icons/bs";
 import { api } from "~/utils/api";
-import { NotificationClass } from "@prisma/client";
 import { ActiveType, type NotificationType } from "~/types/types";
 import { pusherClient } from "~/server/pusher";
 import { toPusherKey } from "~/utils/helperFunctions";

@@ -8,7 +8,6 @@ import { MdLocationPin } from "react-icons/md";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { BsFillBriefcaseFill } from "react-icons/bs";
 import StarsComponent from "../review/multiStars";
-import SwitchProfileButton from "../navbar/switchProfile";
 import DeleteProfileButton from "./deleteProfile";
 import LinkedAccounts from "./linkedAccounts";
 import { AccountType } from "@prisma/client";
@@ -132,7 +131,6 @@ const InvestorProfileComponent: React.FC<{
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
             <div className="modal-content flex w-80 flex-col rounded-lg bg-slate-800 shadow-md">
-              <SwitchProfileButton accountType={AccountType.INVESTOR} />
               <DeleteProfileButton accountType={AccountType.INVESTOR} />
               <button onClick={closeModal} className="text-white">
                 <div className="rounded-b-lg p-4 text-center hover:bg-slate-600">

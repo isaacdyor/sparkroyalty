@@ -4,7 +4,7 @@ import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useGeneralContext } from "~/utils/context";
 import { useUser } from "@clerk/nextjs";
-import { ActiveType, ConversationType } from "~/types/types";
+import { ActiveType, type ConversationType } from "~/types/types";
 
 const MessageIcon = () => {
   const { conversations } = useGeneralContext();

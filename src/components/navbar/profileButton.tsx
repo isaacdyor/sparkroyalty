@@ -1,8 +1,5 @@
 import { useUser } from "@clerk/nextjs";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import user from "pusher-js/types/src/core/user";
 import React, { useEffect, useState } from "react";
-import { ActiveType } from "~/types/types";
 import Image from "next/image";
 import SwitchProfileButton from "./switchProfile";
 import { useClerk } from "@clerk/clerk-react";

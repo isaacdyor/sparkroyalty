@@ -3,7 +3,6 @@ import type { GetServerSideProps, NextPage } from "next/types";
 import Unauthorized from "~/components/conditionals/unauthorized";
 import Loading from "~/components/conditionals/loading";
 import FounderProfileComponent from "~/components/profile/founderProfile";
-import CreateFounder from "~/components/conditionals/createFounder";
 import { useUser } from "@clerk/nextjs";
 import InvestorProfileComponent from "~/components/profile/investorProfile";
 import { ActiveType } from "~/types/types";

@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BellIcon } from "@heroicons/react/24/outline";
 import { timeAgo } from "~/utils/helperFunctions";
 import Link from "next/link";
-import { RxCross2 } from "react-icons/rx";
 import { GoDotFill } from "react-icons/go";
 import { BsArchive } from "react-icons/bs";
 import { api } from "~/utils/api";
@@ -48,8 +46,6 @@ const NotificationIcon: React.FC = () => {
   const [hoveredNotificationId, setHoveredNotificationId] = useState<
     string | null
   >(null);
-
-  const unreadNotifications = notifications?.filter((n) => !n.read);
 
   useEffect(() => {
     if (!isLoading && data) {

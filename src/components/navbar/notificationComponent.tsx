@@ -1,7 +1,7 @@
 import { NotificationClass } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
-import { NotificationType } from "~/types/types";
+import type { NotificationType } from "~/types/types";
 import { timeAgo } from "~/utils/helperFunctions";
 
 const NotificationComponent: React.FC<{

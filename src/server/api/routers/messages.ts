@@ -94,7 +94,7 @@ export const messagesRouter = createTRPCRouter({
             ],
           }
         );
-      } else if (ctx.unsafeMetadata.active === ActiveType.FOUNDER) {
+      } else if (ctx.unsafeMetadata.active === AccountType.FOUNDER) {
         await pusherServer.trigger(
           toPusherKey(`investor:${input.recipientId}`),
           "new-conversation",
@@ -217,7 +217,7 @@ export const messagesRouter = createTRPCRouter({
             senderName: input.senderName,
           }
         );
-      } else if (ctx.unsafeMetadata.active === ActiveType.FOUNDER) {
+      } else if (ctx.unsafeMetadata.active === AccountType.FOUNDER) {
         await pusherServer.trigger(
           toPusherKey(`investor:${input.conversation.investorId}`),
           "new-message",

@@ -1,8 +1,7 @@
 import { useUser } from "@clerk/nextjs";
-import { AccountType } from "@prisma/client";
 import Link from "next/link";
 import router from "next/router";
-import React, { SetStateAction } from "react";
+import React, { type SetStateAction } from "react";
 import { ActiveType, type UnsafeMetadata } from "~/types/types";
 import { updateMetadata } from "~/utils/helperFunctions";
 
@@ -18,13 +17,13 @@ const SwitchProfileButton: React.FC<{
     }
     let unsafeMetadata: UnsafeMetadata;
 
-    if (user.unsafeMetadata.active === AccountType.FOUNDER) {
+    if (user.unsafeMetadata.active === ActiveType.FOUNDER) {
       unsafeMetadata = {
         investor: user.unsafeMetadata.investor,
         founder: user.unsafeMetadata.founder,
         active: ActiveType.INVESTOR,
       };
-    } else if (user.unsafeMetadata.active === AccountType.INVESTOR) {
+    } else if (user.unsafeMetadata.active === ActiveType.INVESTOR) {
       unsafeMetadata = {
         investor: user.unsafeMetadata.investor,
         founder: user.unsafeMetadata.founder,
@@ -40,10 +39,9 @@ const SwitchProfileButton: React.FC<{
         console.error("Error updating metadata", err);
       });
   };
-  console.log(user?.unsafeMetadata.active == ActiveType.FOUNDER);
   return (
     <>
-      {user?.unsafeMetadata.active === AccountType.INVESTOR && (
+      {user?.unsafeMetadata.active === ActiveType.INVESTOR && (
         <>
           {user?.unsafeMetadata.founder ? (
             <button
@@ -70,7 +68,7 @@ const SwitchProfileButton: React.FC<{
           )}
         </>
       )}
-      {user?.unsafeMetadata.active === AccountType.FOUNDER && (
+      {user?.unsafeMetadata.active === ActiveType.FOUNDER && (
         <>
           {user?.unsafeMetadata.investor ? (
             <button

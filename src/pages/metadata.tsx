@@ -9,22 +9,22 @@ const Home: NextPage = () => {
 
   if (!user) return null;
 
-  const updateMetadata = async () => {
-    try {
-      const response = await user.update({
-        unsafeMetadata: {
-          investor: false,
-          founder: true,
-          active: ActiveType.FOUNDER,
-        },
-      });
-      if (response) {
-        console.log("res", response);
-      }
-    } catch (err) {
-      console.error("error", err);
-    }
-  };
+  // const updateMetadata = async () => {
+  //   try {
+  //     const response = await user.update({
+  //       unsafeMetadata: {
+  //         investor: false,
+  //         founder: true,
+  //         active: ActiveType.FOUNDER,
+  //       },
+  //     });
+  //     if (response) {
+  //       console.log("res", response);
+  //     }
+  //   } catch (err) {
+  //     console.error("error", err);
+  //   }
+  // };
 
   const changeMetadata = async (metadata: ActiveType) => {
     try {
@@ -41,12 +41,6 @@ const Home: NextPage = () => {
     } catch (err) {
       console.error("error", err);
     }
-  };
-
-  const handleButtonClick = () => {
-    updateMetadata().catch((err) => {
-      console.error("Error updating metadata", err);
-    });
   };
 
   const onClick = (metadata: ActiveType) => {

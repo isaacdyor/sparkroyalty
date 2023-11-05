@@ -4,11 +4,11 @@ import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "~/components/navbar/navbar";
 import Head from "next/head";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import MessageListener from "~/components/shared/messageListener";
 import { GeneralContext } from "~/utils/context";
 import { useState } from "react";
-import { ConversationType } from "~/types/types";
+import type { ConversationType } from "~/types/types";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const [conversations, setConversations] = useState<ConversationType[] | null>(

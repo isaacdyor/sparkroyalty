@@ -12,7 +12,7 @@ import { updateMetadata } from "~/utils/helperFunctions";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const HamburgerMenu: React.FC = () => {
-  const { user, isLoaded } = useUser();
+  const { user } = useUser();
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -69,29 +69,53 @@ const HamburgerMenu: React.FC = () => {
 
   const investorContent = (
     <>
-      <Link
-        href="/investor/jobs"
-        passHref
-        onClick={() => setHamMenuOpen(false)}
-      >
-        <p className="whitespace-nowrap py-2 ">My Jobs</p>
-      </Link>
+      <p className="whitespace-nowrap py-2 ">
+        <Link
+          className="hover:text-white"
+          href="/investor/jobs"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          My Jobs{" "}
+        </Link>
+      </p>
     </>
   );
 
   const iconGroup = (
     <>
-      <Link
-        href="/notifications"
-        passHref
-        onClick={() => setHamMenuOpen(false)}
-      >
-        <p className="whitespace-nowrap py-2">Notifications</p>
-      </Link>
-      <Link href="/messages" passHref onClick={() => setHamMenuOpen(false)}>
-        <p className="whitespace-nowrap py-2">Messages</p>
-      </Link>
-      <p className="py-2">Saved</p>
+      <p className="whitespace-nowrap py-2">
+        <Link
+          className="hover:text-white"
+          href="/notifications"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          Notifications
+        </Link>
+      </p>
+
+      <p className="whitespace-nowrap py-2">
+        <Link
+          className="hover:text-white"
+          href="/messages"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          Messages
+        </Link>
+      </p>
+
+      <p className="whitespace-nowrap py-2">
+        <Link
+          className="hover:text-white"
+          href="/investments/saved"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          Saved{" "}
+        </Link>
+      </p>
     </>
   );
 
@@ -106,53 +130,73 @@ const HamburgerMenu: React.FC = () => {
   const inactiveContent = (
     <>
       {user?.unsafeMetadata.investor ? (
-        <Link
-          href="/investor"
-          passHref
-          onClick={() => {
-            setHamMenuOpen(false);
-            setInvestorActive();
-          }}
-        >
-          <p className=" py-2">Login as Investor</p>
-        </Link>
+        <p className=" py-2">
+          <Link
+            className="hover:text-white"
+            href="/investor"
+            passHref
+            onClick={() => {
+              setHamMenuOpen(false);
+              setInvestorActive();
+            }}
+          >
+            Login as Investor
+          </Link>
+        </p>
       ) : (
-        <Link
-          href="/investor/create"
-          passHref
-          onClick={() => setHamMenuOpen(false)}
-        >
-          <p className="py-2">Become an Investor</p>
-        </Link>
+        <p className="py-2">
+          <Link
+            className="hover:text-white"
+            href="/investor/create"
+            passHref
+            onClick={() => setHamMenuOpen(false)}
+          >
+            Become an Investor
+          </Link>
+        </p>
       )}
 
       {user?.unsafeMetadata.founder ? (
-        <Link
-          href="/founder"
-          passHref
-          onClick={() => {
-            setHamMenuOpen(false);
-            setFounderActive();
-          }}
-        >
-          <p className="py-2">Login as Founder</p>
-        </Link>
+        <p className="py-2">
+          <Link
+            className="hover:text-white"
+            href="/founder"
+            passHref
+            onClick={() => {
+              setHamMenuOpen(false);
+              setFounderActive();
+            }}
+          >
+            Login as Founder
+          </Link>
+        </p>
       ) : (
-        <Link
-          href="/founder/create"
-          passHref
-          onClick={() => setHamMenuOpen(false)}
-        >
-          <p className="py-2">Become a Founder</p>
-        </Link>
+        <p className="py-2">
+          <Link
+            className="hover:text-white"
+            href="/founder/create"
+            passHref
+            onClick={() => setHamMenuOpen(false)}
+          >
+            Become a Founder
+          </Link>
+        </p>
       )}
     </>
   );
   const signedInContent = (
     <>
-      <Link href="/profile" passHref onClick={() => setHamMenuOpen(false)}>
-        <p className="whitespace-nowrap py-2">Profile</p>
-      </Link>
+      <p className="whitespace-nowrap py-2">
+        <Link
+          className="hover:text-white"
+          href="/profile"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          Profile
+        </Link>
+      </p>
+
       {user?.unsafeMetadata.active == ActiveType.NONE
         ? inactiveContent
         : activeContent}
@@ -161,7 +205,7 @@ const HamburgerMenu: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (ref?.current && ref.current.contains(e.target as Node)) {
+      if (ref?.current && !ref.current.contains(e.target as Node)) {
         setHamMenuOpen(false);
       }
     };
@@ -193,7 +237,10 @@ const HamburgerMenu: React.FC = () => {
 
       {hamMenuOpen && (
         <div className="absolute left-0 top-[63px] z-50 flex h-full w-full flex-col ">
-          <div className="flex w-full flex-col border-b-2 border-b-border bg-background p-4 text-lg text-muted-foreground ">
+          <div
+            ref={ref}
+            className="flex w-full flex-col border-b-2 border-b-border bg-background p-4 text-lg text-muted-foreground "
+          >
             <SignedIn>{signedInContent}</SignedIn>
             <SignedOut>
               <p className="py-2">
@@ -211,7 +258,7 @@ const HamburgerMenu: React.FC = () => {
               </p>
             </SignedOut>
           </div>
-          <div ref={ref} className="h-full w-full bg-black bg-opacity-60" />
+          <div className="h-full w-full bg-black bg-opacity-60" />
         </div>
       )}
     </div>

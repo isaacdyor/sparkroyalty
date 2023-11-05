@@ -1,13 +1,11 @@
 import { useUser } from "@clerk/nextjs";
-import Image from "next/image";
 import React, { useEffect } from "react";
-import toast from "react-hot-toast";
 import { pusherClient } from "~/server/pusher";
 import {
   ActiveType,
-  ConversationType,
-  MessageType,
-  NotificationType,
+  type ConversationType,
+  type MessageType,
+  type NotificationType,
 } from "~/types/types";
 import { useGeneralContext } from "~/utils/context";
 import { toPusherKey } from "~/utils/helperFunctions";
@@ -35,14 +33,14 @@ const MessageListener: React.FC = () => {
       if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
         sendToast(
           conversation.investorName!,
-          conversation.messages![0]!.content!,
-          conversation.investorImageUrl!
+          conversation.messages![0]!.content,
+          conversation.investorImageUrl
         );
       } else if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
         sendToast(
           conversation.founderName!,
-          conversation.messages![0]!.content!,
-          conversation.founderImageUrl!
+          conversation.messages![0]!.content,
+          conversation.founderImageUrl
         );
       }
     };
@@ -67,7 +65,7 @@ const MessageListener: React.FC = () => {
       pusherClient.unbind("new-conversation", newConversationHandler);
       pusherClient.unbind("new-message", newMessageHandler);
     };
-  }, [user, isLoaded]);
+  }, [user, isLoaded, selectedConversation]);
   return <></>;
 };
 

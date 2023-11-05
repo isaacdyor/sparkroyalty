@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   SignInButton,
   useUser,
-  UserButton,
   SignedIn,
   SignedOut,
   SignUpButton,
@@ -18,7 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import ProfileButton from "./profileButton";
 
 const MainContent: React.FC<{ width: number }> = ({ width }) => {
-  const { user, isLoaded } = useUser();
+  const { user } = useUser();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -185,7 +184,7 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
 
   return (
     <>
-      <div className="flex max-w-5xl grow items-center justify-end space-x-4">
+      <div className="flex grow items-center justify-end space-x-4">
         {renderSearchBar && (
           <div className="w-full" ref={searchRef}>
             <SearchBar inputRef={inputRef} />
