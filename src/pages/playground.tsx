@@ -14,7 +14,7 @@ const Playground: NextPage = () => {
           <div className="h-full w-24 bg-orange-500" />
         </div>
         <p>code</p>
-        <p>Fake unfortuntalt</p>
+        <p>Fake unfortuntaly</p>
         <div className="h-full w-96 flex-1 bg-red-500" />
       </div>
     </div>
