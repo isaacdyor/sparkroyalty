@@ -12,7 +12,7 @@ import { api } from "~/utils/api";
 import { MessagesContext, useGeneralContext } from "~/utils/context";
 import { clerkClient, getAuth } from "@clerk/nextjs/server";
 import { AccountType } from "@prisma/client";
-import { pusherClient } from "~/server/pusher";
+import { pusherClient } from "~/utils/pusher";
 import { toPusherKey } from "~/utils/helperFunctions";
 import { useUser } from "@clerk/nextjs";
 import { nanoid } from "nanoid";
@@ -349,110 +349,110 @@ const MessagePage: NextPage<{ active: ActiveType }> = ({ active }) => {
   }, [conversations, selectedConversation]);
 
   // subscribe to pusher
-  useEffect(() => {
-    if (active === ActiveType.FOUNDER) {
-      pusherClient.subscribe(toPusherKey(`founder:${user?.id}`));
-    } else if (active === ActiveType.INVESTOR) {
-      pusherClient.subscribe(toPusherKey(`investor:${user?.id}`));
-    }
+  // useEffect(() => {
+  //   if (active === ActiveType.FOUNDER) {
+  //     pusherClient.subscribe(toPusherKey(`founder:${user?.id}`));
+  //   } else if (active === ActiveType.INVESTOR) {
+  //     pusherClient.subscribe(toPusherKey(`investor:${user?.id}`));
+  //   }
 
-    // get the message for the reciever
-    const updateRecieverMessages = (message: MessageType) => {
-      let newMessage: MessageType;
+  //   // get the message for the reciever
+  //   const updateRecieverMessages = (message: MessageType) => {
+  //     let newMessage: MessageType;
 
-      if (message.senderType === AccountType.FOUNDER) {
-        newMessage = {
-          content: message.content,
-          createdAt: new Date(),
-          id: nanoid(),
-          investorId: message.investorId,
-          founderId: message.founderId,
-          senderType: AccountType.FOUNDER,
-          senderName: user!.fullName!,
-          conversationId: message.conversationId,
-        };
-      } else {
-        newMessage = {
-          content: message.content,
-          createdAt: new Date(),
-          id: nanoid(),
-          investorId: message.investorId,
-          founderId: message.founderId,
-          senderType: AccountType.INVESTOR,
-          senderName: user!.fullName!,
-          conversationId: message.conversationId,
-        };
-      }
+  //     if (message.senderType === AccountType.FOUNDER) {
+  //       newMessage = {
+  //         content: message.content,
+  //         createdAt: new Date(),
+  //         id: nanoid(),
+  //         investorId: message.investorId,
+  //         founderId: message.founderId,
+  //         senderType: AccountType.FOUNDER,
+  //         senderName: user!.fullName!,
+  //         conversationId: message.conversationId,
+  //       };
+  //     } else {
+  //       newMessage = {
+  //         content: message.content,
+  //         createdAt: new Date(),
+  //         id: nanoid(),
+  //         investorId: message.investorId,
+  //         founderId: message.founderId,
+  //         senderType: AccountType.INVESTOR,
+  //         senderName: user!.fullName!,
+  //         conversationId: message.conversationId,
+  //       };
+  //     }
 
-      setConversations((prevConversations) => {
-        const prevConversationsArray = prevConversations ?? [];
+  //     setConversations((prevConversations) => {
+  //       const prevConversationsArray = prevConversations ?? [];
 
-        const unsortedArray = prevConversationsArray.map((conversation) => {
-          if (conversation.id === newMessage.conversationId) {
-            return {
-              ...conversation,
-              lastMessageAt: new Date(),
-              messages: [...conversation.messages!, newMessage],
-              founderSeen:
-                message.senderType === AccountType.INVESTOR &&
-                selectedConversation?.id !== message.conversationId
-                  ? false
-                  : conversation.founderSeen,
-              investorSeen:
-                message.senderType === AccountType.FOUNDER &&
-                selectedConversation?.id !== message.conversationId
-                  ? false
-                  : conversation.investorSeen,
-            };
-          }
-          return conversation;
-        });
-        return sortConversation(unsortedArray);
-      });
-    };
+  //       const unsortedArray = prevConversationsArray.map((conversation) => {
+  //         if (conversation.id === newMessage.conversationId) {
+  //           return {
+  //             ...conversation,
+  //             lastMessageAt: new Date(),
+  //             messages: [...conversation.messages!, newMessage],
+  //             founderSeen:
+  //               message.senderType === AccountType.INVESTOR &&
+  //               selectedConversation?.id !== message.conversationId
+  //                 ? false
+  //                 : conversation.founderSeen,
+  //             investorSeen:
+  //               message.senderType === AccountType.FOUNDER &&
+  //               selectedConversation?.id !== message.conversationId
+  //                 ? false
+  //                 : conversation.investorSeen,
+  //           };
+  //         }
+  //         return conversation;
+  //       });
+  //       return sortConversation(unsortedArray);
+  //     });
+  //   };
 
-    // update conversation state for the reciever when a new conversation is created
-    const newConversationReciever = (conversation: ConversationType) => {
-      setConversations((prevConversations) => {
-        const prevConversationsArray = prevConversations ?? [];
+  //   // update conversation state for the reciever when a new conversation is created
+  //   const newConversationReciever = (conversation: ConversationType) => {
+  //     setConversations((prevConversations) => {
+  //       const prevConversationsArray = prevConversations ?? [];
 
-        return [conversation, ...prevConversationsArray];
-      });
-    };
+  //       return [conversation, ...prevConversationsArray];
+  //     });
+  //   };
 
-    const newMessageHandler = (message: MessageType) => {
-      if (
-        (active === ActiveType.FOUNDER &&
-          message.senderType === AccountType.FOUNDER) ??
-        (active === ActiveType.INVESTOR &&
-          message.senderType === AccountType.INVESTOR)
-      ) {
-        return;
-      } else {
-        updateRecieverMessages(message);
-        markNotRead(message);
-      }
-    };
+  //   const newMessageHandler = (message: MessageType) => {
+  //     if (
+  //       (active === ActiveType.FOUNDER &&
+  //         message.senderType === AccountType.FOUNDER) ??
+  //       (active === ActiveType.INVESTOR &&
+  //         message.senderType === AccountType.INVESTOR)
+  //     ) {
+  //       return;
+  //     } else {
+  //       updateRecieverMessages(message);
+  //       markNotRead(message);
+  //     }
+  //   };
 
-    const newConversationHandler = async (conversation: ConversationType) => {
-      newConversationReciever(conversation);
-      const response = await refetch();
-      return response;
-    };
+  //   const newConversationHandler = async (conversation: ConversationType) => {
+  //     newConversationReciever(conversation);
+  //     const response = await refetch();
+  //     return response;
+  //   };
 
-    pusherClient.bind("new-message", newMessageHandler);
-    pusherClient.bind("new-conversation", newConversationHandler);
+  //   pusherClient.bind("new-message", newMessageHandler);
+  //   pusherClient.bind("new-conversation", newConversationHandler);
 
-    return () => {
-      if (active === ActiveType.FOUNDER) {
-        pusherClient.unsubscribe(toPusherKey(`founder:${user?.id}`));
-      } else if (active === ActiveType.INVESTOR) {
-        pusherClient.unsubscribe(toPusherKey(`investor:${user?.id}`));
-      }
-      pusherClient.unbind("new-conversation", newConversationHandler);
-      pusherClient.unbind("new-message", newMessageHandler);
-    };
-  }, [active, user?.id, markNotRead, selectedConversation?.id, refetch]);
+  //   return () => {
+  //     if (active === ActiveType.FOUNDER) {
+  //       pusherClient.unsubscribe(toPusherKey(`founder:${user?.id}`));
+  //     } else if (active === ActiveType.INVESTOR) {
+  //       pusherClient.unsubscribe(toPusherKey(`investor:${user?.id}`));
+  //     }
+  //     pusherClient.unbind("new-conversation", newConversationHandler);
+  //     pusherClient.unbind("new-message", newMessageHandler);
+  //   };
+  // }, [active, user?.id, markNotRead, selectedConversation?.id, refetch]);
 
   // focus input when new conversation is created
   useEffect(() => {

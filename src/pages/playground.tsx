@@ -1,24 +1,94 @@
-import type { NextPage } from "next/types";
+import { useUser } from "@clerk/nextjs";
+import React, { useEffect } from "react";
+import {
+  ActiveType,
+  type ConversationType,
+  type MessageType,
+  type NotificationType,
+} from "~/types/types";
+import { useGeneralContext } from "~/utils/context";
+import { toPusherKey } from "~/utils/helperFunctions";
+import { sendToast } from "~/utils/toast";
+import Pusher from "pusher-js";
 
-const Playground: NextPage = () => {
-  return (
-    <div className="flex h-screen w-full flex-col justify-center px-24 ">
-      <div className="flex max-w-5xl">
-        <div className="h-48 w-1/2  bg-purple-500" />
-        <div className="h-48 w-1/2 bg-pink-500" />
-      </div>
-      <div className="flex h-48 w-full max-w-5xl items-center justify-between bg-primary">
-        <div className="h-full w-48 flex-1 bg-green-500" />
-        <div className="flex h-full">
-          <div className="h-full w-24 bg-yellow-500" />
-          <div className="h-full w-24 bg-orange-500" />
-        </div>
-        <p>code</p>
-        <p>Fake unfortuntaly</p>
-        <div className="h-full w-96 flex-1 bg-red-500" />
-      </div>
-    </div>
-  );
+const MessageListener: React.FC = () => {
+  const { user, isLoaded } = useUser();
+
+  const { selectedConversation } = useGeneralContext();
+
+  // subscribe to pusher
+  // useEffect(() => {
+  //   if (!isLoaded) {
+  //     return;
+  //   }
+  //   console.log("subscribing");
+  //   if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
+  //     pusherClient.subscribe(toPusherKey(`founder:${user?.id}`));
+  //   } else if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
+  //     pusherClient.subscribe(toPusherKey(`investor:${user?.id}`));
+  //   }
+  //   const newNotificationHandler = (notification: NotificationType) => {
+  //     sendToast(notification.subject, notification.content);
+  //   };
+
+  //   const newConversationHandler = (conversation: ConversationType) => {
+  //     if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
+  //       sendToast(
+  //         conversation.investorName!,
+  //         conversation.messages![0]!.content,
+  //         conversation.investorImageUrl
+  //       );
+  //     } else if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
+  //       sendToast(
+  //         conversation.founderName!,
+  //         conversation.messages![0]!.content,
+  //         conversation.founderImageUrl
+  //       );
+  //     }
+  //   };
+
+  //   const newMessageHandler = (message: MessageType) => {
+  //     if (message.conversationId != selectedConversation?.id) {
+  //       sendToast(message.senderName!, message.content, message.imageUrl);
+  //     }
+  //   };
+
+  //   pusherClient.bind("new-notification", newNotificationHandler);
+  //   pusherClient.bind("new-conversation", newConversationHandler);
+  //   pusherClient.bind("new-message", newMessageHandler);
+
+  //   return () => {
+  //     console.log("unsubscribing");
+  //     if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
+  //       pusherClient.unsubscribe(toPusherKey(`founder:${user?.id}`));
+  //     } else if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
+  //       pusherClient.unsubscribe(toPusherKey(`investor:${user?.id}`));
+  //     }
+  //     pusherClient.unbind("new-notification", newNotificationHandler);
+  //     pusherClient.unbind("new-conversation", newConversationHandler);
+  //     pusherClient.unbind("new-message", newMessageHandler);
+  //   };
+  // }, [user, isLoaded, selectedConversation]);
+
+  const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
+    cluster: "us3",
+  });
+
+  useEffect(() => {
+    pusher.subscribe("channel");
+    const handler = () => {
+      console.log("event");
+    };
+
+    pusher.bind("event", handler);
+
+    return () => {
+      console.log("unsubscribing");
+      pusher.unsubscribe("channel");
+      pusher.unbind("event", handler);
+    };
+  }, []);
+  return <>hello</>;
 };
 
-export default Playground;
+export default MessageListener;

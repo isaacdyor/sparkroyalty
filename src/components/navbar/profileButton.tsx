@@ -35,7 +35,7 @@ const ProfileButton = () => {
     <div ref={ref}>
       <Image
         src={user.imageUrl}
-        className="h-8 w-8 rounded-full object-cover hover:cursor-pointer"
+        className="h-8 w-8 grow rounded-full object-cover hover:cursor-pointer"
         alt={`profile picture`}
         width={120}
         height={120}

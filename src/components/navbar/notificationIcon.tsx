@@ -4,7 +4,7 @@ import { GoDotFill } from "react-icons/go";
 import { BsArchive } from "react-icons/bs";
 import { api } from "~/utils/api";
 import { ActiveType, type NotificationType } from "~/types/types";
-import { pusherClient } from "~/server/pusher";
+import { pusherClient } from "~/utils/pusher";
 import { toPusherKey } from "~/utils/helperFunctions";
 import { useUser } from "@clerk/nextjs";
 import NotificationComponent from "./notificationComponent";
@@ -69,42 +69,42 @@ const NotificationIcon: React.FC = () => {
   }, [isModalOpen]);
 
   // subscribe to pusher
-  useEffect(() => {
-    if (isLoaded) {
-      if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
-        pusherClient.subscribe(toPusherKey(`founder:${user?.id}`));
-      } else if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
-        pusherClient.subscribe(toPusherKey(`investor:${user?.id}`));
-      }
-    }
-    const newNotificationHandler = (notification: NotificationType) => {
-      const date = new Date(notification.createdAt);
-      const newNotification = {
-        ...notification,
-        createdAt: date,
-      };
-      setNotifications((prevNotifications) => {
-        const updatedNotifications = [
-          ...(prevNotifications || []),
-          newNotification,
-        ];
-        return updatedNotifications;
-      });
-      void ctx.notifications.getCurrent.invalidate();
-      // toast
-    };
+  // useEffect(() => {
+  //   if (isLoaded) {
+  //     if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
+  //       pusherClient.subscribe(toPusherKey(`founder:${user?.id}`));
+  //     } else if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
+  //       pusherClient.subscribe(toPusherKey(`investor:${user?.id}`));
+  //     }
+  //   }
+  //   const newNotificationHandler = (notification: NotificationType) => {
+  //     const date = new Date(notification.createdAt);
+  //     const newNotification = {
+  //       ...notification,
+  //       createdAt: date,
+  //     };
+  //     setNotifications((prevNotifications) => {
+  //       const updatedNotifications = [
+  //         ...(prevNotifications || []),
+  //         newNotification,
+  //       ];
+  //       return updatedNotifications;
+  //     });
+  //     void ctx.notifications.getCurrent.invalidate();
+  //     // toast
+  //   };
 
-    pusherClient.bind("new-notification", newNotificationHandler);
+  //   pusherClient.bind("new-notification", newNotificationHandler);
 
-    return () => {
-      if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
-        pusherClient.unsubscribe(toPusherKey(`founder:${user?.id}`));
-      } else if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
-        pusherClient.unsubscribe(toPusherKey(`investor:${user?.id}`));
-      }
-      pusherClient.unbind("new-notification", newNotificationHandler);
-    };
-  }, [user, isLoaded, ctx.notifications.getCurrent]);
+  //   return () => {
+  //     if (user?.unsafeMetadata.active === ActiveType.FOUNDER) {
+  //       pusherClient.unsubscribe(toPusherKey(`founder:${user?.id}`));
+  //     } else if (user?.unsafeMetadata.active === ActiveType.INVESTOR) {
+  //       pusherClient.unsubscribe(toPusherKey(`investor:${user?.id}`));
+  //     }
+  //     pusherClient.unbind("new-notification", newNotificationHandler);
+  //   };
+  // }, [user, isLoaded, ctx.notifications.getCurrent]);
 
   if (!data) return null;
 

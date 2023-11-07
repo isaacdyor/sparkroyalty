@@ -43,7 +43,7 @@ const NewInvestor: NextPage = () => {
   const [country, setCountry] = useState("");
   const [educationAndExperience, setEducationAndExperience] = useState("");
 
-  const createProfile = () => {
+  const createProfile = async () => {
     if (!user) {
       console.log("User is not defined");
       return;
@@ -68,6 +68,7 @@ const NewInvestor: NextPage = () => {
       country,
       educationAndExperience,
     });
+    await router.push("/profile");
   };
 
   if (!isLoaded) return <Loading />;
@@ -83,7 +84,9 @@ const NewInvestor: NextPage = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            createProfile();
+            createProfile().catch((err) => {
+              console.error("Error creating profile", err);
+            });
           }}
         >
           <div className="mb-4">

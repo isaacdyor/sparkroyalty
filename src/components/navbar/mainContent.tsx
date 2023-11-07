@@ -117,7 +117,7 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
     <>
       <div>
         {user?.unsafeMetadata.investor ? (
-          <Link href="/investor" passHref onClick={() => setInvestorActive()}>
+          <Link href="/profile" passHref onClick={() => setInvestorActive()}>
             <p className="text-muted-foreground hover:text-white">
               Login as Investor
             </p>
@@ -132,7 +132,7 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
       </div>
       <div>
         {user?.unsafeMetadata.founder ? (
-          <Link href="/founder" passHref onClick={() => setFounderActive()}>
+          <Link href="/profile" passHref onClick={() => setFounderActive()}>
             <p className="text-muted-foreground hover:text-white">
               Login as Founder
             </p>
@@ -186,11 +186,14 @@ const MainContent: React.FC<{ width: number }> = ({ width }) => {
     <>
       <div className="flex grow items-center justify-end space-x-4">
         {renderSearchBar && (
-          <div className="w-full" ref={searchRef}>
+          <div className="flex w-full justify-center" ref={searchRef}>
             <SearchBar inputRef={inputRef} />
           </div>
         )}
-        <SignedIn>{signedInContent}</SignedIn>
+        <div className="flex shrink-0 items-center gap-4 pl-1">
+          <SignedIn>{signedInContent}</SignedIn>
+        </div>
+
         <SignedOut>
           <div>
             <SignInButton />

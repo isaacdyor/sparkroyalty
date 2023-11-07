@@ -10,6 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ActiveType } from "~/types/types";
 import { updateMetadata } from "~/utils/helperFunctions";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import SearchBar from "./searchBar";
 
 const HamburgerMenu: React.FC = () => {
   const { user } = useUser();
@@ -72,11 +73,21 @@ const HamburgerMenu: React.FC = () => {
       <p className="whitespace-nowrap py-2 ">
         <Link
           className="hover:text-white"
+          href="/investments"
+          passHref
+          onClick={() => setHamMenuOpen(false)}
+        >
+          Ventures
+        </Link>
+      </p>
+      <p className="whitespace-nowrap py-2 ">
+        <Link
+          className="hover:text-white"
           href="/investor/jobs"
           passHref
           onClick={() => setHamMenuOpen(false)}
         >
-          My Jobs{" "}
+          My Jobs
         </Link>
       </p>
     </>

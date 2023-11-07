@@ -22,12 +22,9 @@ const CurrentFounderProfilePage: NextPage<{ active: ActiveType }> = ({
     });
   const { user, isLoaded } = useUser();
 
-  console.log(active === ActiveType.INVESTOR && investorLoading);
   if (!isLoaded) return <Loading />;
   if (active == ActiveType.FOUNDER && founderLoading) return <Loading />;
   if (active == ActiveType.INVESTOR && investorLoading) return <Loading />;
-
-  // if (!investor && !founder) return <p>Where yo account?</p>;
 
   if (!user) return <Unauthorized />;
 
