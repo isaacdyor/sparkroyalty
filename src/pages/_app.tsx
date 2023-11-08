@@ -9,6 +9,8 @@ import MessageListener from "~/components/shared/messageListener";
 import { GeneralContext } from "~/utils/context";
 import { useState } from "react";
 import type { ConversationType } from "~/types/types";
+import PusherServer from "pusher";
+import PusherClient from "pusher-js";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const [conversations, setConversations] = useState<ConversationType[] | null>(
