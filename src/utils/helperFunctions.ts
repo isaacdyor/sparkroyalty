@@ -1,5 +1,9 @@
 import type { UserResource } from "@clerk/types";
-import type { InvestmentType, UnsafeMetadata } from "~/types/types";
+import type {
+  ConversationType,
+  InvestmentType,
+  UnsafeMetadata,
+} from "~/types/types";
 
 export const timeAgo = (createdAt: Date): string => {
   const currentTime = new Date();
@@ -91,4 +95,13 @@ export const getAmountOwed = (
 
 export const toPusherKey = (key: string) => {
   return key.replace(/:/g, "__");
+};
+
+export const sortConversation = (conversations: ConversationType[]) => {
+  const sortedConversations = conversations?.sort((a, b) => {
+    const aDate = new Date(a.lastMessageAt);
+    const bDate = new Date(b.lastMessageAt);
+    return bDate.getTime() - aDate.getTime();
+  });
+  return sortedConversations;
 };

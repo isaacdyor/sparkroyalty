@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 import MessageListener from "~/components/shared/messageListener";
 import { GeneralContext } from "~/utils/context";
 import { useState } from "react";
-import type { ConversationType } from "~/types/types";
+import type { ConversationType, NotificationType } from "~/types/types";
 import PusherServer from "pusher";
 import PusherClient from "pusher-js";
 
@@ -18,7 +18,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   );
   const [selectedConversation, setSelectedConversation] =
     useState<ConversationType | null>(null);
-
+  const [notifications, setNotifications] = useState<NotificationType[] | null>(
+    null
+  );
   const [unreadMessages, setUnreadMessages] = useState(false);
 
   const value = {
@@ -27,6 +29,8 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     unreadMessages: unreadMessages,
     setConversations: setConversations,
     setSelectedConversation: setSelectedConversation,
+    notifications: notifications,
+    setNotifications: setNotifications,
     setUnreadMessages: setUnreadMessages,
   };
   return (

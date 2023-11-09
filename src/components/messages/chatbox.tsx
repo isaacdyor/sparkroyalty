@@ -1,36 +1,228 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 import { FaEllipsisH } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { ActiveType } from "~/types/types";
+import {
+  ActiveType,
+  ConversationType,
+  MessageType,
+  SuggestionType,
+} from "~/types/types";
 import ConversationComponent from "./conversationComponent";
 import UserSuggestions from "./userSuggestions";
-import { useMessagesContext } from "~/utils/context";
 import { BiArrowBack } from "react-icons/bi";
+import { useGeneralContext } from "~/utils/context";
+import { api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
+import { nanoid } from "nanoid";
+import { AccountType } from "@prisma/client";
 
-const Chatbox = () => {
+const Chatbox: React.FC<{
+  newConversation: boolean;
+  isBigScreen: boolean;
+  setNewConversation: React.Dispatch<React.SetStateAction<boolean>>;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  active: ActiveType;
+  inputRef: React.RefObject<HTMLInputElement>;
+  newMessageRef: React.RefObject<HTMLInputElement>;
+}> = ({
+  newConversation,
+  setNewConversation,
+  setSidebarOpen,
+  isBigScreen,
+  active,
+  inputRef,
+  newMessageRef,
+}) => {
+  const { user } = useUser();
+
+  // mutations
+  const { mutate: createConversationMutation } =
+    api.messages.createConversation.useMutation({
+      onError: (e) => {
+        const errorMessage = e.data?.zodError?.fieldErrors.content;
+        console.error("Error updating poopy profile:", errorMessage);
+      },
+    });
+
+  const { mutate: markReadMutation } = api.messages.markRead.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.error("Error updating poopy profile:", errorMessage);
+    },
+  });
+
+  const { mutate: markNotReadMutation } = api.messages.markNotRead.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.error("Error updating poopy profile:", errorMessage);
+    },
+  });
+
+  const { mutate: sendMessageMutation } = api.messages.sendMessage.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.error("Error updating poopy profile:", errorMessage);
+    },
+  });
+  // state
   const {
-    active,
-    newConversation,
-    setNewConversation,
-    newConversationUser,
-    setNewConversationUser,
-    userSearch,
-    setUserSearch,
-    inputRef,
-    founders,
-    investors,
     conversations,
     selectedConversation,
+    setConversations,
     setSelectedConversation,
-    newMessageRef,
-    message,
-    setMessage,
-    createConversation,
-    sendMessage,
-    isBigScreen,
-    setSidebarOpen,
-  } = useMessagesContext();
+  } = useGeneralContext();
+
+  const [conversationSearch, setConversationSearch] = useState("");
+
+  const [message, setMessage] = useState("");
+  const [userSearch, setUserSearch] = useState("");
+
+  const [newConversationUser, setNewConversationUser] =
+    useState<SuggestionType | null>(null);
+
+  // queries
+  const { data: investors } = api.investors.getAll.useQuery(undefined, {
+    enabled: active === ActiveType.FOUNDER,
+  });
+
+  const { data: founders } = api.founders.getAll.useQuery(undefined, {
+    enabled: active === ActiveType.INVESTOR,
+  });
+  // create conversation
+  const createConversation = () => {
+    if (!message || !newConversationUser) return;
+    createConversationMutation({
+      content: message,
+      recipientId: newConversationUser.id,
+      senderName: user!.fullName!,
+      senderImageUrl: user!.imageUrl,
+    });
+    newConversationSender();
+    setNewConversation(false);
+    setNewConversationUser(null);
+  };
+
+  const newConversationSender = () => {
+    if (!newConversationUser) return;
+    let newConversation: ConversationType;
+    if (active === ActiveType.FOUNDER) {
+      newConversation = {
+        id: nanoid(),
+        createdAt: new Date(),
+
+        lastMessageAt: new Date(),
+        founderSeen: true,
+        investorSeen: false,
+        founderId: user!.id,
+        investorId: newConversationUser.id,
+        investorName: newConversationUser.fullName,
+        investorImageUrl: newConversationUser.imageUrl,
+        messages: [
+          {
+            content: message,
+            createdAt: new Date(),
+            id: nanoid(),
+            investorId: newConversationUser.id,
+            founderId: user!.id,
+            senderType: AccountType.FOUNDER,
+            conversationId: nanoid(),
+            senderName: user!.fullName!,
+          },
+        ],
+      };
+    } else if (active === ActiveType.INVESTOR) {
+      newConversation = {
+        id: nanoid(),
+        createdAt: new Date(),
+
+        lastMessageAt: new Date(),
+        founderSeen: true,
+        investorSeen: false,
+        founderId: newConversationUser.id,
+        investorId: user!.id,
+        founderName: newConversationUser.fullName,
+        founderImageUrl: newConversationUser.imageUrl,
+        messages: [
+          {
+            content: message,
+            createdAt: new Date(),
+            id: nanoid(),
+            investorId: user!.id,
+            founderId: newConversationUser.id,
+            senderType: AccountType.INVESTOR,
+            conversationId: nanoid(),
+            senderName: user!.fullName!,
+          },
+        ],
+      };
+    }
+    setConversations((prevConversations) => {
+      const prevConversationsArray = prevConversations ?? [];
+
+      return [newConversation, ...prevConversationsArray];
+    });
+    setSelectedConversation(newConversation!);
+  };
+
+  // send the message
+  const sendMessage = () => {
+    if (!message || !selectedConversation) return;
+    updateSenderMessages();
+    sendMessageMutation({
+      content: message,
+      recipientId:
+        active === ActiveType.INVESTOR
+          ? selectedConversation.founderId
+          : selectedConversation.investorId,
+      conversation: selectedConversation,
+      imageUrl: user!.imageUrl,
+      senderName: user!.fullName!,
+    });
+  };
+
+  // get the message for the sender
+  const updateSenderMessages = () => {
+    if (!selectedConversation) return;
+    let newMessage: MessageType;
+    if (active === ActiveType.FOUNDER) {
+      newMessage = {
+        content: message,
+        createdAt: new Date(),
+        id: nanoid(),
+        investorId: selectedConversation?.investorId,
+        founderId: selectedConversation?.founderId,
+        senderType: AccountType.FOUNDER,
+        senderName: user!.fullName!,
+        conversationId: selectedConversation?.id,
+      };
+    } else if (active === ActiveType.INVESTOR) {
+      newMessage = {
+        content: message,
+        createdAt: new Date(),
+        id: nanoid(),
+        investorId: selectedConversation?.investorId,
+        founderId: selectedConversation?.founderId,
+        senderType: AccountType.INVESTOR,
+        senderName: user!.fullName!,
+        conversationId: selectedConversation?.id,
+      };
+    }
+    setConversations((prevConversations) => {
+      const prevConversationsArray = prevConversations ?? [];
+
+      return prevConversationsArray.map((conversation) => {
+        if (conversation.id === newMessage.conversationId) {
+          return {
+            ...conversation,
+            lastMessageAt: new Date(),
+            messages: [...conversation.messages!, newMessage],
+          };
+        }
+        return conversation;
+      });
+    });
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -118,8 +310,8 @@ const Chatbox = () => {
         <div className="w-full">
           {newConversation ? (
             <UserSuggestions
-              founderSuggestions={founders}
-              investorSuggestions={investors}
+              founderSuggestions={founders!}
+              investorSuggestions={investors!}
               userSearch={userSearch}
               newConversationUser={newConversationUser}
               setNewConversationUser={setNewConversationUser}

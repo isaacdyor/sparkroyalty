@@ -1,20 +1,104 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
 import { IoCreateOutline } from "react-icons/io5";
 import MiniConversation from "./miniConversation";
 import MessageSearchBar from "./searchBar";
-import { useMessagesContext } from "~/utils/context";
+import { useGeneralContext } from "~/utils/context";
+import { ActiveType, ConversationType } from "~/types/types";
+import { api } from "~/utils/api";
+import { AccountType } from "@prisma/client";
 
-const Sidebar = () => {
+const Sidebar: React.FC<{
+  setNewConversation: React.Dispatch<React.SetStateAction<boolean>>;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  active: ActiveType;
+}> = ({ setNewConversation, setSidebarOpen, active }) => {
   const {
-    setNewConversation,
-    conversationSearch,
-    setConversationSearch,
     selectedConversation,
-    filteredConversations,
-    setSidebarOpen,
-    miniConversationClick,
-  } = useMessagesContext();
+    setSelectedConversation,
+    conversations,
+    setConversations,
+  } = useGeneralContext();
+
+  const [conversationSearch, setConversationSearch] = useState("");
+
+  const filteredConversations = conversations?.filter((conversation) =>
+    active === ActiveType.FOUNDER
+      ? (conversation.investor?.fullName ?? conversation.investorName!)
+          .toLowerCase()
+          .includes(conversationSearch.toLowerCase())
+      : (conversation.founder?.fullName ?? conversation.founderName!)
+          .toLowerCase()
+          .includes(conversationSearch.toLowerCase())
+  );
+
+  const miniConversationClick = (conversation: ConversationType) => {
+    setSelectedConversation(conversation);
+    setNewConversation(false);
+    setSidebarOpen(false);
+  };
+
+  const { mutate: markReadMutation } = api.messages.markRead.useMutation({
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.error("Error updating poopy profile:", errorMessage);
+    },
+  });
+
+  // mark the conversation as read
+  const markRead = useCallback(
+    (conversationId: string) => {
+      if (active === ActiveType.FOUNDER) {
+        markReadMutation({
+          conversationId: conversationId,
+          accountType: AccountType.FOUNDER,
+        });
+        markReadState(conversationId, AccountType.FOUNDER);
+      } else if (active === ActiveType.INVESTOR) {
+        markReadMutation({
+          conversationId: conversationId,
+          accountType: AccountType.INVESTOR,
+        });
+        markReadState(conversationId, AccountType.INVESTOR);
+      }
+    },
+    [active, markReadMutation]
+  );
+
+  // change state of conversation to read
+  const markReadState = (conversationId: string, accountType: AccountType) => {
+    setConversations((prevConversations) => {
+      const prevConversationsArray = prevConversations ?? [];
+
+      return prevConversationsArray.map((conversation) => {
+        if (conversation.id === conversationId) {
+          if (accountType === AccountType.FOUNDER) {
+            return {
+              ...conversation,
+              founderSeen: true,
+            };
+          } else if (accountType === AccountType.INVESTOR) {
+            return {
+              ...conversation,
+              investorSeen: true,
+            };
+          }
+        }
+        return conversation;
+      });
+    });
+  };
+  // mark the conversation as read when selected
+  useEffect(() => {
+    if (
+      selectedConversation &&
+      ((active === ActiveType.FOUNDER && !selectedConversation.founderSeen) ??
+        (active === ActiveType.INVESTOR && !selectedConversation.investorSeen))
+    ) {
+      markRead(selectedConversation.id);
+    }
+  }, [selectedConversation, active, markRead]);
+
   return (
     <div className="flex flex-col border-r border-r-border">
       <div className="flex items-center justify-between border-b border-b-border py-1 pl-2">

@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Pusher from "pusher-js";
 
 const MessageListener: React.FC = () => {
+  const [count, setCount] = useState(0);
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
       cluster: "us3",
@@ -10,7 +11,8 @@ const MessageListener: React.FC = () => {
     pusher.subscribe("channel");
 
     const handler = () => {
-      console.log("event");
+      console.log("received event");
+      setCount((prev) => prev + 1);
     };
 
     pusher.bind("event", handler);
@@ -22,7 +24,7 @@ const MessageListener: React.FC = () => {
       pusher.disconnect();
     };
   }, []);
-  return <>hello </>;
+  return <>{count} </>;
 };
 
 export default MessageListener;

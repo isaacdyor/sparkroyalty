@@ -67,61 +67,61 @@ export const messagesRouter = createTRPCRouter({
         data,
       });
 
-      // if (ctx.unsafeMetadata.active === ActiveType.INVESTOR) {
-      //   await pusherServer.trigger(
-      //     toPusherKey(`founder:${input.recipientId}`),
-      //     "new-conversation",
-      //     {
-      //       id: nanoid(),
-      //       createdAt: new Date(),
-      //       lastMessageAt: new Date(),
-      //       founderSeen: false,
-      //       investorSeen: true,
-      //       founderId: input.recipientId,
-      //       investorId: ctx.userId,
-      //       investorName: input.senderName,
-      //       investorImageUrl: input.senderImageUrl,
+      if (ctx.unsafeMetadata.active === ActiveType.INVESTOR) {
+        await pusherServer.trigger(
+          toPusherKey(`founder:${input.recipientId}`),
+          "new-conversation",
+          {
+            id: nanoid(),
+            createdAt: new Date(),
+            lastMessageAt: new Date(),
+            founderSeen: false,
+            investorSeen: true,
+            founderId: input.recipientId,
+            investorId: ctx.userId,
+            investorName: input.senderName,
+            investorImageUrl: input.senderImageUrl,
 
-      //       messages: [
-      //         {
-      //           content: input.content,
-      //           createdAt: new Date(),
-      //           id: nanoid(),
-      //           senderType: AccountType.INVESTOR,
-      //           investorId: ctx.userId,
-      //           founderId: input.recipientId,
-      //         },
-      //       ],
-      //     }
-      //   );
-      // } else if (ctx.unsafeMetadata.active === AccountType.FOUNDER) {
-      //   await pusherServer.trigger(
-      //     toPusherKey(`investor:${input.recipientId}`),
-      //     "new-conversation",
-      //     {
-      //       id: nanoid(),
-      //       createdAt: new Date(),
-      //       lastMessageAt: new Date(),
-      //       founderSeen: true,
-      //       investorSeen: false,
-      //       founderId: ctx.userId,
-      //       investorId: input.recipientId,
-      //       founderName: input.senderName,
-      //       founderImageUrl: input.senderImageUrl,
+            messages: [
+              {
+                content: input.content,
+                createdAt: new Date(),
+                id: nanoid(),
+                senderType: AccountType.INVESTOR,
+                investorId: ctx.userId,
+                founderId: input.recipientId,
+              },
+            ],
+          }
+        );
+      } else if (ctx.unsafeMetadata.active === AccountType.FOUNDER) {
+        await pusherServer.trigger(
+          toPusherKey(`investor:${input.recipientId}`),
+          "new-conversation",
+          {
+            id: nanoid(),
+            createdAt: new Date(),
+            lastMessageAt: new Date(),
+            founderSeen: true,
+            investorSeen: false,
+            founderId: ctx.userId,
+            investorId: input.recipientId,
+            founderName: input.senderName,
+            founderImageUrl: input.senderImageUrl,
 
-      //       messages: [
-      //         {
-      //           content: input.content,
-      //           id: nanoid(),
-      //           createdAt: new Date(),
-      //           senderType: AccountType.FOUNDER,
-      //           investorId: input.recipientId,
-      //           founderId: ctx.userId,
-      //         },
-      //       ],
-      //     }
-      //   );
-      // }
+            messages: [
+              {
+                content: input.content,
+                id: nanoid(),
+                createdAt: new Date(),
+                senderType: AccountType.FOUNDER,
+                investorId: input.recipientId,
+                founderId: ctx.userId,
+              },
+            ],
+          }
+        );
+      }
 
       return user;
     }),
@@ -140,6 +140,7 @@ export const messagesRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      console.log("bang");
       interface Message {
         content: string;
         founder: {
@@ -204,33 +205,33 @@ export const messagesRouter = createTRPCRouter({
         },
       });
 
-      // if (ctx.unsafeMetadata.active === ActiveType.INVESTOR) {
-      //   await pusherServer.trigger(
-      //     toPusherKey(`founder:${input.conversation.founderId}`),
-      //     "new-message",
-      //     {
-      //       content: input.content,
-      //       id: nanoid(),
-      //       senderType: AccountType.INVESTOR,
-      //       conversationId: input.conversation.id,
-      //       imageUrl: input.imageUrl,
-      //       senderName: input.senderName,
-      //     }
-      //   );
-      // } else if (ctx.unsafeMetadata.active === AccountType.FOUNDER) {
-      //   await pusherServer.trigger(
-      //     toPusherKey(`investor:${input.conversation.investorId}`),
-      //     "new-message",
-      //     {
-      //       content: input.content,
-      //       id: nanoid(),
-      //       senderType: AccountType.FOUNDER,
-      //       conversationId: input.conversation.id,
-      //       imageUrl: input.imageUrl,
-      //       senderName: input.senderName,
-      //     }
-      //   );
-      // }
+      if (ctx.unsafeMetadata.active === ActiveType.INVESTOR) {
+        await pusherServer.trigger(
+          toPusherKey(`founder:${input.conversation.founderId}`),
+          "new-message",
+          {
+            content: input.content,
+            id: nanoid(),
+            senderType: AccountType.INVESTOR,
+            conversationId: input.conversation.id,
+            imageUrl: input.imageUrl,
+            senderName: input.senderName,
+          }
+        );
+      } else if (ctx.unsafeMetadata.active === AccountType.FOUNDER) {
+        await pusherServer.trigger(
+          toPusherKey(`investor:${input.conversation.investorId}`),
+          "new-message",
+          {
+            content: input.content,
+            id: nanoid(),
+            senderType: AccountType.FOUNDER,
+            conversationId: input.conversation.id,
+            imageUrl: input.imageUrl,
+            senderName: input.senderName,
+          }
+        );
+      }
 
       return user;
     }),
