@@ -7,10 +7,9 @@ import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import MessageListener from "~/components/shared/messageListener";
 import { GeneralContext } from "~/utils/context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ConversationType, NotificationType } from "~/types/types";
-import PusherServer from "pusher";
-import PusherClient from "pusher-js";
+import Pusher from "pusher-js";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const [conversations, setConversations] = useState<ConversationType[] | null>(
@@ -33,6 +32,33 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     setNotifications: setNotifications,
     setUnreadMessages: setUnreadMessages,
   };
+  console.log("Component is rendering"); // Log each render
+  useEffect(() => {
+    console.log("Effect is running"); // Log when useEffect runs
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
+      cluster: "us3",
+      // Additional options if needed
+    });
+    const channel = pusher.subscribe("channel");
+
+    const eventHandler = () => {
+      console.log("event");
+    };
+    channel.bind("event", eventHandler);
+
+    return () => {
+      console.log("cleaning up");
+      // Unbind the event handler
+      channel.unbind("event", eventHandler);
+
+      // Unsubscribe from the channel to avoid memory leaks
+      pusher.unsubscribe("channel");
+
+      // Disconnect from Pusher
+      pusher.disconnect();
+    };
+  }, []);
+
   return (
     <>
       <Head>
